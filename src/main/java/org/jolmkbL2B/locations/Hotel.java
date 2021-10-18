@@ -3,13 +3,13 @@ import org.jxmapviewer.viewer.GeoPosition;
 
 public class Hotel extends Lieu
 {
-    public final boolean hasRestaurant;
-    public String numTelephone;
-    public String siteWeb;
-    public String urlTripadvisor;
-    public int categorieEtoiles;
-    public boolean[] labelHandicap; /** Pour chaque type de handicap, true si l'Hotel est ok pour acceuillir ce type de handicap, false sinon. 0 si info inconnue */
-    public boolean animauxAcceptes; /** 0 si non ou pas sûr, 1 si oui*/
+    private final boolean hasRestaurant;
+    private String numTelephone;
+    private String siteWeb;
+    private String urlTripadvisor;
+    private int categorieEtoiles;
+    private boolean[] labelHandicap; /** Pour chaque type de handicap, true si l'Hotel est ok pour acceuillir ce type de handicap, false sinon. 0 si info inconnue */
+    private boolean animauxAcceptes; /** 0 si non ou pas sûr, 1 si oui*/
 
     /** Constructeur pour import depuis BD des lieux repertoriés */
     public Hotel(double latitude, double longitude, String id, String name, String city,
