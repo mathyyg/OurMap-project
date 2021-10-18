@@ -1,7 +1,7 @@
 package org.jolmkbL2B.locations;
 import org.jxmapviewer.viewer.GeoPosition;
 
-public class Hotel extends PlaceOfInterest
+public class Hotel extends Lieu
 {
     public final boolean hasRestaurant;
     public String numTelephone;
@@ -34,7 +34,7 @@ public class Hotel extends PlaceOfInterest
         this.siteWeb = "We don't have that information yet. You can help by providing it !";
         this.urlTripadvisor = "We don't have that information yet. You can help by providing it !";
         this.categorieEtoiles = stars;
-        this.labelHandicap = new boolean[]{false, false, false, false};
+        this.labelHandicap = new boolean[]  {false, false, false, false};
         this.animauxAcceptes = false ;
     }
 
