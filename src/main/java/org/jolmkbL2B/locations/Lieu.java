@@ -1,5 +1,6 @@
 package org.jolmkbL2B.locations;
 
+import org.jolmkbL2B.marqueurs.PlaceType;
 import org.jxmapviewer.viewer.*;
 import org.jolmkbL2B.ourUtil.Generator;
 
@@ -33,7 +34,7 @@ public abstract class Lieu     {
     /** Ce constructeur est utilisé pour créer un marqueur depuis la carte.
      * Il fait appel a une methode de generation de String por generer les ID lieu et marqueurs qui n'existent
      * pas encore dans la BD    */
-    public Lieu(PlaceType placeType, GeoPosition coord, String name)
+    /* public Lieu(PlaceType placeType, GeoPosition coord, String name)
     {
         this.placeType = placeType.toString();
         this.coord=coord;
@@ -43,7 +44,7 @@ public abstract class Lieu     {
         this.zipCode = "We don't have that information yet. You can help by providing it !";
         this.description = "No description set yet";
         this.userMemo = "no user memo set yet";
-    }
+    }*/
 
     public String generateId() { /* algo recursif : tant creer un id, verifie qu'il n'existe pas deja.
                                                       Si il n'existe pas, on peut l'utiliser, sinon on recommence.*/

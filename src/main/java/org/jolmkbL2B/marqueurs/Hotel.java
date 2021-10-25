@@ -1,9 +1,10 @@
-package org.jolmkbL2B.locations;
-import org.jxmapviewer.viewer.GeoPosition;
+package org.jolmkbL2B.marqueurs;
+import org.jolmkbL2B.locations.Lieu;
+import org.jolmkbL2B.marqueurs.PlaceType;
 
 import java.util.Arrays;
 
-public class Hotel extends Lieu
+public class Hotel extends Marqueur
 {
     private final boolean hasRestaurant;
     private int categorieEtoiles;
@@ -15,11 +16,11 @@ public class Hotel extends Lieu
 
     /** Constructeur pour import depuis BD des lieux repertoriés
      * @author Bastien */
-    public Hotel(double latitude, double longitude, String lieuID, String marqueurID, String name,
-                 String zipCode, boolean hasRestaurant,
+    public Hotel(double latitude, double longitude, String lieuID,
+                 String name, boolean hasRestaurant,
                                     int categorieEtoiles, boolean[] labelHandicap, boolean animauxAcceptes)
     {
-        super(PlaceType.HOTEL, latitude, longitude, lieuID, marqueurID, name, zipCode);
+        super(PlaceType.HOTEL, latitude, longitude, lieuID, name);
         this.hasRestaurant = hasRestaurant;
         this.categorieEtoiles = categorieEtoiles;
         this.labelHandicap = labelHandicap;
@@ -30,14 +31,14 @@ public class Hotel extends Lieu
 
     /** Constructeur utilisé lorsqu'un lieu est ajouté depuis le carte
      * @author Bastien */
-    public Hotel(GeoPosition coord, String name, boolean hasRestaurant, int stars)
+    /* public Hotel(GeoPosition coord, String name, boolean hasRestaurant, int stars)
     {
         super(PlaceType.HOTEL, coord, name);
         this.hasRestaurant = hasRestaurant;
         this.categorieEtoiles = stars;
         this.labelHandicap = new boolean[]  {false, false, false, false};
         this.animauxAcceptes = false ;
-    }
+    }*/
 
     public boolean isHasRestaurant()    {return hasRestaurant;}
     public int getcategorieEtoiles()    {return categorieEtoiles;}
