@@ -1,11 +1,12 @@
 package org.jolmkbL2B.marqueurs;
-import org.jolmkbL2B.locations.Lieu;
-import org.jolmkbL2B.marqueurs.PlaceType;
 
 import java.util.Arrays;
-
+/** Dans cette version, l'objet n'a pas spécialement de méthodes autre que les getters, setters et toString
+ * @author Bastien
+ * @version 3 */
 public class Hotel extends Marqueur
 {
+    private String address;
     private final boolean hasRestaurant;
     private int categorieEtoiles;
     private boolean[] labelHandicap; /* Pour chaque type de handicap (moteur, mental, auditif, visuel, true si l'Hotel
@@ -14,39 +15,20 @@ public class Hotel extends Marqueur
 
 
 
-    /** Constructeur pour import depuis BD des lieux repertoriés
-     * @author Bastien */
-    public Hotel(double latitude, double longitude, String lieuID,
-                 String name, boolean hasRestaurant,
+    public Hotel(double latitude, double longitude, long lieuID,
+                 String name, String city, String address, boolean hasRestaurant,
                                     int categorieEtoiles, boolean[] labelHandicap, boolean animauxAcceptes)
     {
-        super(PlaceType.HOTEL, latitude, longitude, lieuID, name);
+        super(PlaceType.HOTEL, latitude, longitude, lieuID, name, city);
+        this.address = address;
         this.hasRestaurant = hasRestaurant;
         this.categorieEtoiles = categorieEtoiles;
         this.labelHandicap = labelHandicap;
         this.animauxAcceptes = animauxAcceptes;
     }
 
-
-
-    /** Constructeur utilisé lorsqu'un lieu est ajouté depuis le carte
-     * @author Bastien */
-    /* public Hotel(GeoPosition coord, String name, boolean hasRestaurant, int stars)
-    {
-        super(PlaceType.HOTEL, coord, name);
-        this.hasRestaurant = hasRestaurant;
-        this.categorieEtoiles = stars;
-        this.labelHandicap = new boolean[]  {false, false, false, false};
-        this.animauxAcceptes = false ;
-    }*/
-
     public boolean isHasRestaurant()    {return hasRestaurant;}
     public int getcategorieEtoiles()    {return categorieEtoiles;}
-
-    public String getLabelHandi()   {return("Handicap moteur : " + labelHandicap[0] + ".\nHandicap mental : " +
-                labelHandicap[1] + "\nHandicap auditif : " + labelHandicap[2] + "\nHandicap visuel : " +
-            labelHandicap[3]);}
-
     public boolean isAnimauxAcceptes()  {return animauxAcceptes;}
 
     @Override

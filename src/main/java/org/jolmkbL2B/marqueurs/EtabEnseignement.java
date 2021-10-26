@@ -1,32 +1,24 @@
 package org.jolmkbL2B.marqueurs;
-
-import org.jolmkbL2B.locations.Lieu;
-
+/** Dans cette version, l'objet n'a pas spécialement de méthodes autre que les getters, setters et toString
+ * @author Bastien
+ * @version 1 */
 public class EtabEnseignement extends Marqueur {
-    private final String schoolType;
-    private final String PubliqueOuPrive;
-    private final String city; //NOTE DEV : Me semble imporant ici car certaines ecole dans des les petites villes n'ont pas de nom
+    private final SchoolType schoolType; //Si l'etablissement est une cole maternelle, elmentaire, college, lycee etc. Voir enum
+    private final SchoolStatus publicOuPrive;
+    private final String address;
 
-
-    public EtabEnseignement(double latitude, double longitude, String lieuID, String marqueurID, String name, String zipCode,
-                            SchoolType schoolType, String PubliqueOrPrivate, String city)
+    public EtabEnseignement(double latitude, double longitude, long lieuID, String name,  String city, String address,
+                            SchoolType schoolType, SchoolStatus publicOuPrive)
     {
-        super(PlaceType.ENSEIGNEMENT, latitude, longitude, lieuID, name);
-        this.schoolType = schoolType.toString();
-        this.PubliqueOuPrive = PubliqueOrPrivate;
-        this.city = city;
+        super(PlaceType.ENSEIGNEMENT, latitude, longitude, lieuID, name, city);
+        this.address = address;
+        this.schoolType = schoolType;
+        this.publicOuPrive = publicOuPrive;
     }
 
-   /* public EtabEnseignement(GeoPosition coord, String name, SchoolType schoolType, SchoolStatus status)    {
-        super(PlaceType.ENSEIGNEMENT, coord, name);
-
-
-    }*/
-    public String getSchoolType() {return schoolType;}
-    public String getPubliqueOuPrive() {
-        return PubliqueOuPrive;
+    public SchoolType getSchoolType() {return schoolType;}
+    public SchoolStatus PublicOuPrive() {
+        return publicOuPrive;
     }
-    public String getCity() {
-        return city;
-    }
+    public String getAddress()  {return address;}
 }
