@@ -14,14 +14,14 @@ public abstract class Marqueur extends DefaultWaypoint {
     private String userMemo; //un memo, propre à l'utilisateur
 
     public Marqueur(PlaceType placeType, double latitude, double longitude, long lieuID, String name,
-                    String city)
+                    String city, String description)
     {
         super(latitude, longitude);
         this.placeType = placeType;
         this.lieuID = lieuID;
         this.name = name;
         this.city= city;
-        this.description = "No description set yet";
+        this.description = description;
         this.userMemo = "no user memo set yet";
     }
 

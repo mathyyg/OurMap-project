@@ -6,8 +6,8 @@ public class ArretBus extends Marqueur {
     private boolean accesHandicap;
 
     public ArretBus(double latitude, double longitude, long lieuID,
-                    String name, String city, boolean accesHandicap) {
-        super(PlaceType.ARRETBUS, latitude, longitude, lieuID, name, city);
+                    String name, String city, String description, boolean accesHandicap) {
+        super(PlaceType.ARRETBUS, latitude, longitude, lieuID, name, city, description);
         this.accesHandicap = accesHandicap;
     }
     public boolean isAccesHandicap() {return accesHandicap;}
