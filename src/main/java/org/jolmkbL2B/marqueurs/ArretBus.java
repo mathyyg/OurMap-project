@@ -5,7 +5,7 @@ package org.jolmkbL2B.marqueurs;
 public class ArretBus extends Marqueur {
     private boolean accesHandicap;
 
-    public ArretBus(double latitude, double longitude, long lieuID,
+    public ArretBus( long lieuID, double latitude, double longitude,
                     String name, String city, String description, boolean accesHandicap) {
         super(PlaceType.ARRETBUS, latitude, longitude, lieuID, name, city, description);
         this.accesHandicap = accesHandicap;
