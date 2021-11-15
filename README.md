@@ -1,6 +1,5 @@
 # OurMap
 
---------
 
 ### Projet de Licence Informatique - 2ème année
 ### Université de Tours - Antenne de Blois
