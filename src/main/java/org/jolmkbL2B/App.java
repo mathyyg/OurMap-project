@@ -18,6 +18,7 @@ public class App     {
             this.con = con;
         }
         catch(SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
             System.out.println("Error establishing connection with database. Initialization cannot contiue"); // Soucis : si pas internet, on peut pas utiliser l'appli
         }
         this.marqueurController = new MarqueurController(con);
