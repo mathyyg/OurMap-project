@@ -39,8 +39,10 @@ public class Main
 
 
         /** AFFICHARGE MARQUEUR */
-        markers.add(sncf);
-        markers.add(papin);
+        School fac = new School(47.590044038859595, 1.3366520404815674, 1, "Fac", "", "","",null, null);
+        markers.add(fac);
+//        markers.add(sncf);
+//        markers.add(papin);
 
         WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<Waypoint>();
         waypointPainter.setWaypoints(markers);
@@ -96,7 +98,8 @@ public class Main
         mapFrame.setSize(800, 600);
         mapFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mapFrame.setVisible(true);
-        OurMap.setAddressLocation(gare.getCoord());
+
+        OurMap.setAddressLocation(fac.getCoord());
         OurMap.setZoom(7);
     }
 }
