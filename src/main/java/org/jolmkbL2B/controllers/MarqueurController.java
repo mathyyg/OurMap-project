@@ -24,8 +24,8 @@ public class MarqueurController {
         }
     }
 
-    public HashSet<Marqueur> getAllMarkers()    {
-
-    }
+//    public HashSet<Marqueur> getAllMarkers()    {
+//
+//    }
 
 }
