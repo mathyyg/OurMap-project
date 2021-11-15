@@ -6,21 +6,31 @@ import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 /** Cette classe contient toutes les méthodes pour les interactions avec la base de données concernant les marqueurs et
  * objets dérivés.
  * @author Bastien*/
-public class MarqueurController {
-    private Connection con;
+public class MarqueurController  {
+
+    protected final Connection con;
 
     public MarqueurController(Connection con) {
         this.con = con;
-    }
+        try {
+            Statement stmt = con.createStatement();
+            stmt.execute("USE ourmapdb;");
+            con.setAutoCommit(false);
+            stmt.close();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     
     public ResultSet fetchAll() {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM marqueurs;");
+            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, type, latitude, longitude, name FROM marqueurs;");
             stmt.close();
             return rs;
         }
@@ -44,21 +54,21 @@ public class MarqueurController {
         return null;
     }
 
-    public ResultSet[] fetchAllInfo(long id, PlaceType placeType) {
+    public ResultSet fetchAllInfo(long id, PlaceType placeType) {
         String table = selectTable(placeType);
 
         try {
-            if (table == "none")    return null;
+            if (table.equals("none"))    {
+                System.err.println("Erreur lors de la selection de la table de BD.");
+                return null;
+            }
             else {
                 Statement stmt = con.createStatement();
                 ResultSet infoMarqueur = stmt.executeQuery("SELECT * FROM marqueurs NATURAL JOIN " + table + " WHERE " +
                         "idmarqueur = " + id + ";");
                 checkResultSetSize(infoMarqueur);
-                ResultSet commentaires = stmt.executeQuery("SELECT idmarqueur, idutilisateur, text, FROM commentaires " +
-                        "WHERE idmarqueur = " + id + " AND setVisible = 0;");
                 stmt.close();
-                ResultSet[] rsTab = {infoMarqueur, commentaires};
-                return rsTab;
+                return infoMarqueur;
             }
         }
         catch(SQLException e) {
@@ -67,12 +77,27 @@ public class MarqueurController {
         return null;
     }
 
-    public boolean updateInfo(PlaceType placeType){
+    public boolean updateInfo(PlaceType placeType, String[][] setValues, String[][] condition)  {
         boolean success = false;
         String table = selectTable(placeType);
-        return success;
+        try {
+            con.setAutoCommit(false);
 
+            con.commit();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+            try {
+                con.rollback();
+                System.err.println("Connection rollbacked.");
+            }
+            catch(SQLException ex)  {
+                ex.printStackTrace();
+            }
+        }
+        return success;
     }
+
     private void checkResultSetSize(ResultSet rs)   {
         try {
             int rsSize = rs.getFetchSize();
@@ -86,7 +111,8 @@ public class MarqueurController {
             e.printStackTrace();
         }
     }
-    private String selectTable(PlaceType placeType) {
+
+    protected String selectTable(PlaceType placeType) {
         switch(placeType)   {
             case SCHOOL:
                 return "schools";

@@ -10,7 +10,7 @@ public class MarqueursCSVToDB   {
 
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
-                    "mathys", "mathysfaitcacaparterre"); //etablissement connection
+                    "mathys", "projet2021GL"); //etablissement connection
             con.setAutoCommit(false); /**
              Les changements sur la BD ne seront enregistrés que lorsque l'instruction con.commit() ext executée
              * Cela permet d'éviter que la transaction ne soit que partiellement realisée si le process crashe */

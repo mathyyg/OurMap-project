@@ -1,5 +1,4 @@
 package org.jolmkbL2B.controllers;
-import org.jolmkbL2B.marqueurs.*;
 
 import java.sql.ResultSet;
 
@@ -7,26 +6,25 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.jolmkbL2B.marqueurs.*;
-
-import java.sql.ResultSet;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-public class UserContentController {
+public class UserContentController implements ListesEtCommentaires  {
     private Connection con;
 
     public UserContentController(Connection con)   {
         this.con = con;
+        try {
+            Statement stmt = con.createStatement();
+            stmt.execute("USE ourmapdb;");
+            stmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public ResultSet fetchAllCommentaires(long idmarqueur)  {
         try {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT idmarqueur, idutilisateur, text FROM commentaires WHERE idmarqueur = " + idmarqueur + " AND setVisible = 1;");
-
             stmt.close();
             return rs;
         }
@@ -50,6 +48,24 @@ public class UserContentController {
         return null;
     }
 
+    public boolean setCommentaireVisible(String idutilisateur, long idmarqueur, boolean visible) {
+        //On s'assure que le booleen sera bien transmis sous lq forme 0 ou 1 (la BD etant configuree pour que les booleens soient codés sur 1 bit
+        int isVisible = 0;
+        if(visible == true) isVisible = 1;
+        try {
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate("UPDATE `ourmapdb`.`commentaires`\n" +
+                    "(SET `setVisible`= " + isVisible + ")\n" +
+                    "WHERE idmarqueur = " + idmarqueur + "AND idutlisateur = \"" + idutilisateur + "\";\n");
+            con.commit();
+            return true;
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean postCommentaire(String idutilisateur, long idmarqueur, String text)  {
         try {
             Statement stmt = con.createStatement();
@@ -62,9 +78,10 @@ public class UserContentController {
                     "(" + idmarqueur + ",\n" +
                     "\"" + idutilisateur + "\",\n" +
                     "\"" + text + "\",\n" +
-                    "1);\n");
+                    " 1);\n");
 
             stmt.close();
+            con.commit();
             return true;
         }
         catch(SQLException e) {
@@ -99,8 +116,8 @@ public class UserContentController {
                 String getLastIDQuerry = "SELECT idliste FROM listeOwner ORDER BY idliste DESC LIMIT 1;";
                 ResultSet rs = stmt.executeQuery(getLastIDQuerry); //Recuperation de l'id de la liste tout juste crée
                 rs.next();
+                con.commit();
                 return rs.getLong(1);
-
             }
             stmt.close();
         }
@@ -109,6 +126,8 @@ public class UserContentController {
         }
         return -1;
     }
+
+
     /**Cette méthode permet d'ajouter un marqueur à une liste de marqueurs dans la bse de données. Pour cela, elle
      * verifie d'abord que l'utilisateur qui fait la demande a le droit d'ajouter le maqueur a la liste spécifiée
      * (via la methode checkAccessRight)
@@ -122,7 +141,10 @@ public class UserContentController {
                         "`idmarqueur`)\n" +
                         "VALUES\n" +
                         "(" + idliste + ",\n" +
-                        idmarqueur + ");\n") > 0) return true ;
+                        idmarqueur + ");\n") > 0) {
+                    con.commit();
+                    return true;
+                }
             }
             else System.out.println("Erreur lors de l'ajout du collaborateur.");
         }
@@ -141,7 +163,10 @@ public class UserContentController {
                         "`idutilisateur`)\n" +
                         "VALUES\n" +
                         "(" + idliste + ",\n" +
-                        "\"" + newCollaborateurID + "\");") > 0) return true;
+                        "\"" + newCollaborateurID + "\");") > 0)    {
+                    con.commit();
+                    return true;
+                }
             }
         }
         catch(SQLException e) {
