@@ -1,7 +1,7 @@
 package org.jolmkbL2B;
 
 import org.jolmkbL2B.controllers.MarqueurController;
-import org.jolmkbL2B.controllers.UserContentController;
+//import org.jolmkbL2B.controllers.UserContentController;
 
 import java.sql.*;
 
@@ -9,7 +9,7 @@ import java.sql.*;
 public class App     {
     public static Connection con;
     public static MarqueurController marqueurController;
-    public static UserContentController userContentController;
+//    public static UserContentController userContentController;
 
     public App()    {
         try {
@@ -22,7 +22,7 @@ public class App     {
             System.out.println("Error establishing connection with database. Initialization cannot contiue"); // Soucis : si pas internet, on peut pas utiliser l'appli
         }
         this.marqueurController = new MarqueurController(con);
-        this.userContentController = new UserContentController(con);
+//        this.userContentController = new UserContentController(con);
 
 
         try {
