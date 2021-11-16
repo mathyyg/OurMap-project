@@ -19,9 +19,13 @@ public class AppliHubFrame extends JFrame {
         this.contentPanel = new JPanel();
         this.contentPanel.setLayout(new BorderLayout());
         this.contentPanel.add(new MapPanel());
+
+        JPanel listesetmarqueurs = new JPanel();
+        this.contentPanel.add(listesetmarqueurs, BorderLayout.EAST);
+
         //principal.add ^^^
         this.setContentPane(contentPanel);
-        this.setPreferredSize(new Dimension(400, 300));
+        this.setPreferredSize(new Dimension(1200, 600));
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
