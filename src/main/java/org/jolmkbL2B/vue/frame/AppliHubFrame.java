@@ -29,7 +29,7 @@ public class AppliHubFrame extends JFrame {
         JPanel gauche = new JPanel(new MigLayout());
         JPanel gaucheBoutons = new JPanel(new MigLayout("align center"));
         gaucheBoutons.add(new JButton("Créer une liste"), "wrap");
-        gaucheBoutons.add(new JButton("Créer un marqueur personnalisé"), "wrap");
+        gaucheBoutons.add(new JButton("Créer un marqueur"), "wrap");
 
         gauche.add(favPanel, "wrap");
         gauche.add(gaucheBoutons, "wrap");
