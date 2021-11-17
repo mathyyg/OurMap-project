@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Cette classe contient toutes les méthodes pour les interactions avec la base de données concernant les marqueurs et
  * objets dérivés.
@@ -77,27 +79,6 @@ public class MarqueurController  {
         return null;
     }
 
-    public boolean updateInfo(PlaceType placeType, String[][] setValues, String[][] condition)  {
-        boolean success = false;
-        String table = selectTable(placeType);
-        try {
-            con.setAutoCommit(false);
-
-            con.commit();
-        }
-        catch(SQLException e) {
-            e.printStackTrace();
-            try {
-                con.rollback();
-                System.err.println("Connection rollbacked.");
-            }
-            catch(SQLException ex)  {
-                ex.printStackTrace();
-            }
-        }
-        return success;
-    }
-
     private void checkResultSetSize(ResultSet rs)   {
         try {
             int rsSize = rs.getFetchSize();
@@ -124,5 +105,111 @@ public class MarqueurController  {
                 System.err.println("Argument PlaceType non reconnu;");
                 return "none";
         }
+    }
+
+    public boolean updateHotel(long idmarqueur, HashMap<TableHotel, String> changes) {
+        try {
+            Statement stmt = con.createStatement();
+            String operations = "";
+            String formattedValue = "";
+
+
+            for(Map.Entry e : changes.entrySet()) {
+                TableHotel colonne = (TableHotel) e.getKey();
+                if (colonne.equals(TableHotel.description)) {
+                    stmt.executeUpdate("UPDATE `ourmapdb`.`marqueurs` (\n" +
+                            "SET `description` = \"" + e.getValue().toString() + "\"\n" +
+                            "WHERE idmarqueur = " + idmarqueur +";");
+                }
+                else {
+                    switch(colonne) {
+                        case etoiles:
+                            formattedValue = e.getValue().toString();
+                            break;
+                        case adresse, numTel, siteWeb, tripadvisor:
+                            formattedValue = "\"" + e.getValue().toString() + "\"";
+                            break;
+                        case hasRestaurant, handi_moteur, handi_mental, handi_auditif, handi_visuel, accepteAnimaux:
+                            String bool = e.getValue().toString();
+                            if(bool.equals("true") || bool.equals("True") || bool.equals("TRUE") || bool.equals("1"))   {
+                                formattedValue = "1";
+                            }
+                            else formattedValue = "0";
+                            break;
+                        default :
+                            throw new RuntimeException("Vous n'avez pas la permission de modifier cette" +
+                                    "information (" + colonne + ")");
+                    }
+                    operations += "`" + colonne + "` = " + formattedValue +", ";
+                }
+            }
+            operations = operations.substring(0, operations.length()-2);
+
+            String sqlUpdate = "UPDATE `ourmapdb`.`hotels` (SET " + operations + "WHERE idmarqueur = " + idmarqueur +";";
+            stmt.executeUpdate(sqlUpdate);
+            stmt.close();
+            con.commit();
+            return true;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                con.rollback();
+            }
+            catch (SQLException ex)    {
+                ex.printStackTrace();
+            }
+        }
+        catch (RuntimeException e)    {
+            System.err.println(e);
+        }
+        return false;
+    }
+
+    public boolean updateArretBus(long idmarqueur, HashMap<TableArretBus, String> changes) {
+        try {
+            Statement stmt = con.createStatement();
+            String operations = "";
+            String formattedValue = "";
+
+
+            for (Map.Entry e : changes.entrySet()) {
+                TableArretBus colonne = (TableArretBus) e.getKey();
+                if (colonne.equals(TableArretBus.description)) {
+                    stmt.executeUpdate("UPDATE `ourmapdb`.`marqueurs` (\n" +
+                            "SET `description` = \"" + e.getValue().toString() + "\"\n" +
+                            "WHERE idmarqueur = " + idmarqueur + ";");
+                } else {
+                    if (colonne.equals(TableArretBus.accesHandi)) {
+                        String bool = e.getValue().toString();
+                        if (bool.equals("true") || bool.equals("True") || bool.equals("TRUE") || bool.equals("1")) {
+                            formattedValue = "1";
+                        } else formattedValue = "0";
+                        operations += "`accesHandi` = " + formattedValue + ", ";
+                    }
+                    else throw new RuntimeException("Vous n'avez pas la permission de modifier cette" +
+                            "information (" + colonne + ")");
+                }
+            }
+            operations = operations.substring(0, operations.length() - 2);
+
+            String sqlUpdate = "UPDATE `ourmapdb`.`arretsbus` (SET " + operations + "WHERE idmarqueur = " + idmarqueur + ";";
+            stmt.executeUpdate(sqlUpdate);
+            stmt.close();
+            con.commit();
+            return true;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        catch (RuntimeException e)    {
+            System.err.println(e);
+        }
+        return false;
     }
 }

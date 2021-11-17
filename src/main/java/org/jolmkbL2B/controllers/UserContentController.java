@@ -14,6 +14,7 @@ public class UserContentController implements ListesEtCommentaires  {
         try {
             Statement stmt = con.createStatement();
             stmt.execute("USE ourmapdb;");
+            con.setAutoCommit(false);
             stmt.close();
 
         } catch (SQLException e) {
