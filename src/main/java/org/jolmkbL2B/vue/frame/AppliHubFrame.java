@@ -2,6 +2,7 @@ package org.jolmkbL2B.vue.frame;
 
 import com.formdev.flatlaf.intellijthemes.FlatDarkPurpleIJTheme;
 import net.miginfocom.swing.MigLayout;
+import org.jolmkbL2B.controllers.MarqueurController;
 import org.jolmkbL2B.vue.panel.ListesMarqueursPanel;
 import org.jolmkbL2B.vue.panel.MapPanel;
 
@@ -11,7 +12,7 @@ import java.awt.*;
 public class AppliHubFrame extends JFrame {
     private JPanel contentPanel;
 
-    public AppliHubFrame(String titre) {
+    public AppliHubFrame(String titre, MarqueurController marqueurController) {
         super(titre);
 //        try {
 //            UIManager.setLookAndFeel( new FlatDarkPurpleIJTheme() );

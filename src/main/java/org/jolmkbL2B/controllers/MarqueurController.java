@@ -1,11 +1,8 @@
 package org.jolmkbL2B.controllers;
 import org.jolmkbL2B.marqueurs.*;
 
-import java.sql.ResultSet;
+import java.sql.*;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,18 +11,32 @@ import java.util.Map;
  * @author Bastien*/
 public class MarqueurController  {
 
-    protected final Connection con;
+    protected Connection con;
 
-    public MarqueurController(Connection con) {
-        this.con = con;
+    public MarqueurController() {
         try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
+                    "mathys", "projet2021GL");
+            this.con = con;
             Statement stmt = con.createStatement();
             stmt.execute("USE ourmapdb;");
             con.setAutoCommit(false);
             stmt.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }
+        catch(SQLException sqlException) {
+            this.con = null;
+            System.out.println(sqlException.getMessage());
+            System.out.println("Error establishing connection with database in class MarqueurController" +
+                    ". Initialization cannot continue.");
+            // Soucis : si pas internet, on peut pas utiliser l'appli
+            sqlException.printStackTrace();
+            try {
+                con.close();
+            }
+            catch(SQLException e)   {
+                e.printStackTrace();
+                System.err.println("Connection cannot be closed or already is.");
+            }
         }
     }
     

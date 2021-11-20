@@ -1,6 +1,7 @@
 package org.jolmkbL2B.vue.panel;
 
 import com.formdev.flatlaf.intellijthemes.FlatDarkPurpleIJTheme;
+import org.jolmkbL2B.controllers.MarqueurController;
 import org.jolmkbL2B.marqueurs.MarqueurLoader;
 import org.jolmkbL2B.marqueurs.School;
 import org.jxmapviewer.JXMapViewer;
@@ -25,8 +26,13 @@ import java.util.List;
 import java.util.Set;
 
 public class MapPanel extends JPanel {
+    public static JXMapViewer OurMap; //L'objet "carte"
+    private final GeoPosition Blois_Focus; //Le point central de la carte au chargement
+    private HashSet<Waypoint> waypoints; //Un hashset contenant tous les waypoints affichés
+    private MarqueurLoader loader; // Un objet qui gere l'affichage des marqueurs
 
     public MapPanel() {
+
         this.setLayout(new BorderLayout());
 //        try {
 //            UIManager.setLookAndFeel( new FlatDarkPurpleIJTheme() );
@@ -34,11 +40,9 @@ public class MapPanel extends JPanel {
 //            System.err.println( "Failed to initialize LaF" );
 //        }
 
-        //Generator generator/ = new Generator();
-        JXMapViewer OurMap = new JXMapViewer();
-        MarqueurLoader loader = new MarqueurLoader();
-        Set<Waypoint> markers = new HashSet<Waypoint>();
-
+        this.OurMap = new JXMapViewer();
+        this.Blois_Focus = new GeoPosition(47.58507056469526, 1.337506934455753);
+        this.loader = new MarqueurLoader();
 
         /** Creer une TileFactoryInfo pour importer OpenStreetMap La Tile factory genere grosso modo topus les points de la carte */
         TileFactoryInfo info = new OSMTileFactoryInfo();
@@ -47,19 +51,8 @@ public class MapPanel extends JPanel {
 
 
         /** AFFICHARGE MARQUEUR */
-        School fac = new School(47.590044038859595, 1.3366520404815674, 1, "Fac", "", "","",null, null);
-        markers.add(fac);
-//        markers.add(sncf);
-//        markers.add(papin);
-
-        WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<Waypoint>();
-        waypointPainter.setWaypoints(markers);
-
-        java.util.List<org.jxmapviewer.painter.Painter<JXMapViewer>> painters = new ArrayList<org.jxmapviewer.painter.Painter<JXMapViewer>>();
-        painters.add(waypointPainter);
-
-        CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
-        OurMap.setOverlayPainter(painter);
+        this.waypoints = loader.loadAllMarkers();
+        OurMap.setOverlayPainter(loader.updateDisplay(waypoints));
 
 
         /** mouse clicks to waypoints method  */
@@ -72,22 +65,11 @@ public class MapPanel extends JPanel {
 
                 DefaultWaypoint clickwaypoint = new DefaultWaypoint((me_src.convertPointToGeoPosition(me.getPoint())));
 
-                markers.add(clickwaypoint);
-                WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<Waypoint>();
-                waypointPainter.setWaypoints(markers);
-
-                List<org.jxmapviewer.painter.Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
-                painters.add(waypointPainter);
-
-                CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
-                OurMap.setOverlayPainter(painter);
-
+                waypoints.add(clickwaypoint);
+                OurMap.setOverlayPainter(loader.updateDisplay(waypoints));
 
                 System.out.println(" mouse  x coordinates =" + me_src.getMousePosition().getX() + "/ mouse y coordinates =" + me_src.getMousePosition().getY());
                 System.out.println("CONVERTING MOUSE COORDINATES TO geoposition ones =====> latitude :" + me_src.convertPointToGeoPosition(me.getPoint()).getLatitude() + "  longitude :" + me_src.convertPointToGeoPosition(me.getPoint()).getLongitude());
-
-                /**address location or center  position */
-
 
             }
         });
@@ -101,10 +83,16 @@ public class MapPanel extends JPanel {
         OurMap.addKeyListener(new PanKeyListener(OurMap));
 
         /** Affichage de la carte */
-        OurMap.setAddressLocation(fac.getCoord());
+        OurMap.setAddressLocation(Blois_Focus);
         OurMap.setZoom(7);
-
         this.add(OurMap);
+    }
+
+    /** Cette methode permet d'ajouter un Waypoint à l'affichage de la carte */
+    //TODO pouvoir ajouter les infos du marqueurs pour affichage dans une frame
+    public void updateMapOverlay(Waypoint w)    {
+        waypoints.add(w);
+        OurMap.setOverlayPainter(loader.updateDisplay(waypoints));
     }
 
     // METHODE MAIN DESTINEE U N I Q U E M E N T AU DEBUG
