@@ -10,7 +10,7 @@ public class Main
         System.out.println("Hello World!");
         App app = new App();
         FlatDarkPurpleIJTheme.setup();
-        AppliHubFrame hub = new AppliHubFrame("HOME");
+        AppliHubFrame hub = new AppliHubFrame("HOME",null);
         hub.pack();
         hub.setVisible(true);
     }
