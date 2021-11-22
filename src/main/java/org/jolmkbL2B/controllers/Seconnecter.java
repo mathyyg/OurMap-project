@@ -19,7 +19,6 @@ private String mmessage;
     public Seconnecter() {
         
         initComponents();
-        fzqjfop
     }
 
     /**
@@ -158,6 +157,7 @@ private String mmessage;
     private void AnnulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnnulerActionPerformed
       connnom1.setText("");
       connpass.setText("");
+      jsjsjsjsj
     }//GEN-LAST:event_AnnulerActionPerformed
    
     //Bouttoun se connecter
