@@ -13,6 +13,21 @@ import java.sql.*;
  */
 
 public class Sinscrire extends javax.swing.JFrame {
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnconnins;
+    private javax.swing.JButton btninscrire;
+    private javax.swing.JButton btnvider;
+    private javax.swing.JTextField insID;
+    private javax.swing.JTextField insnom1;
+    private javax.swing.JTextField inspass;
+    private javax.swing.JTextField inspass2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel labelID;
+    private javax.swing.JLabel registername;
+    // End of variables declaration//GEN-END:variables
 	String id;
 	String username;
 	String password1;
@@ -267,19 +282,5 @@ public class Sinscrire extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnconnins;
-    private javax.swing.JButton btninscrire;
-    private javax.swing.JButton btnvider;
-    private javax.swing.JTextField insID;
-    private javax.swing.JTextField insnom1;
-    private javax.swing.JTextField inspass;
-    private javax.swing.JTextField inspass2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel labelID;
-    private javax.swing.JLabel registername;
-    // End of variables declaration//GEN-END:variables
+
 }
