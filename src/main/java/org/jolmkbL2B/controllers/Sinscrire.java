@@ -175,7 +175,6 @@ public class Sinscrire extends javax.swing.JFrame {
 
     private void btninscrireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btninscrireActionPerformed
         username=insnom1.getText();
-        id=insID.getText();
         password1=btninscrire.getText();
         //password2=btninscrire.getText();
         Erreur=btninscrire.getText();
@@ -189,11 +188,28 @@ public class Sinscrire extends javax.swing.JFrame {
              
              Statement stmt = con.createStatement();
              stmt.execute("USE ourmapdb");
-             String log ="insert into utilisateurs (`idutilisateur`,`displayName`, `password`) values ( '"+insID.getText()+"','"+insnom1.getText()+"','"+inspass.getText()+"')" ;
-             int success = stmt.executeUpdate(log);
-             if(success == 1)	{
-             con.commit();
-            	 this.message="vous êtes bien inscrit";
+             String log ="insert into utilisateurs (`displayName`, `password`)" +
+                     "values ( '"+ username +"','"+ password1 +"')" ; //Creation d'un nouvel utilisateur
+             int success = stmt.executeUpdate(log); //execution de la requete ci dessus
+
+             if(success == 1)	{// si cette operation fonctionne, suite de la procedure (creation de la liste de favoris
+                con.commit(); // validation de l'operation
+                this.message="vous êtes bien inscrit";
+
+                /* Recupération de l'identifiant de l'utilisateur */
+                String getLastIDQuery = "SELECT idutilisateur FROM utilisateurs ORDER BY idutilisateurs DESC LIMIT 1;"; //Tri decroissant de la colonne idutilisateur pour recuperer le dernier identifiant créé (Auto-increment)
+                ResultSet rs = stmt.executeQuery(getLastIDQuery);
+                rs.next();
+                long idutilisateur = rs.getLong(1);
+
+
+                UserContentController userContentController= new UserContentController();
+                long idFavList = userContentController.createList(idutilisateur, "Favoris"); //Creation de la liste de favoris du nouvel utilisateur
+
+                stmt.executeUpdate("UPDATE `utilisateurs`\n" +
+                        " (SET `idFavList` = " + idFavList + ")\n" +
+                        "WHERE idutilisateur = " + idutilisateur + ";"); //Attribution de la liste de favoris a l'utilisateur
+                 con.commit();
              }
              
              else 
