@@ -10,6 +10,18 @@ package org.jolmkbL2B.controllers;/*
 import java.sql.*;
 import java.util.Properties;
 public class Seconnecter extends javax.swing.JFrame {
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Annuler;
+    private javax.swing.JButton btnconn;
+    private javax.swing.JButton btnisncrire1;
+    private javax.swing.JTextField connnom1;
+    private javax.swing.JTextField connpass;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel message;
+    // End of variables declaration//GEN-END:variables
+
 private String usernameconn;
 private String passwordconn;
 private String mmessage;
@@ -19,7 +31,6 @@ private String mmessage;
     public Seconnecter() {
         
         initComponents();
-        fzqjfop
     }
 
     /**
@@ -264,15 +275,5 @@ private String mmessage;
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Annuler;
-    private javax.swing.JButton btnconn;
-    private javax.swing.JButton btnisncrire1;
-    private javax.swing.JTextField connnom1;
-    private javax.swing.JTextField connpass;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel message;
-    // End of variables declaration//GEN-END:variables
+
 }
