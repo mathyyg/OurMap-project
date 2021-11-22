@@ -19,6 +19,7 @@ private String mmessage;
     public Seconnecter() {
         
         initComponents();
+        fzqjfop
     }
 
     /**
