@@ -31,7 +31,7 @@ public class UserContentController implements ListesEtCommentaires  {
         }
     }
 
-    public ResultSet fetchAllCommentaires(long idmarqueur)  {
+    public ResultSet fetchAllCommentairesByMarqueur(long idmarqueur)  {
         try {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT idmarqueur, idutilisateur, text FROM commentaires WHERE idmarqueur = " + idmarqueur + " AND setVisible = 1;");
@@ -44,11 +44,11 @@ public class UserContentController implements ListesEtCommentaires  {
         return null;
     }
 
-    public ResultSet fetchAllCommentaires(String idUtilisateur)  {
+    public ResultSet fetchAllCommentairesByUser(long idutilisateur)  {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM commentaires WHERE idutilisateur = \"" + idUtilisateur +
-                    "\" AND setVisible = 1;");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM commentaires WHERE idutilisateur = " + idutilisateur +
+                    " AND setVisible = 1;");
             stmt.close();
             return rs;
         }
@@ -58,7 +58,7 @@ public class UserContentController implements ListesEtCommentaires  {
         return null;
     }
 
-    public boolean setCommentaireVisible(String idutilisateur, long idmarqueur, boolean visible) {
+    public boolean setCommentaireVisible(long idutilisateur, long idmarqueur, boolean visible) {
         //On s'assure que le booleen sera bien transmis sous lq forme 0 ou 1 (la BD etant configuree pour que les booleens soient codés sur 1 bit
         int isVisible = 0;
         if(visible == true) isVisible = 1;
@@ -66,7 +66,7 @@ public class UserContentController implements ListesEtCommentaires  {
             Statement stmt = con.createStatement();
             stmt.executeUpdate("UPDATE `ourmapdb`.`commentaires`\n" +
                     "(SET `setVisible`= " + isVisible + ")\n" +
-                    "WHERE idmarqueur = " + idmarqueur + "AND idutlisateur = \"" + idutilisateur + "\";\n");
+                    "WHERE idmarqueur = " + idmarqueur + "AND idutlisateur = " + idutilisateur + ";\n");
             con.commit();
             return true;
         }
@@ -76,7 +76,7 @@ public class UserContentController implements ListesEtCommentaires  {
         return false;
     }
 
-    public boolean postCommentaire(String idutilisateur, long idmarqueur, String text)  {
+    public boolean postCommentaire(long idutilisateur, long idmarqueur, String text)  {
         try {
             Statement stmt = con.createStatement();
             stmt.executeUpdate("INSERT INTO `ourmapdb`.`commentaires`\n" +
@@ -115,13 +115,13 @@ public class UserContentController implements ListesEtCommentaires  {
         return null;
     }
 /** */
-    public long createList(String idutilisateur, String listName)   {
+    public long createList(long idutilisateur, String listName)   {
         try {
             Statement stmt = con.createStatement();
             if(stmt.executeUpdate("INSERT INTO `ourmapdb`.`listeOwner`\n" +
                     "(`idutilisateur`, `listname`)\n" +
                     "VALUES\n" +
-                    "(\"" + idutilisateur + "\", \"" + listName + "\");") > 0)    {
+                    "(" + idutilisateur + ", \"" + listName + "\");") > 0)    {
                 //Si l'insertion réussie, on continue en ajoutant le marqueur dans la table listmarqueurs
                 String getLastIDQuerry = "SELECT idliste FROM listeOwner ORDER BY idliste DESC LIMIT 1;";
                 ResultSet rs = stmt.executeQuery(getLastIDQuerry); //Recuperation de l'id de la liste tout juste crée
@@ -142,7 +142,7 @@ public class UserContentController implements ListesEtCommentaires  {
      * verifie d'abord que l'utilisateur qui fait la demande a le droit d'ajouter le maqueur a la liste spécifiée
      * (via la methode checkAccessRight)
      * */
-    public boolean addToList(long idmarqueur, long idliste, String requestingUser) {
+    public boolean addToList(long idmarqueur, long idliste, long requestingUser) {
         try {
             if(checkListAccessRight(idliste, requestingUser)) {
                 Statement stmt = con.createStatement();
@@ -164,7 +164,7 @@ public class UserContentController implements ListesEtCommentaires  {
         return false;
     }
 
-    public boolean addCollaborateurListe(long idliste, String newCollaborateurID, String requestingUser)    {
+    public boolean addCollaborateurListe(long idliste, String newCollaborateurID, long requestingUser)    {
         try {
             if(checkOwnerPrivilege(idliste, requestingUser)) {
                 Statement stmt = con.createStatement();
@@ -196,13 +196,13 @@ public class UserContentController implements ListesEtCommentaires  {
      * @exception SQLException
      * @author Bastien
      * */
-    public boolean checkListAccessRight(long idliste, String idutilisateur)    {
+    public boolean checkListAccessRight(long idliste, long idutilisateur)    {
         try {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT idutilisateur FROM listeOwner WHERE idliste = " + idliste +
                     ";");
             rs.next();
-            if(rs.getString(1) == idutilisateur)    {
+            if(rs.getLong(1) == idutilisateur)    {
                 stmt.close();
                 return true;
             }
@@ -211,7 +211,7 @@ public class UserContentController implements ListesEtCommentaires  {
                         ";");
                 stmt.close();
                 while (rs.next()) {
-                    if (rs.getString(1) == idutilisateur) return true;
+                    if (rs.getLong(1) == idutilisateur) return true;
                 }
             }
         }
@@ -222,13 +222,13 @@ public class UserContentController implements ListesEtCommentaires  {
         return false;
     }
 
-    private boolean checkOwnerPrivilege(long idliste, String idutilisateur) {
+    private boolean checkOwnerPrivilege(long idliste, long idutilisateur) {
         try {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT idutilisateur FROM listeOwner WHERE idliste = " + idliste +
                     ";");
             rs.next();
-            if (rs.getString(1) == idutilisateur) {
+            if (rs.getLong(1) == idutilisateur) {
                 stmt.close();
                 return true;
             }

@@ -4,21 +4,21 @@ import java.sql.ResultSet;
 
 public interface ListesEtCommentaires {
 
-    ResultSet fetchAllCommentaires(long idmarqueur);
+    public ResultSet fetchAllCommentairesByMarqueur(long idmarqueur);
 
-    ResultSet fetchAllCommentaires(String idUtilisateur);
+    public ResultSet fetchAllCommentairesByUser(long idmarqueur);
 
-    boolean setCommentaireVisible(String idutilisateur, long idmarqueur, boolean visible);
+    boolean setCommentaireVisible(long idutilisateur, long idmarqueur, boolean visible);
 
-    boolean postCommentaire(String idutilisateur, long idmarqueur, String text);
+    boolean postCommentaire(long idutilisateur, long idmarqueur, String text);
 
     ResultSet fetchList(long idliste);
 
-    long createList(String idutilisateur, String listName);
+    long createList(long idutilisateur, String listName);
 
-    boolean addToList(long idmarqueur, long idliste, String requestingUser);
+    boolean addToList(long idmarqueur, long idliste, long requestingUser);
 
-    boolean addCollaborateurListe(long idliste, String newCollaborateurID, String requestingUser);
+    boolean addCollaborateurListe(long idliste, String newCollaborateurID, long requestingUser);
 
-    boolean checkListAccessRight(long idliste, String idutilisateur);
+    boolean checkListAccessRight(long idliste, long idutilisateur);
 }
