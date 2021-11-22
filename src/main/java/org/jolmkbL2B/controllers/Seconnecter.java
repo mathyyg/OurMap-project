@@ -169,6 +169,7 @@ private String mmessage;
     private void AnnulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnnulerActionPerformed
       connnom1.setText("");
       connpass.setText("");
+
     }//GEN-LAST:event_AnnulerActionPerformed
    
     //Bouttoun se connecter
@@ -178,24 +179,8 @@ private String mmessage;
         passwordconn=btnconn.getText();
         mmessage=btnconn.getText();
         if(evt.getSource()==btnconn){
-         /*try {
-         Connection conn = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys","mathys", "projet2021GL");
-                String log ="select displayName,password from utilisateurs where displayName='"+connnom1.getText()+"' and password='"+connpass.getText()+"'";
-                PreparedStatement ps =  conn.prepareStatement(log);
-                ResultSet resultat = ps.executeQuery();
-              
-                if(resultat.next()){
-                    //connnom1.setText("hhh");
-                	System.out.println("Connection established!");
-                    conn.close();
-                }
-         }       
-         catch (SQLException e)
-         {
-             System.out.println("Connection failed. Aborting process." + e);
-         }*/
-         
-        	 try {
+
+            try {
                  Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
                          "mathys", "projet2021GL"); //etablissement connection
                  con.setAutoCommit(false); /**
