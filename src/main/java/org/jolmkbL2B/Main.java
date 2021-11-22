@@ -1,6 +1,7 @@
 package org.jolmkbL2B;
 
 import com.formdev.flatlaf.intellijthemes.FlatDarkPurpleIJTheme;
+import org.jolmkbL2B.controllers.MarqueurController;
 import org.jolmkbL2B.vue.frame.AppliHubFrame;
 
 
@@ -10,7 +11,7 @@ public class Main
         System.out.println("Hello World!");
         App app = new App();
         FlatDarkPurpleIJTheme.setup();
-        AppliHubFrame hub = new AppliHubFrame("HOME",null);
+        AppliHubFrame hub = new AppliHubFrame("HOME", new MarqueurController());
         hub.pack();
         hub.setVisible(true);
     }
