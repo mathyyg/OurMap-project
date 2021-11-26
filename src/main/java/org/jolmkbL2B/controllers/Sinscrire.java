@@ -227,6 +227,7 @@ public class Sinscrire extends javax.swing.JFrame {
 
     private void btnviderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnviderActionPerformed
     insID.setText("");
+    insnom1.setText("");
     inspass.setText("");
     inspass2.setText("");
     }//GEN-LAST:event_btnviderActionPerformed
