@@ -13,7 +13,6 @@ public class ListeController implements Listes {
             Statement stmt = con.createStatement();
             stmt.execute("USE ourmapdb;");
             con.setAutoCommit(false);
-            stmt.close();
             }
         catch(SQLException sqlException) {
             this.con = null;
@@ -36,7 +35,6 @@ public class ListeController implements Listes {
             if(checkListAccessRight(idliste, requestingUser)) {
                 ResultSet rs = stmt.executeQuery("SELECT idmarqueur FROM listemarqueurs WHERE idliste = " + idliste +
                         ";");
-                stmt.close();
                 return rs;
             }
         }

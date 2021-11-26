@@ -21,7 +21,6 @@ public class MarqueurController  {
             Statement stmt = con.createStatement();
             stmt.execute("USE ourmapdb;");
             con.setAutoCommit(false);
-            stmt.close();
         }
         catch(SQLException sqlException) {
             this.con = null;
@@ -43,8 +42,8 @@ public class MarqueurController  {
     public ResultSet fetchAll() {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, type, latitude, longitude, name FROM marqueurs;");
-            stmt.close();
+            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, type, latitude, longitude, name, city, description" +
+                    " FROM marqueurs;");
             return rs;
         }
         catch(SQLException e) {
@@ -58,7 +57,6 @@ public class MarqueurController  {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM marqueurs WHERE idmarqueur = " + id + ";");
             checkResultSetSize(rs);
-            stmt.close();
             return rs;
         }
         catch(SQLException e) {
@@ -80,7 +78,6 @@ public class MarqueurController  {
                 ResultSet infoMarqueur = stmt.executeQuery("SELECT * FROM marqueurs NATURAL JOIN " + table + " WHERE " +
                         "idmarqueur = " + id + ";");
                 checkResultSetSize(infoMarqueur);
-                stmt.close();
                 return infoMarqueur;
             }
         }

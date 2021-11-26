@@ -35,7 +35,6 @@ public class CommentaireController implements Commentaires  {
         try {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT idmarqueur, idutilisateur, text FROM commentaires WHERE idmarqueur = " + idmarqueur + " AND setVisible = 1;");
-            stmt.close();
             return rs;
         }
         catch(SQLException e) {
@@ -49,7 +48,6 @@ public class CommentaireController implements Commentaires  {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM commentaires WHERE idutilisateur = " + idutilisateur +
                     " AND setVisible = 1;");
-            stmt.close();
             return rs;
         }
         catch(SQLException e) {
@@ -67,6 +65,7 @@ public class CommentaireController implements Commentaires  {
             stmt.executeUpdate("UPDATE `ourmapdb`.`commentaires`\n" +
                     "(SET `setVisible`= " + isVisible + ")\n" +
                     "WHERE idmarqueur = " + idmarqueur + "AND idutlisateur = " + idutilisateur + ";\n");
+            stmt.close();
             con.commit();
             return true;
         }
