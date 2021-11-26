@@ -198,7 +198,7 @@ public class MarqueurController  {
                         } else formattedValue = "0";
                         operations += "`accesHandi` = " + formattedValue + ", ";
                     }
-                    else throw new RuntimeException("Vous n'avez pas la permission de modifier cette" +
+                    else throw new IllegalArgumentException("Vous n'avez pas la permission de modifier cette" +
                             "information (" + colonne + ")");
                 }
             }
