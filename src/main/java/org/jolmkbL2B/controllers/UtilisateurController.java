@@ -4,11 +4,26 @@ package org.jolmkbL2B.controllers;
 import java.sql.*;
 
 public class UtilisateurController {
+
 public int idutilisateur;
 public String displayName;
 public String password;
 public int idFavList;
 public boolean isAdmin;
+
+    public UtilisateurController(int idutilisateur,String displayName,String password,int idFavList,boolean isAdmin)
+    {
+        this.idutilisateur=idutilisateur;
+        this.displayName=displayName;
+        this.password=password;
+        this.idFavList=idFavList;
+        this.isAdmin=isAdmin;
+
+    }
+    public UtilisateurController()
+    {
+    }
+
 
 public void AfficherUtilisateurs()
 {
@@ -18,20 +33,21 @@ public void AfficherUtilisateurs()
         con.setAutoCommit(false);
         Statement stmt = con.createStatement();
         stmt.execute("USE ourmapdb;");
-        String log ="select idutilisateur,displayName,password,idFavList,isAdmin from utilisateurs ;";
+        String log ="select idutilisateur,displayName,password,idFavList,isAdmin from utilisateurs ";
         //select idutilisateur,displayName,password,idFavList,isAdmin from utilisateurs ;
+        //  String log ="select idutilisateur,displayName,password,idFavList,isAdmin from utilisateurs ";
         PreparedStatement ps =  con.prepareStatement(log);
         ResultSet resultat = ps.executeQuery();
         if(resultat.next()){
 
-            dispose();
+           // dispose();
         }
 
         else
         {
-            mmessage="Désolé, nous n'avons pas pu trouver votre compte.";
+            //mmessage="Désolé, nous n'avons pas pu trouver votre compte.";
         }
-        message.setText(mmessage);
+        //message.setText(mmessage);
     }
 
     catch(SQLException e) {

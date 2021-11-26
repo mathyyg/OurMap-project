@@ -186,7 +186,9 @@ public class Seconnecter extends javax.swing.JFrame {
             con.setAutoCommit(false);
             Statement stmt = con.createStatement();
             stmt.execute("USE ourmapdb;");
-            String log ="select displayName,password from utilisateurs where displayName='"+connnom1.getText()+"' and password='"+connpass.getText()+"'";
+           String log ="select displayName,password from utilisateurs where displayName='"+connnom1.getText()+"' and password='"+connpass.getText()+"'";
+
+
             PreparedStatement ps =  con.prepareStatement(log);
             ResultSet resultat = ps.executeQuery();
             if(resultat.next()){
