@@ -48,7 +48,6 @@ public class MarqueurLoader {
         return marqueurPainter;
     }
 
-
     /** Methode executee a l'initialisation pour creer le set initial de marqueur.
      * @author Bastien
      * @return HashSet de tous les marqueurs de la base de données
