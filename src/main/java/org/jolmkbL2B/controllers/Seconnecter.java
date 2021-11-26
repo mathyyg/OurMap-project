@@ -1,9 +1,6 @@
 package org.jolmkbL2B.controllers;
 
-/**
- *
- * @author InfomediaShop
- */
+//auteur jalal
 import java.sql.*;
 import java.util.Properties;
 public class Seconnecter extends javax.swing.JFrame {
