@@ -21,7 +21,6 @@ public class MarqueurController  {
             Statement stmt = con.createStatement();
             stmt.execute("USE ourmapdb;");
             con.setAutoCommit(false);
-            stmt.close();
         }
         catch(SQLException sqlException) {
             this.con = null;
@@ -43,8 +42,21 @@ public class MarqueurController  {
     public ResultSet fetchAll() {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, type, latitude, longitude, name FROM marqueurs;");
-            stmt.close();
+            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, type, latitude, longitude, name, city, description" +
+                    " FROM marqueurs;");
+            return rs;
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ResultSet fetchAllByType(PlaceType placeType)    {
+        try {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, type, latitude, longitude, name, city, description" +
+                    " FROM marqueurs WHERE type = \"" + placeType.toString() + "\";");
             return rs;
         }
         catch(SQLException e) {
@@ -58,7 +70,6 @@ public class MarqueurController  {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM marqueurs WHERE idmarqueur = " + id + ";");
             checkResultSetSize(rs);
-            stmt.close();
             return rs;
         }
         catch(SQLException e) {
@@ -80,7 +91,6 @@ public class MarqueurController  {
                 ResultSet infoMarqueur = stmt.executeQuery("SELECT * FROM marqueurs NATURAL JOIN " + table + " WHERE " +
                         "idmarqueur = " + id + ";");
                 checkResultSetSize(infoMarqueur);
-                stmt.close();
                 return infoMarqueur;
             }
         }
@@ -117,7 +127,6 @@ public class MarqueurController  {
                 return "none";
         }
     }
-
     public boolean updateHotel(long idmarqueur, HashMap<TableHotel, String> changes) {
         try {
             Statement stmt = con.createStatement();
@@ -198,7 +207,7 @@ public class MarqueurController  {
                         } else formattedValue = "0";
                         operations += "`accesHandi` = " + formattedValue + ", ";
                     }
-                    else throw new RuntimeException("Vous n'avez pas la permission de modifier cette" +
+                    else throw new IllegalArgumentException("Vous n'avez pas la permission de modifier cette" +
                             "information (" + colonne + ")");
                 }
             }

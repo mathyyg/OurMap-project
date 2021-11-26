@@ -2,7 +2,9 @@ package org.jolmkbL2B.vue.panel;
 
 import com.formdev.flatlaf.intellijthemes.FlatDarkPurpleIJTheme;
 import org.jolmkbL2B.controllers.MarqueurController;
+import org.jolmkbL2B.marqueurs.Marqueur;
 import org.jolmkbL2B.marqueurs.MarqueurLoader;
+import org.jolmkbL2B.marqueurs.PlaceType;
 import org.jolmkbL2B.marqueurs.School;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
@@ -28,7 +30,7 @@ import java.util.Set;
 public class MapPanel extends JPanel {
     public static JXMapViewer OurMap; //L'objet "carte"
     private final GeoPosition Blois_Focus; //Le point central de la carte au chargement
-    private HashSet<Waypoint> waypoints; //Un hashset contenant tous les waypoints affichés
+    private HashSet<Marqueur> waypoints; //Un hashset contenant tous les waypoints affichés
     private MarqueurLoader loader; // Un objet qui gere l'affichage des marqueurs
 
     public MapPanel() {
@@ -52,6 +54,9 @@ public class MapPanel extends JPanel {
 
         /** AFFICHARGE MARQUEUR */
         this.waypoints = loader.loadAllMarkers();
+        //this.waypoints = loader.loadAllMarkersByType(PlaceType.HOTEL);
+        //this.waypoints = loader.loadListToNewSet(1,1);
+        //this.waypoints = loader.loadListInCurrentSet(waypoints, 1, 1);
         OurMap.setOverlayPainter(loader.updateDisplay(waypoints));
 
 
@@ -63,7 +68,8 @@ public class MapPanel extends JPanel {
                 /** création d'un marqueur en cliquant  */
                 JXMapViewer me_src = (JXMapViewer) me.getSource();
 
-                DefaultWaypoint clickwaypoint = new DefaultWaypoint((me_src.convertPointToGeoPosition(me.getPoint())));
+                Marqueur clickwaypoint = new Marqueur(PlaceType.ARRETBUS,me_src.convertPointToGeoPosition(me.getPoint()).getLatitude(),
+                        me_src.convertPointToGeoPosition(me.getPoint()).getLongitude(), 0, "click", "click", "click");
 
                 waypoints.add(clickwaypoint);
                 OurMap.setOverlayPainter(loader.updateDisplay(waypoints));
@@ -90,7 +96,7 @@ public class MapPanel extends JPanel {
 
     /** Cette methode permet d'ajouter un Waypoint à l'affichage de la carte */
     //TODO pouvoir ajouter les infos du marqueurs pour affichage dans une frame
-    public void updateMapOverlay(Waypoint w)    {
+    public void updateMapOverlay(Marqueur w)    {
         waypoints.add(w);
         OurMap.setOverlayPainter(loader.updateDisplay(waypoints));
     }

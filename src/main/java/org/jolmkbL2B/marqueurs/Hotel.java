@@ -36,6 +36,11 @@ public class Hotel extends Marqueur
     public boolean isHasRestaurant()    {return hasRestaurant;}
     public int getcategorieEtoiles()    {return categorieEtoiles;}
     public boolean isAnimauxAcceptes()  {return animauxAcceptes;}
+    public String getAddress()  {return address;}
+    public String getSiteWeb()  {return siteWeb;}
+    public String getTripAdvisor()  {return  tripAdvisor;}
+
+    public boolean[] getLabelHandicap() {return labelHandicap;}
 
     @Override
     public String toString() {
