@@ -2,10 +2,10 @@ package org.jolmkbL2B.controllers;
 
 import java.sql.*;
 
-public class UserContentController implements ListesEtCommentaires  {
+public class ListeController implements Listes {
     private Connection con;
 
-    public UserContentController()   {
+    public ListeController()    {
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
                     "mathys", "projet2021GL");
@@ -14,11 +14,11 @@ public class UserContentController implements ListesEtCommentaires  {
             stmt.execute("USE ourmapdb;");
             con.setAutoCommit(false);
             stmt.close();
-        }
+            }
         catch(SQLException sqlException) {
             this.con = null;
             System.out.println(sqlException.getMessage());
-            System.out.println("Error establishing connection with database in class UserContentController" +
+            System.out.println("Error establishing connection with database in class ListeController" +
                     ". Initialization cannot continue.");
             // Soucis : si pas internet, on peut pas utiliser l'appli
             sqlException.printStackTrace();
@@ -30,91 +30,22 @@ public class UserContentController implements ListesEtCommentaires  {
             }
         }
     }
-
-    public ResultSet fetchAllCommentairesByMarqueur(long idmarqueur)  {
+    public ResultSet fetchList(long idliste, long requestingUser)    {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, idutilisateur, text FROM commentaires WHERE idmarqueur = " + idmarqueur + " AND setVisible = 1;");
-            stmt.close();
-            return rs;
+            if(checkListAccessRight(idliste, requestingUser)) {
+                ResultSet rs = stmt.executeQuery("SELECT idmarqueur FROM listemarqueurs WHERE idliste = " + idliste +
+                        ";");
+                stmt.close();
+                return rs;
+            }
         }
         catch(SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
-
-    public ResultSet fetchAllCommentairesByUser(long idutilisateur)  {
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM commentaires WHERE idutilisateur = " + idutilisateur +
-                    " AND setVisible = 1;");
-            stmt.close();
-            return rs;
-        }
-        catch(SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public boolean setCommentaireVisible(long idutilisateur, long idmarqueur, boolean visible) {
-        //On s'assure que le booleen sera bien transmis sous lq forme 0 ou 1 (la BD etant configuree pour que les booleens soient codés sur 1 bit
-        int isVisible = 0;
-        if(visible == true) isVisible = 1;
-        try {
-            Statement stmt = con.createStatement();
-            stmt.executeUpdate("UPDATE `ourmapdb`.`commentaires`\n" +
-                    "(SET `setVisible`= " + isVisible + ")\n" +
-                    "WHERE idmarqueur = " + idmarqueur + "AND idutlisateur = " + idutilisateur + ";\n");
-            con.commit();
-            return true;
-        }
-        catch(SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean postCommentaire(long idutilisateur, long idmarqueur, String text)  {
-        try {
-            Statement stmt = con.createStatement();
-            stmt.executeUpdate("INSERT INTO `ourmapdb`.`commentaires`\n" +
-                    "(`idmarqueur`,\n" +
-                    "`idutilisateur`,\n" +
-                    "`text`,\n" +
-                    "`setVisible`)\n" +
-                    "VALUES\n" +
-                    "(" + idmarqueur + ",\n" +
-                    "\"" + idutilisateur + "\",\n" +
-                    "\"" + text + "\",\n" +
-                    " 1);\n");
-
-            stmt.close();
-            con.commit();
-            return true;
-        }
-        catch(SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-
-    public ResultSet fetchList(long idliste)    {
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT idmarqueur FROM listemarqueurs WHERE idliste = " + idliste +
-                    ";");
-            stmt.close();
-            return rs;
-        }
-        catch(SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-/** */
+    /** */
     public long createList(long idutilisateur, String listName)   {
         try {
             Statement stmt = con.createStatement();
@@ -199,7 +130,10 @@ public class UserContentController implements ListesEtCommentaires  {
     public boolean checkListAccessRight(long idliste, long idutilisateur)    {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT idutilisateur FROM listeOwner WHERE idliste = " + idliste +
+            ResultSet rs = stmt.executeQuery("SELECT isAdmin FROM utilisateurs WHERE idutilisateur = " + idutilisateur +";");
+            if(rs.getBoolean(1))   return true;
+
+            rs = stmt.executeQuery("SELECT idutilisateur FROM listeOwner WHERE idliste = " + idliste +
                     ";");
             rs.next();
             if(rs.getLong(1) == idutilisateur)    {
@@ -239,4 +173,5 @@ public class UserContentController implements ListesEtCommentaires  {
         System.out.println("Accès refusé.Seul le propriétaire de la liste peut réaliser cette action.");
         return false;
     }
+
 }
