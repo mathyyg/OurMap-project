@@ -56,6 +56,10 @@ public class MarqueurLoader {
         return loadNewSet(marqueurController.fetchAll());
     }
 
+    public HashSet<Marqueur> loadAllMarkersByType(PlaceType placeType) {
+        return loadNewSet(marqueurController.fetchAllByType(placeType));
+    }
+
     /** Méthode chargeant une liste de marqueurs dans un nouveau set
      * @author Bastien
      * @version 1

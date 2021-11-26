@@ -52,6 +52,19 @@ public class MarqueurController  {
         return null;
     }
 
+    public ResultSet fetchAllByType(PlaceType placeType)    {
+        try {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, type, latitude, longitude, name, city, description" +
+                    " FROM marqueurs WHERE type = " + placeType.toString() + ";");
+            return rs;
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public ResultSet fetchMarqueurBasicInfo(long id)    {
         try {
             Statement stmt = con.createStatement();
@@ -114,7 +127,6 @@ public class MarqueurController  {
                 return "none";
         }
     }
-
     public boolean updateHotel(long idmarqueur, HashMap<TableHotel, String> changes) {
         try {
             Statement stmt = con.createStatement();
