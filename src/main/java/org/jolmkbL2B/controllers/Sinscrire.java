@@ -189,27 +189,27 @@ public class Sinscrire extends javax.swing.JFrame {
 
 
             Statement stmt = con.createStatement();
-            stmt.execute("USE ourmapdb");
+            stmt.execute("USE ourmapdb;");
             String log ="insert into utilisateurs (`displayName`, `password`)" +
-                    "values ( '"+ username +"','"+ password1 +"')" ; //Creation d'un nouvel utilisateur
+                    "values ( \""+ this.username +"\", \""+ this.password1 +"\" );" ; //Creation d'un nouvel utilisateur
             int success = stmt.executeUpdate(log); //execution de la requete ci dessus
 
             if(success == 1)	{// si cette operation fonctionne, suite de la procedure (creation de la liste de favoris
                 con.commit(); // validation de l'operation
-                this.message="vous êtes bien inscrit";
+                this.message="Vous êtes bien inscrit";
 
                 /* Recupération de l'identifiant de l'utilisateur */
-                String getLastIDQuery = "SELECT idutilisateur FROM utilisateurs ORDER BY idutilisateurs DESC LIMIT 1;"; //Tri decroissant de la colonne idutilisateur pour recuperer le dernier identifiant créé (Auto-increment)
+                String getLastIDQuery = "SELECT idutilisateur FROM utilisateurs ORDER BY idutilisateur DESC LIMIT 1;"; //Tri decroissant de la colonne idutilisateur pour recuperer le dernier identifiant créé (Auto-increment)
                 ResultSet rs = stmt.executeQuery(getLastIDQuery);
                 rs.next();
                 long idutilisateur = rs.getLong(1);
 
 
-                ListeController ListeController= new ListeController();
-                long idFavList = ListeController.createList(idutilisateur, "Favoris"); //Creation de la liste de favoris du nouvel utilisateur
+                ListeController listeController= new ListeController();
+                long idFavList = listeController.createList(idutilisateur, "Favoris"); //Creation de la liste de favoris du nouvel utilisateur
 
                 stmt.executeUpdate("UPDATE `utilisateurs`\n" +
-                        " (SET `idFavList` = " + idFavList + ")\n" +
+                        " SET `idFavList` = " + idFavList + "\n" +
                         "WHERE idutilisateur = " + idutilisateur + ";"); //Attribution de la liste de favoris a l'utilisateur
                 con.commit();
             }
@@ -227,10 +227,10 @@ public class Sinscrire extends javax.swing.JFrame {
 
     }
     private void btninscrireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btninscrireActionPerformed
-        username=insnom1.getText();
-        password1=btninscrire.getText();
-        //password2=btninscrire.getText();
-        Erreur=btninscrire.getText();
+        this.username=insnom1.getText();
+        this.password1=inspass.getText();
+        this.password2=inspass2.getText();
+        this.Erreur=btninscrire.getText();
         Sinscrireform();
         
     }//GEN-LAST:event_btninscrireActionPerformed
