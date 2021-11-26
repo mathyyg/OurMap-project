@@ -56,7 +56,7 @@ public class MarqueurController  {
         try {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT idmarqueur, type, latitude, longitude, name, city, description" +
-                    " FROM marqueurs WHERE type = " + placeType.toString() + ";");
+                    " FROM marqueurs WHERE type = \"" + placeType.toString() + "\";");
             return rs;
         }
         catch(SQLException e) {
