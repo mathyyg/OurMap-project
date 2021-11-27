@@ -11,7 +11,7 @@ public class Admin {
     public int idFavList;
     public boolean isAdmin;
 
-    // Constructeur()
+    // Constructeur avec parametre()
     public Admin(int idutilisateur, String displayName, String password, int idFavList, boolean isAdmin) {
         this.idutilisateur = idutilisateur;
         this.displayName = displayName;
@@ -19,6 +19,11 @@ public class Admin {
         this.idFavList = idFavList;
         this.isAdmin = isAdmin;
     }
+    //Constructeur sans parametre
+    public Admin()
+    {
+    }
+
     // Getters et Setters
     public int getIdutilisateur() {
         return idutilisateur;

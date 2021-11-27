@@ -8,8 +8,12 @@ package org.jolmkbL2B.Utilisateurs;
 public class UtilsateurNonAuthentifié {
     String nom;
     //Constructeur()
-    public UtilsateurNonAuthentifié(String nom) {
+    public UtilsateurNonAuthentifié(String nom)
+    {
         nom = nom;
+    }
+    public UtilsateurNonAuthentifié()
+    {
     }
 
     //Getters Et Setters
