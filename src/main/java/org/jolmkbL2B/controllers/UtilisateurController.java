@@ -2,7 +2,11 @@
 package org.jolmkbL2B.controllers;
 
 import java.sql.*;
-//auteur jalal
+/*auteurs jalal & oualid
+
+
+
+ */
 public class UtilisateurController {
 
 public int idutilisateur;
@@ -56,7 +60,13 @@ public void AfficherUtilisateurs()
 
 
 }
-
+public void UpdateNomUtilisateur(int idutilisateur,String NouveauNom)
+{
+    stmt.executeUpdate("UPDATE `utilisateurs`\n" +
+            " SET `displayName` = " + NouveauNom + "\n" +
+            "WHERE idutilisateur = " + idutilisateur + ";");
+    con.commit();
+}
 
 
 
