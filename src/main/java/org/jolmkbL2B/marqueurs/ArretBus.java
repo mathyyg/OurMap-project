@@ -10,7 +10,13 @@ public class ArretBus extends Marqueur {
         super(PlaceType.ARRETBUS, latitude, longitude, lieuID, name, city, description);
         this.accesHandicap = accesHandicap;
     }
-    public boolean isAccesHandicap() {return accesHandicap;}
+
+    /** Getter pour accesHandicap. Renvoie des entiers car sert principalement lors d'interaction avec la base de
+     * donnees, où les booleens sont codés sous forme de 0 et de 1
+     * @author Bastien*/
+    public int isAccesHandicap() {
+        if(accesHandicap) return 1;
+        else return  0;}
 
     public void setAccesHandicap(boolean accesHandicap) {this.accesHandicap = accesHandicap;}
 
