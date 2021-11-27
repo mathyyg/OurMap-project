@@ -236,7 +236,7 @@ public class MarqueurController  {
         return success;
     }
 
-    /** Insertion des données de base d'un nouvel Arret de Bus dans les tables marqueurs et hotels
+    /** Insertion des données de base d'un nouvel Arret de Bus dans les tables marqueurs et arretsbus
      * @author Bastien
      * @since 2.5
      * @param arret : un objet ArretBus (etendu de marqueur)
