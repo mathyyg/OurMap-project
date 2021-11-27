@@ -43,13 +43,13 @@ public class MarqueurController  {
     /** Recupere tous les marqueurs de la base de données.
      * @since 2.0 ~
      * @version 1
-     * @retyrn ResultSet aux colonnes suivantes : (`type`, `latitude`, `longitude`, `name`, `city`, `description`)
+     * @retyrn ResultSet aux colonnes suivantes : (`type`, `latitude`, `longitude`, `marqueurName`, `city`, `description`)
      * @author Bastien
      */
     public ResultSet fetchAll() {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, type, latitude, longitude, name, city, description" +
+            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, type, latitude, longitude, marqueurName, city, description" +
                     " FROM marqueurs;");
             return rs;
         }
@@ -64,13 +64,13 @@ public class MarqueurController  {
     /** Recupere tous les marqueurs d'un certain type (seulement les hotels, les arrets de bus etc...)
      * @since 2.4 ~
      * @version 1
-     * @retyrn ResultSet aux colonnes suivantes : (`type`, `latitude`, `longitude`, `name`, `city`, `description`)
+     * @retyrn ResultSet aux colonnes suivantes : (`type`, `latitude`, `longitude`, `marqueurName`, `city`, `description`)
      * @author Bastien
      */
     public ResultSet fetchAllByType(PlaceType placeType)    {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, type, latitude, longitude, name, city, description" +
+            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, type, latitude, longitude, marqueurName, city, description" +
                     " FROM marqueurs WHERE type = \"" + placeType.toString() + "\";");
             return rs;
         }
@@ -103,7 +103,7 @@ public class MarqueurController  {
 
     /** Recupere toutes les infos d'un unique marqueur
      * @version 1
-     * @retyrn ResultSet aux colonnes suivantes : (`type`, `latitude`, `longitude`, `name`, `city`, `description`) + colonnes specifiques aux tables
+     * @retyrn ResultSet aux colonnes suivantes : (`type`, `latitude`, `longitude`, `marqueurName`, `city`, `description`) + colonnes specifiques aux tables
      * @author Bastien*/
     public ResultSet fetchAllInfo(long id, PlaceType placeType) {
         String table = selectTable(placeType);
@@ -175,7 +175,7 @@ public class MarqueurController  {
                     "(`type`,\n" +
                     "`latitude`,\n" +
                     "`longitude`,\n" +
-                    "`name`,\n" +
+                    "`marqueurName`,\n" +
                     "`city`,\n" +
                     "`description`)\n VALUES (\"" + marqueur.getPlaceType().toString() + "\", " +
                     marqueur.getPosition().getLatitude() + ", " + marqueur.getPosition().getLongitude() + ", \"" + marqueur.getName() + "\", \""
