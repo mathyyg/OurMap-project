@@ -2,6 +2,7 @@ package org.jolmkbL2B.marqueurs;
 
 import org.jolmkbL2B.controllers.ListeController;
 import org.jolmkbL2B.controllers.MarqueurController;
+import org.jolmkbL2B.vue.marqueurPainters.SwingMarqueurPainter;
 import org.jxmapviewer.viewer.Waypoint;
 import org.jxmapviewer.viewer.WaypointPainter;
 
@@ -22,13 +23,14 @@ import java.sql.*;
 
 public class MarqueurLoader {
     private MarqueurController marqueurController;
-    private WaypointPainter<Waypoint> waypointPainter;
+    private WaypointPainter<Marqueur> marqueurPainter;
     private ListeController listeController;
     private final String info = "Classe qui charge ls marqueurs.";
 
 
     public MarqueurLoader() {
-        this.waypointPainter = new WaypointPainter<Waypoint>();
+        //this.marqueurPainter = new SwingMarqueurPainter(); A UTILISER QUAND LE RENDERER SERA PRET
+        this.marqueurPainter = new WaypointPainter<Marqueur>();
         this.marqueurController = new MarqueurController();
         this.listeController = new ListeController();
     }
@@ -40,10 +42,8 @@ public class MarqueurLoader {
      * @return les marqueurs visibles, generqlement appelé dqns un OurMap.setOverlay
      */
     public WaypointPainter<Marqueur> updateDisplay(HashSet<Marqueur> marqueurs)  {
-
-        WaypointPainter<Marqueur> marqueurPainter = new WaypointPainter<Marqueur>();
         marqueurPainter.setWaypoints(marqueurs);
-        //marqueurPainter.setRenderer(new ColoredMarqueurRenderer());
+       //marqueurPainter.setRenderer(new ColoredMarqueurRenderer());
 
         return marqueurPainter;
     }
@@ -88,7 +88,7 @@ public class MarqueurLoader {
     private HashSet<Marqueur> updateMarqueurSet(HashSet initialSet, ResultSet rs) {
         try {
             while (rs.next()) {
-                String type = rs.getString("type"); // Selection du type de Marqueur (ce champs est une Enum)
+                String type = rs.getString("placeType"); // Selection du placeType de Marqueur (ce champs est une Enum)
                 PlaceType placeType = null;
 
                 switch (type) {
@@ -106,7 +106,7 @@ public class MarqueurLoader {
                 //Instanciation du marqueur avec tous les champs du contructeur et de la base de donnée
                 Marqueur wp = new Marqueur(placeType, rs.getDouble("latitude"),
                         rs.getDouble("longitude"), rs.getLong("idmarqueur"),
-                        rs.getString("name"), rs.getString("city"),
+                        rs.getString("marqueurName"), rs.getString("city"),
                         rs.getString("description"));
 
                 initialSet.add(wp); //ajout du marqueur au Set
@@ -133,7 +133,7 @@ public class MarqueurLoader {
         HashSet<Marqueur> marqueurs = new HashSet<Marqueur>();
         try {
             while (rs.next()) {
-                String type = rs.getString("type"); // Selection du type de Marqueur (ce champs est une Enum)
+                String type = rs.getString("placeType"); // Selection du placeType de Marqueur (ce champs est une Enum)
                 PlaceType placeType = null;
                 switch (type) {
                     case "HOTEL":
@@ -150,8 +150,10 @@ public class MarqueurLoader {
                 //Creation du nouveau Marqueur
                 Marqueur wp = new Marqueur(placeType, rs.getDouble("latitude"),
                         rs.getDouble("longitude"), rs.getLong("idmarqueur"),
-                        rs.getString("name"), rs.getString("city"),
+                        rs.getString("marqueurName"), rs.getString("city"),
                         rs.getString("description"));
+
+                //System.out.println(wp.getPlaceType()); TEST PURPOSE
 
                 marqueurs.add(wp); //Ajout au Set
             }

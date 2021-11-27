@@ -33,14 +33,49 @@ public class Hotel extends Marqueur
         this.animauxAcceptes = animauxAcceptes;
     }
 
-    public boolean isHasRestaurant()    {return hasRestaurant;}
-    public int getcategorieEtoiles()    {return categorieEtoiles;}
-    public boolean isAnimauxAcceptes()  {return animauxAcceptes;}
-    public String getAddress()  {return address;}
-    public String getSiteWeb()  {return siteWeb;}
-    public String getTripAdvisor()  {return  tripAdvisor;}
+    public String getAddress() {
+        return address;
+    }
 
-    public boolean[] getLabelHandicap() {return labelHandicap;}
+    public boolean isHasRestaurant() {
+        return hasRestaurant;
+    }
+
+    public String getNumTelephone() {
+        return numTelephone;
+    }
+
+    public int getCategorieEtoiles() {
+        return categorieEtoiles;
+    }
+
+    public String getSiteWeb() {
+        return siteWeb;
+    }
+
+    public String getTripAdvisor() {
+        return tripAdvisor;
+    }
+
+
+    /** Getter pour animauxAcceptes. Renvoie un entier car sert principalement lors d'interaction avec la base de
+     * donnees, où les booleens sont codés sous forme de 0 et de 1
+     * @author Bastien*/
+    public int isAnimauxAcceptes() {
+        if (animauxAcceptes) return 1;
+        else return 0;
+    }
+
+    /** Getter pour labelhandicap. Renvoie des entiers car sert principalement lors d'interaction avec la base de
+     * donnees, où les booleens sont codés sous forme de 0 et de 1
+     * @author Bastien*/
+    public int[] getLabelHandicap() {
+        int[] labelInt = {0, 0, 0, 0};
+        for(int i = 0; i<4 ; i++)   {
+            if (labelHandicap[i] == true) labelInt[i] = 1;
+        }
+        return labelInt;
+    }
 
     @Override
     public String toString() {

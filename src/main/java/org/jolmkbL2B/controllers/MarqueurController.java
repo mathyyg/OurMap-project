@@ -10,7 +10,6 @@ import java.util.Map;
  * objets dérivés.
  * @author Bastien*/
 public class MarqueurController  {
-
     protected Connection con;
 
     public MarqueurController() {
@@ -38,11 +37,19 @@ public class MarqueurController  {
             }
         }
     }
-    
+
+
+
+    /** Recupere tous les marqueurs de la base de données.
+     * @since 2.0 ~
+     * @version 1
+     * @retyrn ResultSet aux colonnes suivantes : (`placeType`, `latitude`, `longitude`, `marqueurName`, `city`, `description`)
+     * @author Bastien
+     */
     public ResultSet fetchAll() {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, type, latitude, longitude, name, city, description" +
+            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, placeType, latitude, longitude, marqueurName, city, description" +
                     " FROM marqueurs;");
             return rs;
         }
@@ -52,11 +59,19 @@ public class MarqueurController  {
         return null;
     }
 
+
+
+    /** Recupere tous les marqueurs d'un certain placeType (seulement les hotels, les arrets de bus etc...)
+     * @since 2.4 ~
+     * @version 1
+     * @retyrn ResultSet aux colonnes suivantes : (`placeType`, `latitude`, `longitude`, `marqueurName`, `city`, `description`)
+     * @author Bastien
+     */
     public ResultSet fetchAllByType(PlaceType placeType)    {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, type, latitude, longitude, name, city, description" +
-                    " FROM marqueurs WHERE type = \"" + placeType.toString() + "\";");
+            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, placeType, latitude, longitude, marqueurName, city, description" +
+                    " FROM marqueurs WHERE placeType = \"" + placeType.toString() + "\";");
             return rs;
         }
         catch(SQLException e) {
@@ -65,6 +80,14 @@ public class MarqueurController  {
         return null;
     }
 
+
+
+    /** Recupere tous les marqueurs de la base de données.
+     * @since 2.0 ~
+     * @param id identifiant d'un marqueur
+     * @version 1
+     * @author Bastien
+     */
     public ResultSet fetchMarqueurBasicInfo(long id)    {
         try {
             Statement stmt = con.createStatement();
@@ -78,6 +101,10 @@ public class MarqueurController  {
         return null;
     }
 
+    /** Recupere toutes les infos d'un unique marqueur
+     * @version 1
+     * @retyrn ResultSet aux colonnes suivantes : (`placeType`, `latitude`, `longitude`, `marqueurName`, `city`, `description`) + colonnes specifiques aux tables
+     * @author Bastien*/
     public ResultSet fetchAllInfo(long id, PlaceType placeType) {
         String table = selectTable(placeType);
 
@@ -100,6 +127,9 @@ public class MarqueurController  {
         return null;
     }
 
+
+    /** Verifie qu'un ResultSet a au plus 1 resultat. Affiche un message d'avertissement si ce n'est pas le cas
+     * @author Bastien*/
     private void checkResultSetSize(ResultSet rs)   {
         try {
             int rsSize = rs.getFetchSize();
@@ -114,6 +144,7 @@ public class MarqueurController  {
         }
     }
 
+    /** Selection d'une table de base de donnees en fonction d'un parametre Enum PlaceType donné */
     protected String selectTable(PlaceType placeType) {
         switch(placeType)   {
             case SCHOOL:
@@ -127,6 +158,140 @@ public class MarqueurController  {
                 return "none";
         }
     }
+
+    /** Insertion des données de base d'un nouveau marqueur dans la table marqueurs
+     * @author Bastien
+     * @since 2.5
+     * @param marqueur : un objet Marqueur
+     * @return identifiant de la nouvelle entree, -1 en cas d'erreur
+     * @version 1*/
+    private int insertMarqueur(Marqueur marqueur)    {
+        boolean success = false;
+        int lastID = -1;
+
+        try {
+            Statement stmt = con.createStatement();
+            String sql1 = "INSERT INTO `ourmapdb`.`marqueurs`\n" +
+                    "(`placeType`,\n" +
+                    "`latitude`,\n" +
+                    "`longitude`,\n" +
+                    "`marqueurName`,\n" +
+                    "`city`,\n" +
+                    "`description`)\n VALUES (\"" + marqueur.getPlaceType().toString() + "\", " +
+                    marqueur.getPosition().getLatitude() + ", " + marqueur.getPosition().getLongitude() + ", \"" + marqueur.getName() + "\", \""
+                    + marqueur.getCity() + "\", \"" + marqueur.getDescription() + "\");";
+            stmt.executeUpdate(sql1);
+
+            String getLastIDQuerry = "SELECT idmarqueur FROM marqueurs ORDER BY idmarqueur DESC LIMIT 1;"; //Recuperation de l'identifiant de la nouvelle entree
+            ResultSet rs = stmt.executeQuery(getLastIDQuerry);
+            rs.next();
+            lastID = rs.getInt(1);
+            con.commit();
+            stmt.close();
+        }
+        catch(SQLException e)
+            {e.printStackTrace();}
+
+        return lastID;
+
+    }
+    /** Insertion des données de base d'un nouvel Hotel dans la tables marqueurs et hotels
+     * @author Bastien
+     * @since 2.5
+     * @param hotel : un objet Hotel (etendu de marqueur)
+     * @return identifiant de la nouvelle entree
+     * @version 1*/
+    public boolean insertMarqueur(Hotel hotel) {
+        boolean success = false;
+        try {
+            int id = insertMarqueur((Marqueur) hotel); //Les informations de classes mere Marqueur sont envoyés vers la table marqueurs
+            if(id> 0) { //si id < 0, c'est qu'il y a une erreur, les exceptions sont deja lancee dans la methode insertMarqueur(Marqueur)
+                Statement stmt = con.createStatement();
+
+                String sql = "INSERT INTO `ourmapdb`.`hotels`\n" +
+                        "(`idmarqueur`,\n" +
+                        "`adresse`,\n" +
+                        "`hasRestaurant`,\n" +
+                        "`numTel`,\n" +
+                        "`etoiles`,\n" +
+                        "`siteWeb`,\n" +
+                        "`tripadvisor`,\n" +
+                        "`handi_moteur`,\n" +
+                        "`handi_mental`,\n" +
+                        "`handi_auditif`,\n" +
+                        "`handi_visuel`,\n" +
+                        "`accepteAnimaux`)\n" +
+                        "VALUES ( " + id + ", \"" + hotel.getAddress() + "\", " + hotel.isHasRestaurant() + ", \"" + hotel.getNumTelephone() +
+                        "\", " + hotel.getCategorieEtoiles() + ", \"" + hotel.getSiteWeb() + "\", \"" + hotel.getTripAdvisor() +
+                        "\", " + hotel.getLabelHandicap()[0] + ", " + hotel.getLabelHandicap()[1] + ", " + hotel.getLabelHandicap()[1] +
+                        ", " + hotel.getLabelHandicap()[2] + ", " + hotel.getLabelHandicap()[3] + ", " + hotel.isAnimauxAcceptes() + ");";
+
+                int tmp = stmt.executeUpdate(sql); //executeUpdate renvoie le nombre de lignes modifiees / inserees
+                con.commit();
+                stmt.close();
+                if (tmp > 0) success = true; //si plus de 0 lignes sont ;odifee, l'operation est un succès
+            }
+        }
+        catch(SQLException e)  {e.printStackTrace();}
+        return success;
+    }
+
+    /** Insertion des données de base d'un nouvel Arret de Bus dans les tables marqueurs et arretsbus
+     * @author Bastien
+     * @since 2.5
+     * @param arret : un objet ArretBus (etendu de marqueur)
+     * @return identifiant de la nouvelle entree
+     * @version 1*/
+    public boolean insertMarqueur(ArretBus arret)   {
+        boolean success = false;
+        try {
+            int id = insertMarqueur((Marqueur) arret); //Les informations de classes mere Marqueur sont envoyés vers la table marqueurs
+            if(id> 0) { //si id < 0, c'est qu'il y a une erreur, les exceptions sont deja lancee dans la methode insertMarqueur(Marqueur)
+                Statement stmt = con.createStatement();
+
+                String sql = "INSERT INTO `ourmapdb`.`arretsbus`\n" +
+                        "(`idmarqueur`,\n" +
+                        "`accesHandi`)\n" +
+                        "VALUES\n" +
+                        "( " + id + ", " + arret.isAccesHandicap() + ");\n";
+                int tmp = stmt.executeUpdate(sql); //executeUpdate renvoie le nombre de lignes modifiees / inserees
+                con.commit();
+                stmt.close();
+                if (tmp > 0) success = true; //si plus de 0 lignes sont ;odifee, l'operation est un succès
+            }
+        }
+        catch(SQLException e)  {e.printStackTrace();}
+        return success;
+    }
+
+    public boolean insertMarqueur(School school)   {
+        boolean success = false;
+        try {
+            int id = insertMarqueur((Marqueur) school); //Les informations de classes mere Marqueur sont envoyés vers la table marqueurs
+            if(id> 0) { //si id < 0, c'est qu'il y a une erreur, les exceptions sont deja lancee dans la methode insertMarqueur(Marqueur)
+                Statement stmt = con.createStatement();
+
+                String sql = "INSERT INTO `ourmapdb`.`schools`\n" +
+                        "(`idschools`,\n" +
+                        "`schoolType`,\n" +
+                        "`statut`,\n" +
+                        "`adresse`)\n" +
+                        "VALUES\n" +
+                        "(" + id + ",\n\"" +
+                        school.getSchoolType().toString() + "\",\n\"" +
+                        school.PublicOuPrive().toString() + "\",\n\"" +
+                        school.getAddress() + ");\n";
+                int tmp = stmt.executeUpdate(sql); //executeUpdate renvoie le nombre de lignes modifiees / inserees
+                con.commit();
+                stmt.close();
+                if (tmp > 0) success = true; //si plus de 0 lignes sont ;odifee, l'operation est un succès
+            }
+        }
+        catch(SQLException e)  {e.printStackTrace();}
+        return success;
+    }
+
+
     public boolean updateHotel(long idmarqueur, HashMap<TableHotel, String> changes) {
         try {
             Statement stmt = con.createStatement();

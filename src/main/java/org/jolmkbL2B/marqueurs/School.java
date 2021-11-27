@@ -3,6 +3,7 @@ package org.jolmkbL2B.marqueurs;
  * @author Bastien
  * @version 1 */
 public class School extends Marqueur {
+
     private final SchoolType schoolType; //Si l'etablissement est une cole maternelle, elmentaire, college, lycee etc. Voir enum
     private final SchoolStatus publicOuPrive;
     private final String address;
