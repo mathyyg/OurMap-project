@@ -88,7 +88,7 @@ public class MarqueurLoader {
     private HashSet<Marqueur> updateMarqueurSet(HashSet initialSet, ResultSet rs) {
         try {
             while (rs.next()) {
-                String type = rs.getString("type"); // Selection du type de Marqueur (ce champs est une Enum)
+                String type = rs.getString("placeType"); // Selection du placeType de Marqueur (ce champs est une Enum)
                 PlaceType placeType = null;
 
                 switch (type) {
@@ -133,7 +133,7 @@ public class MarqueurLoader {
         HashSet<Marqueur> marqueurs = new HashSet<Marqueur>();
         try {
             while (rs.next()) {
-                String type = rs.getString("type"); // Selection du type de Marqueur (ce champs est une Enum)
+                String type = rs.getString("placeType"); // Selection du placeType de Marqueur (ce champs est une Enum)
                 PlaceType placeType = null;
                 switch (type) {
                     case "HOTEL":
