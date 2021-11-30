@@ -2,17 +2,17 @@ package org.jolmkbL2B.controllers;
 
 import java.sql.*;
 /**
- *
- * @author Oualid
+ * @author Oualid Siraji
  */
 
 public class Sinscrire extends javax.swing.JFrame {
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration
     private javax.swing.JButton btnconnins;
     private javax.swing.JButton btninscrire;
     private javax.swing.JButton btnvider;
     private javax.swing.JTextField insID;
     private javax.swing.JTextField insnom1;
+    //private javax.swing.JTextField inspass;
     private javax.swing.JTextField inspass;
     private javax.swing.JTextField inspass2;
     private javax.swing.JLabel jLabel1;
@@ -21,25 +21,35 @@ public class Sinscrire extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel labelID;
     private javax.swing.JLabel registername;
-    // End of variables declaration//GEN-END:variables
+    // des attributs de la classe
 	String id;
 	String username;
 	String password1;
 	String password2;
-	String Erreur;
+	//String Erreur;
 	String message;
+    private Connection con;
 	
     /**
      * Creates Sinscrire
      */
     public Sinscrire() {
         initComponents();
+        try {
+            this.con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
+                    "mathys", "projet2021GL"); //etablissement connection
+            con.setAutoCommit(false);
+        }
+        catch(SQLException e)   {
+            e.printStackTrace();
+            System.err.println("Connection failed in class Sinscrire.");
+        }
     }
 
 
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    //
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
@@ -51,8 +61,8 @@ public class Sinscrire extends javax.swing.JFrame {
         btnvider = new javax.swing.JButton();
         btnconnins = new javax.swing.JButton();
         registername = new javax.swing.JLabel();
-        inspass = new javax.swing.JTextField();
-        inspass2 = new javax.swing.JTextField();
+        inspass = new javax.swing.JPasswordField();   //masquer les caractères de mot de passe dans la console lors de la saisie
+        inspass2 = new javax.swing.JPasswordField(); //masquer les caractères de mot de passe dans la console lors de la saisie( pour confirmation de mot de passe)
         jLabel5 = new javax.swing.JLabel();
         insnom1 = new javax.swing.JTextField();
 
@@ -92,6 +102,9 @@ public class Sinscrire extends javax.swing.JFrame {
 
         btnconnins.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnconnins.setText("Se connecter");
+        btnconnins.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {btnconninsActionPerformed(evt);}
+        });
 
         registername.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
@@ -182,21 +195,64 @@ public class Sinscrire extends javax.swing.JFrame {
     private void Sinscrireform() //Methode Sinscrire pour l'inscription
     {
 
-        try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
-                    "mathys", "projet2021GL"); //etablissement connection
-            con.setAutoCommit(false);
+
+        try  {
+
+ 
+ 
+             Statement stmt = con.createStatement();
+             stmt.execute("USE ourmapdb;");
+
+             ResultSet nameCheck = stmt.executeQuery("SELECT displayName FROM utilisateurs WHERE displayName = \"" + username +
+                     "\" ;");
 
 
-            Statement stmt = con.createStatement();
-            stmt.execute("USE ourmapdb;");
-            String log ="insert into utilisateurs (`displayName`, `password`)" +
-                    "values ( \""+ this.username +"\", \""+ this.password1 +"\" );" ; //Creation d'un nouvel utilisateur
-            int success = stmt.executeUpdate(log); //execution de la requete ci dessus
+            if(username.equals("") || password1.equals("") || password2.equals(""))
+            {
+                message="Remplissez les champs SVP";
+            }   else if (nameCheck.next()) {
+                message ="Ce nom d'utilisateur est déjà utilisé, choisissez-en un autre.";
+            }
+            else if(password1.equals(password2) == false)
+                 {
+                     message="les Mots de passe sont différents. Recommencez";
+                 }
+            else {
+                finaliserInscription(username, password1);
+            }
+            registername.setText(message);
+           // new Seconnecter().setVisible(true);
+            //dispose();
+        }
 
-            if(success == 1)	{// si cette operation fonctionne, suite de la procedure (creation de la liste de favoris
-                con.commit(); // validation de l'operation
-                this.message="Vous êtes bien inscrit";
+        catch(SQLException e) {
+            System.out.println("Connection failed. Aborting process." + e);
+        }
+
+    }
+
+    /** Cette méthode execute els requetes SQL necessaire à l'inscription d'un nouvel utilisateur.
+     * Elle inscrit d'abord l'utilisateur dans la table utilisateurs pui créé sa liste de favoris. Elle n'est executée
+     * qu'une fois les verification de mot de passe et de nom d'utilisateurs sont effectuées.
+     *
+     * @param username, password1
+     * @return true si l'inscription se déroule correctement, false en cas d'erreur
+     * @since 2.4.8
+     * @version 1
+     * @author Oualid Siraji */
+    private boolean finaliserInscription(String username, String password1) {
+
+
+        String log ="insert into utilisateurs (`displayName`, `password`)" +
+                "values ( \""+ this.username +"\", \""+ this.password1 +"\" );" ;       //Creation d'un nouvel utilisateur
+        //execution de la requete ci dessus
+        try{
+            Statement stmt = con.createStatement(); //Pre^paration de la requete d'insertion
+            int success = stmt.executeUpdate(log);
+
+            if(success == 1)    {
+                con.commit();// validation de l'operation d'insertion
+                this.message = "Vous êtes bien inscrit";
 
                 /* Recupération de l'identifiant de l'utilisateur */
                 String getLastIDQuery = "SELECT idutilisateur FROM utilisateurs ORDER BY idutilisateur DESC LIMIT 1;"; //Tri decroissant de la colonne idutilisateur pour recuperer le dernier identifiant créé (Auto-increment)
@@ -205,45 +261,48 @@ public class Sinscrire extends javax.swing.JFrame {
                 long idutilisateur = rs.getLong(1);
 
 
-                ListeController listeController= new ListeController();
-                long idFavList = listeController.createList(idutilisateur, "Favoris"); //Creation de la liste de favoris du nouvel utilisateur
+                ListeController listeController = new ListeController(); //Instance du controlleur gêrant les listes
+                long idFavList = listeController.createList(idutilisateur, "Favoris");
+                //Creation de la liste de favoris du nouvel utilisateur
 
                 stmt.executeUpdate("UPDATE `utilisateurs`\n" +
                         " SET `idFavList` = " + idFavList + "\n" +
                         "WHERE idutilisateur = " + idutilisateur + ";"); //Attribution de la liste de favoris a l'utilisateur
-                con.commit();
-            }
+                con.commit(); //validation de l'opération
 
-            else
-            {
-                this.message="L'inscription a échoué";
+                return true;
             }
-            registername.setText(message);
+            else    {
+                message = "Echec de l'inscription. Erreur réseau ou erreur SQL.";}
         }
-
         catch(SQLException e) {
-            System.out.println("Connection failed. Aborting process." + e);
+            e.printStackTrace();
+            System.err.println("Inscription failed");
         }
-
+        return false;
     }
-    private void btninscrireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btninscrireActionPerformed
+    private void btninscrireActionPerformed(java.awt.event.ActionEvent evt) {//btninscrireActionPerformed
         this.username=insnom1.getText();
         this.password1=inspass.getText();
         this.password2=inspass2.getText();
-        this.Erreur=btninscrire.getText();
+        //this.Erreur=btninscrire.getText();
         Sinscrireform();
         
     }//GEN-LAST:event_btninscrireActionPerformed
 
-    private void btnviderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnviderActionPerformed
+    private void btnviderActionPerformed(java.awt.event.ActionEvent evt) {//Cette boutton est creer pour vider les champs
     insID.setText("");
     insnom1.setText("");
     inspass.setText("");
     inspass2.setText("");
-    }//GEN-LAST:event_btnviderActionPerformed
+    }
+    private void btnconninsActionPerformed(java.awt.event.ActionEvent evt) {
+        new Seconnecter().setVisible(true);
+        dispose();
+    }
 
     /**
-     * @param args the command line arguments
+     * @param args les arguments de la ligne de commande
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -269,7 +328,7 @@ public class Sinscrire extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Créer et afficher le formulaire */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Sinscrire().setVisible(true);

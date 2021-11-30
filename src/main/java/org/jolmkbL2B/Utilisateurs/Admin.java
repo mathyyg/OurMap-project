@@ -4,20 +4,13 @@ package org.jolmkbL2B.Utilisateurs;
  * @author Oualid siraji
  */
   //Attributs de La classe Admin
-public class Admin {
-    public int idutilisateur;
-    public String displayName;
-    public String password;
-    public int idFavList;
-    public boolean isAdmin;
+public class Admin extends UtilisateurAuthentifié {
+
 
     // Constructeur avec parametre()
-    public Admin(int idutilisateur, String displayName, String password, int idFavList, boolean isAdmin) {
-        this.idutilisateur = idutilisateur;
-        this.displayName = displayName;
-        this.password = password;
-        this.idFavList = idFavList;
-        this.isAdmin = isAdmin;
+    public Admin(int idutilisateur, String displayName, String password, int idFavList) {
+        super(idutilisateur, displayName, password, idFavList);
+        this.isAdmin = true;
     }
     //Constructeur sans parametre
     public Admin()

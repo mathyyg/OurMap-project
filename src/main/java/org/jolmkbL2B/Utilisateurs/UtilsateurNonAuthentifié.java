@@ -5,7 +5,7 @@ package org.jolmkbL2B.Utilisateurs;
  */
  // Attribut de La classe UtilisateurNonAuthentifié
 
-public class UtilsateurNonAuthentifié {
+public class UtilsateurNonAuthentifié extends Utilisateurs {
     String nom;
     //Constructeur()
     public UtilsateurNonAuthentifié(String nom)
