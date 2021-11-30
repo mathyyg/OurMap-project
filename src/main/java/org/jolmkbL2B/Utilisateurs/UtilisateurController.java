@@ -1,5 +1,5 @@
 
-package org.jolmkbL2B.controllers;
+package org.jolmkbL2B.Utilisateurs;
 
 import java.sql.*;
 /*auteurs jalal & oualid
