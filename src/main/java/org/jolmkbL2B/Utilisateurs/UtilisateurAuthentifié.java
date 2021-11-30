@@ -1,4 +1,4 @@
-package org.jolmkbL2B.controllers;
+package org.jolmkbL2B.Utilisateurs;
 
 public class UtilisateurAuthentifié {
 
