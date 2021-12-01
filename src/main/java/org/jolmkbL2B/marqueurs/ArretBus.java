@@ -3,11 +3,17 @@ package org.jolmkbL2B.marqueurs;
  * @author Bastien
  * @version 1 */
 public class ArretBus extends Marqueur {
+
+    private final String city;        //commmune ou l'endroit se situe
+    private String description; //description publique du lieu
+
     private boolean accesHandicap;
 
     public ArretBus( long lieuID, double latitude, double longitude,
                     String name, String city, String description, boolean accesHandicap) {
-        super(PlaceType.ARRETBUS, latitude, longitude, lieuID, name, city, description);
+        super(PlaceType.ARRETBUS, latitude, longitude, lieuID, name);
+        this.city= city;
+        this.description = description;
         this.accesHandicap = accesHandicap;
     }
 
@@ -25,5 +31,17 @@ public class ArretBus extends Marqueur {
         return "ArretBus{" +
                 "accesHandicap=" + accesHandicap +
                 '}';
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
