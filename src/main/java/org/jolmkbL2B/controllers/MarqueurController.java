@@ -28,13 +28,6 @@ public class MarqueurController  {
                     ". Initialization cannot continue.");
             // Soucis : si pas internet, on peut pas utiliser l'appli
             sqlException.printStackTrace();
-            try {
-                con.close();
-            }
-            catch(SQLException e)   {
-                e.printStackTrace();
-                System.err.println("Connection cannot be closed or already is.");
-            }
         }
     }
 
