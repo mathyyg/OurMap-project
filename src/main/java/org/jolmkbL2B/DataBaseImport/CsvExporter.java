@@ -146,7 +146,9 @@ public class CsvExporter {
                 Statement stmt = con.createStatement();
                 String sql1 = "INSERT INTO `ourmapdb`.`marqueurs`\n" +
                         "(`placeType`,\n" +
-                        "`marqueurName`)\n VALUES (\"SCHOOL\", \"" + data[0] + "\");";
+                        "`latitude`, \n" +
+                        "`longitude`, \n" +
+                        "`marqueurName`)\n VALUES (\"SCHOOL\", 0, 0, \"" + data[0] + "\");";
                 stmt.executeUpdate(sql1);
 
                 String getLastIDQuerry = "SELECT idmarqueur FROM marqueurs ORDER BY idmarqueur DESC LIMIT 1;";
@@ -158,9 +160,9 @@ public class CsvExporter {
                         "(`idmarqueur`,\n" +
                         "`city`,\n" +
                         "`marqueurDescription`," +
-                        "`schoolType`" +
-                        "`statut`" +
-                        "`adresse`" +
+                        "`schoolType`," +
+                        "`statut`," +
+                        "`adresse`)" +
                         "VALUES\n( " + rowID + ", \"" + data[1] + "\", \"NO DESCRIPTION YET\", \"" + data[3] + "\", \"" +
                 data[4] + "\", \"" + data[2] + "\");";
                 stmt.executeUpdate(sql2);

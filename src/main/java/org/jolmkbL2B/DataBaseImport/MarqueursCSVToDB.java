@@ -31,8 +31,10 @@ public class MarqueursCSVToDB   {
             //System.out.println("Export arretsBus terminé : " + exportArretBusSuccess);
 
            //con.commit();
+            con.rollback();
             path = Paths.get("C:\\Users\\lloyd\\Desktop\\projects\\l2s1 gl project\\project database\\csv\\schools.csv");
             exporter.exportSchools(path.toString(), con);
+            con.commit();
 
             con.close();
         }
