@@ -1,18 +1,18 @@
 package org.jolmkbL2B;
 
 import com.formdev.flatlaf.intellijthemes.FlatDarkPurpleIJTheme;
-import org.jolmkbL2B.controllers.MarqueurController;
 import org.jolmkbL2B.vue.frame.AppliHubFrame;
+import org.jolmkbL2B.vue.frame.LoginFrame;
 
 
 public class Main
 {
     public static void main( String[] args ) {
         System.out.println("Hello World!");
-        App app = new App();
+        AppControllers app = new AppControllers();
         FlatDarkPurpleIJTheme.setup();
-        AppliHubFrame hub = new AppliHubFrame("HOME", new MarqueurController());
-        hub.pack();
-        hub.setVisible(true);
+        LoginFrame login = new LoginFrame("Se connecter", app);
+        login.pack();
+        login.setVisible(true);
     }
 }
