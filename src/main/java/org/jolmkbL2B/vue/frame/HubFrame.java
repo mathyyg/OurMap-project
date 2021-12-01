@@ -13,6 +13,7 @@ import org.jolmkbL2B.vue.panel.*;
  */
 public class HubFrame extends JFrame {
     public HubFrame() {
+        super("OurMap : Hub");
         initComponents();
     }
 

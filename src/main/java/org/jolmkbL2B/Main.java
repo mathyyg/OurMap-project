@@ -11,7 +11,7 @@ public class Main
         System.out.println("Hello World!");
         AppControllers app = new AppControllers();
         FlatDarkPurpleIJTheme.setup();
-        LoginFrame login = new LoginFrame("Se connecter", app);
+        LoginFrame login = new LoginFrame(app);
         login.pack();
         login.setVisible(true);
     }

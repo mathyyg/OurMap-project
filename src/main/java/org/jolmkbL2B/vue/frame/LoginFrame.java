@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.sql.*;
 
 public class LoginFrame extends JFrame {
+    private final AppControllers app;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Annuler;
     private javax.swing.JButton btnconn;
@@ -26,8 +27,9 @@ public class LoginFrame extends JFrame {
     /**
      Creation de formulaire de connexion
      */
-    public LoginFrame(String titre, AppControllers app) {
-        super(titre);
+    public LoginFrame(AppControllers app) {
+        super("Se connecter");
+        this.app = app;
         initComponents(); //appel de la methode qui contient les composants de formulaire
     }
 
@@ -210,7 +212,7 @@ public class LoginFrame extends JFrame {
     }
     private void btnisncrire1ActionPerformed(java.awt.event.ActionEvent evt) {
 
-        new Sinscrire().setVisible(true);
+        new RegisterFrame(this.app).setVisible(true);
         dispose();
     }
 
