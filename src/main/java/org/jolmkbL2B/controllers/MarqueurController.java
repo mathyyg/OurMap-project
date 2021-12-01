@@ -36,13 +36,13 @@ public class MarqueurController  {
     /** Recupere tous les marqueurs de la base de données.
      * @since 2.0 ~
      * @version 1
-     * @retyrn ResultSet aux colonnes suivantes : (`placeType`, `latitude`, `longitude`, `marqueurName`, `city`, `description`)
+     * @retyrn ResultSet aux colonnes suivantes : (`placeType`, `latitude`, `longitude`, `marqueurName`)
      * @author Bastien
      */
     public ResultSet fetchAll() {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, placeType, latitude, longitude, marqueurName, city, marqueurDescription" +
+            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, placeType, latitude, longitude, marqueurName" +
                     " FROM marqueurs;");
             return rs;
         }
@@ -57,13 +57,13 @@ public class MarqueurController  {
     /** Recupere tous les marqueurs d'un certain placeType (seulement les hotels, les arrets de bus etc...)
      * @since 2.4 ~
      * @version 1
-     * @retyrn ResultSet aux colonnes suivantes : (`placeType`, `latitude`, `longitude`, `marqueurName`, `city`, `description`)
+     * @retyrn ResultSet aux colonnes suivantes : (`placeType`, `latitude`, `longitude`, `marqueurName`)
      * @author Bastien
      */
     public ResultSet fetchAllByType(PlaceType placeType)    {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, placeType, latitude, longitude, marqueurName, city, description" +
+            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, placeType, latitude, longitude, marqueurName" +
                     " FROM marqueurs WHERE placeType = \"" + placeType.toString() + "\";");
             return rs;
         }
@@ -96,7 +96,7 @@ public class MarqueurController  {
 
     /** Recupere toutes les infos d'un unique marqueur
      * @version 1
-     * @retyrn ResultSet aux colonnes suivantes : (`placeType`, `latitude`, `longitude`, `marqueurName`, `city`, `description`) + colonnes specifiques aux tables
+     * @retyrn ResultSet aux colonnes suivantes : (`placeType`, `latitude`, `longitude`, `marqueurName`) + colonnes specifiques aux tables
      * @author Bastien*/
     public ResultSet fetchAllInfo(long id, PlaceType placeType) {
         String table = selectTable(placeType);
@@ -146,6 +146,9 @@ public class MarqueurController  {
                 return "hotels";
             case ARRETBUS:
                 return "arretsbus";
+
+            case CUSTOM :
+                return "customMarqueur";
             default:
                 System.err.println("Argument PlaceType non reconnu;");
                 return "none";
@@ -168,11 +171,8 @@ public class MarqueurController  {
                     "(`placeType`,\n" +
                     "`latitude`,\n" +
                     "`longitude`,\n" +
-                    "`marqueurName`,\n" +
-                    "`city`,\n" +
-                    "`description`)\n VALUES (\"" + marqueur.getPlaceType().toString() + "\", " +
-                    marqueur.getPosition().getLatitude() + ", " + marqueur.getPosition().getLongitude() + ", \"" + marqueur.getName() + "\", \""
-                    + marqueur.getCity() + "\", \"" + marqueur.getDescription() + "\");";
+                    "`marqueurName`,)\n VALUES (\"" + marqueur.getPlaceType().toString() + "\", " +
+                    marqueur.getPosition().getLatitude() + ", " + marqueur.getPosition().getLongitude() + ", \"" + marqueur.getName() + "\");";
             stmt.executeUpdate(sql1);
 
             String getLastIDQuerry = "SELECT idmarqueur FROM marqueurs ORDER BY idmarqueur DESC LIMIT 1;"; //Recuperation de l'identifiant de la nouvelle entree
@@ -193,7 +193,7 @@ public class MarqueurController  {
      * @since 2.5
      * @param hotel : un objet Hotel (etendu de marqueur)
      * @return identifiant de la nouvelle entree
-     * @version 1*/
+     * @version 2*/
     public boolean insertMarqueur(Hotel hotel) {
         boolean success = false;
         try {
@@ -203,6 +203,8 @@ public class MarqueurController  {
 
                 String sql = "INSERT INTO `ourmapdb`.`hotels`\n" +
                         "(`idmarqueur`,\n" +
+                        "`city`,\n" +
+                        "`marqueurDescription`,\n" +
                         "`adresse`,\n" +
                         "`hasRestaurant`,\n" +
                         "`numTel`,\n" +
@@ -214,7 +216,7 @@ public class MarqueurController  {
                         "`handi_auditif`,\n" +
                         "`handi_visuel`,\n" +
                         "`accepteAnimaux`)\n" +
-                        "VALUES ( " + id + ", \"" + hotel.getAddress() + "\", " + hotel.isHasRestaurant() + ", \"" + hotel.getNumTelephone() +
+                        "VALUES ( " + id + ", \"" + hotel.getCity() + "\" , \"" + hotel.getDescription() + "\", \"" + hotel.getAddress() + "\", " + hotel.isHasRestaurant() + ", \"" + hotel.getNumTelephone() +
                         "\", " + hotel.getCategorieEtoiles() + ", \"" + hotel.getSiteWeb() + "\", \"" + hotel.getTripAdvisor() +
                         "\", " + hotel.getLabelHandicap()[0] + ", " + hotel.getLabelHandicap()[1] + ", " + hotel.getLabelHandicap()[1] +
                         ", " + hotel.getLabelHandicap()[2] + ", " + hotel.getLabelHandicap()[3] + ", " + hotel.isAnimauxAcceptes() + ");";
@@ -234,7 +236,7 @@ public class MarqueurController  {
      * @since 2.5
      * @param arret : un objet ArretBus (etendu de marqueur)
      * @return identifiant de la nouvelle entree
-     * @version 1*/
+     * @version 2*/
     public boolean insertMarqueur(ArretBus arret)   {
         boolean success = false;
         try {
@@ -244,9 +246,11 @@ public class MarqueurController  {
 
                 String sql = "INSERT INTO `ourmapdb`.`arretsbus`\n" +
                         "(`idmarqueur`,\n" +
+                        "`city`,\n" +
+                        "`marqueurDescription`,\n" +
                         "`accesHandi`)\n" +
                         "VALUES\n" +
-                        "( " + id + ", " + arret.isAccesHandicap() + ");\n";
+                        "( " + id + ", \"" + arret.getCity() + "\" , \"" + arret.getDescription() + "\", " + arret.isAccesHandicap() + ");\n";
                 int tmp = stmt.executeUpdate(sql); //executeUpdate renvoie le nombre de lignes modifiees / inserees
                 con.commit();
                 stmt.close();
@@ -266,13 +270,15 @@ public class MarqueurController  {
 
                 String sql = "INSERT INTO `ourmapdb`.`schools`\n" +
                         "(`idschools`,\n" +
+                        "`city`,\n" +
+                        "`marqueurDescription`,\n" +
                         "`schoolType`,\n" +
                         "`statut`,\n" +
                         "`adresse`)\n" +
                         "VALUES\n" +
-                        "(" + id + ",\n\"" +
-                        school.getSchoolType().toString() + "\",\n\"" +
-                        school.PublicOuPrive().toString() + "\",\n\"" +
+                        "(" + id + ", \"" + school.getCity() + "\" , \"" + school.getDescription() + "\", \"" +
+                        school.getSchoolType().toString() + "\", \"" +
+                        school.PublicOuPrive().toString() + "\", \"" +
                         school.getAddress() + ");\n";
                 int tmp = stmt.executeUpdate(sql); //executeUpdate renvoie le nombre de lignes modifiees / inserees
                 con.commit();
@@ -284,7 +290,7 @@ public class MarqueurController  {
         return success;
     }
 
-
+/** version 2*/
     public boolean updateHotel(long idmarqueur, HashMap<TableHotel, String> changes) {
         try {
             Statement stmt = con.createStatement();
@@ -294,17 +300,11 @@ public class MarqueurController  {
 
             for(Map.Entry e : changes.entrySet()) {
                 TableHotel colonne = (TableHotel) e.getKey();
-                if (colonne.equals(TableHotel.description)) {
-                    stmt.executeUpdate("UPDATE `ourmapdb`.`marqueurs` (\n" +
-                            "SET `description` = \"" + e.getValue().toString() + "\"\n" +
-                            "WHERE idmarqueur = " + idmarqueur +";");
-                }
-                else {
-                    switch(colonne) {
+                switch(colonne) {
                         case etoiles:
                             formattedValue = e.getValue().toString();
                             break;
-                        case adresse, numTel, siteWeb, tripadvisor:
+                        case adresse, numTel, siteWeb, tripadvisor, description:
                             formattedValue = "\"" + e.getValue().toString() + "\"";
                             break;
                         case hasRestaurant, handi_moteur, handi_mental, handi_auditif, handi_visuel, accepteAnimaux:
@@ -320,7 +320,6 @@ public class MarqueurController  {
                     }
                     operations += "`" + colonne + "` = " + formattedValue +", ";
                 }
-            }
             operations = operations.substring(0, operations.length()-2);
 
             String sqlUpdate = "UPDATE `ourmapdb`.`hotels` (SET " + operations + "WHERE idmarqueur = " + idmarqueur +";";
@@ -344,6 +343,7 @@ public class MarqueurController  {
         return false;
     }
 
+    /** version 2*/
     public boolean updateArretBus(long idmarqueur, HashMap<TableArretBus, String> changes) {
         try {
             Statement stmt = con.createStatement();
@@ -353,20 +353,20 @@ public class MarqueurController  {
 
             for (Map.Entry e : changes.entrySet()) {
                 TableArretBus colonne = (TableArretBus) e.getKey();
-                if (colonne.equals(TableArretBus.description)) {
-                    stmt.executeUpdate("UPDATE `ourmapdb`.`marqueurs` (\n" +
-                            "SET `description` = \"" + e.getValue().toString() + "\"\n" +
-                            "WHERE idmarqueur = " + idmarqueur + ";");
-                } else {
-                    if (colonne.equals(TableArretBus.accesHandi)) {
+                switch(colonne) {
+                    case description:
+                        formattedValue = "\"" + e.getValue().toString() + "\"";
+                        break;
+                    case accesHandi:
                         String bool = e.getValue().toString();
-                        if (bool.equals("true") || bool.equals("True") || bool.equals("TRUE") || bool.equals("1")) {
+                        if(bool.equals("true") || bool.equals("True") || bool.equals("TRUE") || bool.equals("1"))   {
                             formattedValue = "1";
-                        } else formattedValue = "0";
-                        operations += "`accesHandi` = " + formattedValue + ", ";
-                    }
-                    else throw new IllegalArgumentException("Vous n'avez pas la permission de modifier cette" +
-                            "information (" + colonne + ")");
+                        }
+                        else formattedValue = "0";
+                        break;
+                    default :
+                        throw new RuntimeException("Vous n'avez pas la permission de modifier cette" +
+                                "information (" + colonne + ")");
                 }
             }
             operations = operations.substring(0, operations.length() - 2);
