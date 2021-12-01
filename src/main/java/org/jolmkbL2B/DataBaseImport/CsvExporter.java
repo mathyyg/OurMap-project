@@ -12,7 +12,8 @@ public class CsvExporter {
     public CsvExporter() {
     }
 
-    public boolean exportArretBus(String path, Connection con)  {
+    /** @obsolete N'est plus compatible avec la BD*/
+    private boolean exportArretBus(String path, Connection con)  {
         boolean success = false;
 
         try {
@@ -65,8 +66,8 @@ public class CsvExporter {
     }
 
 
-
-    public boolean exportHotels(String path, Connection con)    {
+    /** @obsolete N'est plus compatible avec la BD */
+    private boolean exportHotels(String path, Connection con)    {
         boolean success = false;
         String csvLine = "";
 
@@ -132,4 +133,55 @@ public class CsvExporter {
     }
 
 
+    public boolean exportSchools(String path, Connection con)   {
+        boolean success = false;
+
+        try {
+            BufferedReader lineReader = new BufferedReader(new FileReader(path)); //Buffer servant à lire le fichier ligne par ligne
+            String csvLine = "";
+            lineReader.readLine();
+
+            while ((csvLine = lineReader.readLine()) != null) {
+                String[] data = csvLine.split(",");
+                Statement stmt = con.createStatement();
+                String sql1 = "INSERT INTO `ourmapdb`.`marqueurs`\n" +
+                        "(`placeType`,\n" +
+                        "`marqueurName`)\n VALUES (\"SCHOOL\", \"" + data[0] + "\");";
+                stmt.executeUpdate(sql1);
+
+                String getLastIDQuerry = "SELECT idmarqueur FROM marqueurs ORDER BY idmarqueur DESC LIMIT 1;";
+                ResultSet rs = stmt.executeQuery(getLastIDQuerry);
+                rs.next();
+                int rowID = rs.getInt(1);
+
+                String sql2 = "INSERT INTO `ourmapdb`.`schools`\n" +
+                        "(`idmarqueur`,\n" +
+                        "`city`,\n" +
+                        "`marqueurDescription`," +
+                        "`schoolType`" +
+                        "`statut`" +
+                        "`adresse`" +
+                        "VALUES\n( " + rowID + ", \"" + data[1] + "\", \"NO DESCRIPTION YET\", \"" + data[3] + "\", \"" +
+                data[4] + "\", \"" + data[2] + "\");";
+                stmt.executeUpdate(sql2);
+                stmt.close();
+            }
+            lineReader.close();
+            System.out.println("Export terminé");
+            success = true;
+        }
+        catch(IOException ioException)  {
+            System.err.println(ioException);
+        }
+        catch(SQLException sqlException)    {
+            sqlException.printStackTrace();
+            try {
+                con.rollback();
+            }
+            catch(SQLException e)   {
+                e.printStackTrace();
+            }
+        }
+        return success;
+    }
 }

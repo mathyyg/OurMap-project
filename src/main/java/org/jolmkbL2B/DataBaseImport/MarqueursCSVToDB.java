@@ -21,16 +21,19 @@ public class MarqueursCSVToDB   {
 
             Path path = Paths.get("C:\\project_database\\csv\\hotels.csv");
 
-            boolean exportHotelSuccess = exporter.exportHotels(path.toString(), con);
-            System.out.println("Export hotels terminé : " + exportHotelSuccess);
-            con.commit();
+            //boolean exportHotelSuccess = exporter.exportHotels(path.toString(), con);
+            //System.out.println("Export hotels terminé : " + exportHotelSuccess);
+            //con.commit();
 
             path = Paths.get("C:\\project_database\\csv\\arretsbus.csv");
 
-            boolean exportArretBusSuccess = exporter.exportArretBus(path.toString(), con);
-            System.out.println("Export arretsBus terminé : " + exportArretBusSuccess);
+            //boolean exportArretBusSuccess = exporter.exportArretBus(path.toString(), con);
+            //System.out.println("Export arretsBus terminé : " + exportArretBusSuccess);
 
-            con.commit();
+           //con.commit();
+            path = Paths.get("C:\\Users\\lloyd\\Desktop\\projects\\l2s1 gl project\\project database\\csv\\schools.csv");
+            exporter.exportSchools(path.toString(), con);
+
             con.close();
         }
 
