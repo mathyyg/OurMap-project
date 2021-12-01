@@ -18,20 +18,16 @@ public class HubFrame extends JFrame {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        mapPanel1 = new MapPanel();
-        label1 = new JLabel();
         label2 = new JLabel();
         label3 = new JLabel();
-        label4 = new JLabel();
+        mapPanel1 = new MapPanel();
+        listesMarqueursPanel1 = new ListesMarqueursPanel();
+        marqueurInfosPanel1 = new MarqueurInfosPanel();
 
         //======== this ========
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         var contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
-        contentPane.add(mapPanel1, BorderLayout.CENTER);
-
-        //---- label1 ----
-        label1.setText("text");
-        contentPane.add(label1, BorderLayout.EAST);
 
         //---- label2 ----
         label2.setText("text");
@@ -40,20 +36,19 @@ public class HubFrame extends JFrame {
         //---- label3 ----
         label3.setText("text");
         contentPane.add(label3, BorderLayout.NORTH);
-
-        //---- label4 ----
-        label4.setText("text");
-        contentPane.add(label4, BorderLayout.SOUTH);
-        pack();
+        contentPane.add(mapPanel1, BorderLayout.CENTER);
+        contentPane.add(listesMarqueursPanel1, BorderLayout.EAST);
+        contentPane.add(marqueurInfosPanel1, BorderLayout.SOUTH);
+        setSize(685, 375);
         setLocationRelativeTo(getOwner());
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    private MapPanel mapPanel1;
-    private JLabel label1;
     private JLabel label2;
     private JLabel label3;
-    private JLabel label4;
+    private MapPanel mapPanel1;
+    private ListesMarqueursPanel listesMarqueursPanel1;
+    private MarqueurInfosPanel marqueurInfosPanel1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

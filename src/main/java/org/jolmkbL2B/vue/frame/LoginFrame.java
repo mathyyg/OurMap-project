@@ -39,7 +39,7 @@ public class LoginFrame extends JFrame {
         jLabel1 = new javax.swing.JLabel(); // label titre de formulaire
         jLabel2 = new javax.swing.JLabel(); // label pour username
         jLabel4 = new javax.swing.JLabel(); //label pour password
-        connpass = new javax.swing.JTextField(); //text field username
+        connpass = new javax.swing.JPasswordField(); //text field username
         btnconn = new javax.swing.JButton(); //boutton de connexion
         Annuler = new javax.swing.JButton(); //boutton annuler qui permetra l'utilisateur de vider le formulaire
         message = new javax.swing.JLabel(); //label pour l'affichage des erreurs de formulaires
