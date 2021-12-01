@@ -14,20 +14,15 @@ public class Marqueur extends DefaultWaypoint {
     private PlaceType placeType; //type d'endroit. Redondant avec le instanceof ?
     private long lieuID;        //identifiant dans la base de données
     private String name;        // nom de l'endroit
-    private String city;        //commmune ou l'endroit se situe
-    private String description; //description publique du lieu
 
     private final JButton button;
 
-    public Marqueur(PlaceType placeType, double latitude, double longitude, long lieuID, String name,
-                    String city, String description)
+    public Marqueur(PlaceType placeType, double latitude, double longitude, long lieuID, String name)
     {
         super(latitude, longitude);
         this.placeType = placeType;
         this.lieuID = lieuID;
         this.name = name;
-        this.city= city;
-        this.description = description;
 
         button = new JButton(placeType.toString().substring(0, 1));
         button.setSize(24, 24);
@@ -58,22 +53,6 @@ public class Marqueur extends DefaultWaypoint {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public JButton getButton() {

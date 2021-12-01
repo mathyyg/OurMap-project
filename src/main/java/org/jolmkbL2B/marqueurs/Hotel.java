@@ -6,6 +6,10 @@ import java.util.Arrays;
  * @version 3 */
 public class Hotel extends Marqueur
 {
+
+    private final String city;        //commmune ou l'endroit se situe
+    private String description; //description publique du lieu
+
     private String address;
     private final boolean hasRestaurant;
     private String numTelephone;
@@ -22,7 +26,9 @@ public class Hotel extends Marqueur
                  String name, String city, String description, String address, boolean hasRestaurant, String numTele, int categorieEtoiles,
                  String siteWeb, String tripAdvisor, boolean[] labelHandicap, boolean animauxAcceptes)
     {
-        super(PlaceType.HOTEL, latitude, longitude, lieuID, name, city, description);
+        super(PlaceType.HOTEL, latitude, longitude, lieuID, name);
+        this.city= city;
+        this.description = description;
         this.address = address;
         this.hasRestaurant = hasRestaurant;
         this.numTelephone = numTele;
@@ -57,6 +63,17 @@ public class Hotel extends Marqueur
         return tripAdvisor;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     /** Getter pour animauxAcceptes. Renvoie un entier car sert principalement lors d'interaction avec la base de
      * donnees, où les booleens sont codés sous forme de 0 et de 1
