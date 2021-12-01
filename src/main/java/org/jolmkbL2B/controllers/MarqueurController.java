@@ -42,8 +42,23 @@ public class MarqueurController  {
     public ResultSet fetchAll() {
         try {
             Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * " +
+                    " FROM marqueurs WHERE placeType NOT LIKE \"CUSTOM\";");
+            return rs;
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ResultSet fetchUserCustomMarqueur(long idutilisateur)    {
+        try {
+            Statement stmt = con.createStatement();
+
+            /* doublon dans la clause where pour eviter d'eventuelles erreur, par précaution */
             ResultSet rs = stmt.executeQuery("SELECT idmarqueur, placeType, latitude, longitude, marqueurName" +
-                    " FROM marqueurs;");
+                    "FROM marqueurs NATURAL JOIN customMarqueurs WHERE placeType = \"CUSTOM\" AND idowner = " + idutilisateur + ";");
             return rs;
         }
         catch(SQLException e) {
@@ -72,8 +87,6 @@ public class MarqueurController  {
         }
         return null;
     }
-
-
 
     /** Recupere tous les marqueurs de la base de données.
      * @since 2.0 ~
@@ -289,6 +302,31 @@ public class MarqueurController  {
         catch(SQLException e)  {e.printStackTrace();}
         return success;
     }
+
+
+    public boolean insertMarqueur(CustomMarqueur custom)   {
+        boolean success = false;
+        try {
+            int id = insertMarqueur((Marqueur) custom); //Les informations de classes mere Marqueur sont envoyés vers la table marqueurs
+            if(id> 0) { //si id < 0, c'est qu'il y a une erreur, les exceptions sont deja lancee dans la methode insertMarqueur(Marqueur)
+                Statement stmt = con.createStatement();
+
+                String sql = "INSERT INTO `ourmapdb`.`customMarqueurs`\n" +
+                        "(`idmarqueur`,\n" +
+                        "`marqueurDescription`,\n" +
+                        "`idOwner`)\n" +
+                        "VALUES\n" +
+                        "( " + id + ", \"" + custom.getDescription() + ", " + custom.getOwnerID() + ");\n";
+                int tmp = stmt.executeUpdate(sql); //executeUpdate renvoie le nombre de lignes modifiees / inserees
+                con.commit();
+                stmt.close();
+                if (tmp > 0) success = true; //si plus de 0 lignes sont ;odifee, l'operation est un succès
+            }
+        }
+        catch(SQLException e)  {e.printStackTrace();}
+        return success;
+    }
+
 
 /** version 2*/
     public boolean updateHotel(long idmarqueur, HashMap<TableHotel, String> changes) {
