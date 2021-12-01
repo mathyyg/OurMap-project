@@ -107,7 +107,7 @@ public class MarqueurLoader {
                 Marqueur wp = new Marqueur(placeType, rs.getDouble("latitude"),
                         rs.getDouble("longitude"), rs.getLong("idmarqueur"),
                         rs.getString("marqueurName"), rs.getString("city"),
-                        rs.getString("description"));
+                        rs.getString("marqueurDescription"));
 
                 initialSet.add(wp); //ajout du marqueur au Set
             }
@@ -151,7 +151,7 @@ public class MarqueurLoader {
                 Marqueur wp = new Marqueur(placeType, rs.getDouble("latitude"),
                         rs.getDouble("longitude"), rs.getLong("idmarqueur"),
                         rs.getString("marqueurName"), rs.getString("city"),
-                        rs.getString("description"));
+                        rs.getString("marqueurDescription"));
 
                 //System.out.println(wp.getPlaceType()); TEST PURPOSE
 
