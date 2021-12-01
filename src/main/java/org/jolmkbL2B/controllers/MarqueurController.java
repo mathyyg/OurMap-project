@@ -49,7 +49,7 @@ public class MarqueurController  {
     public ResultSet fetchAll() {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, placeType, latitude, longitude, marqueurName, city, description" +
+            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, placeType, latitude, longitude, marqueurName, city, marqueurDescription" +
                     " FROM marqueurs;");
             return rs;
         }
