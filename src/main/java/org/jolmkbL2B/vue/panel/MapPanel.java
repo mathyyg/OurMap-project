@@ -69,7 +69,7 @@ public class MapPanel extends JPanel {
                 JXMapViewer me_src = (JXMapViewer) me.getSource();
 
                 Marqueur clickwaypoint = new Marqueur(PlaceType.ARRETBUS,me_src.convertPointToGeoPosition(me.getPoint()).getLatitude(),
-                        me_src.convertPointToGeoPosition(me.getPoint()).getLongitude(), 0, "click", "click", "click");
+                        me_src.convertPointToGeoPosition(me.getPoint()).getLongitude(), 0, "click");
 
                 waypoints.add(clickwaypoint);
                 OurMap.setOverlayPainter(loader.updateDisplay(waypoints));

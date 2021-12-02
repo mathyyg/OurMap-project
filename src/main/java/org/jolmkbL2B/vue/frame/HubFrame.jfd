@@ -19,15 +19,15 @@ new FormModel {
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "North"
 			} )
-			add( new FormComponent( "org.jolmkbL2B.vue.panel.MapPanel" ) {
-				name: "mapPanel1"
-			}, new FormLayoutConstraints( class java.lang.String ) {
-				"value": "Center"
-			} )
 			add( new FormComponent( "org.jolmkbL2B.vue.panel.ListesMarqueursPanel" ) {
 				name: "listesMarqueursPanel1"
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "East"
+			} )
+			add( new FormComponent( "org.jolmkbL2B.vue.panel.MapPanel" ) {
+				name: "mapPanel1"
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
 			} )
 			add( new FormComponent( "org.jolmkbL2B.vue.panel.MarqueurInfosPanel" ) {
 				name: "marqueurInfosPanel1"
@@ -35,8 +35,8 @@ new FormModel {
 				"value": "South"
 			} )
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 60, 135 )
-			"size": new java.awt.Dimension( 685, 375 )
+			"location": new java.awt.Point( 30, 0 )
+			"size": new java.awt.Dimension( 845, 520 )
 		} )
 	}
 }
