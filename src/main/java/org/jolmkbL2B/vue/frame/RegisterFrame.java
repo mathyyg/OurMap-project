@@ -6,6 +6,7 @@ import org.jolmkbL2B.controllers.Seconnecter;
 import org.jolmkbL2B.controllers.Sinscrire;
 
 import javax.swing.*;
+import java.awt.*;
 import java.sql.*;
 
 public class RegisterFrame extends JFrame {
@@ -16,8 +17,8 @@ public class RegisterFrame extends JFrame {
     private javax.swing.JButton btnvider;
     private javax.swing.JTextField insID;
     private javax.swing.JTextField insnom1;
-    //private javax.swing.JTextField inspass;
     private javax.swing.JTextField inspass;
+//    private javax.swing.JTextField inspass;
     private javax.swing.JTextField inspass2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
@@ -61,6 +62,7 @@ public class RegisterFrame extends JFrame {
         jLabel1 = new javax.swing.JLabel();
         labelID = new javax.swing.JLabel();
         insID = new javax.swing.JTextField();
+        insID.setEnabled(false);
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         btninscrire = new javax.swing.JButton();
@@ -81,6 +83,7 @@ public class RegisterFrame extends JFrame {
 
         labelID.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         labelID.setText("Id Utilisateur");
+        labelID.setForeground(Color.GRAY);
 
         insID.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
 
@@ -297,7 +300,7 @@ public class RegisterFrame extends JFrame {
     }//GEN-LAST:event_btninscrireActionPerformed
 
     private void btnviderActionPerformed(java.awt.event.ActionEvent evt) {//Cette boutton est creer pour vider les champs
-        insID.setText("");
+//        insID.setText("");
         insnom1.setText("");
         inspass.setText("");
         inspass2.setText("");
