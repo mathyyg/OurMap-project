@@ -100,6 +100,7 @@ public class MarqueurLoader {
                         break;
                     case "SCHOOL":
                         placeType = placeType.SCHOOL;
+                        break;
                     default:
                         throw new SQLDataException("Donnée " + type + " ne correspond pas aux valeurs attendues dans ENUM (PlaceType). ");
                 }
@@ -143,6 +144,7 @@ public class MarqueurLoader {
                         break;
                     case "SCHOOL":
                         placeType = placeType.SCHOOL;
+                        break;
                     default:
                         throw new SQLDataException("Donnée " + type + " ne correspond pas aux valeurs attendues dans ENUM (PlaceType). ");
                 }
