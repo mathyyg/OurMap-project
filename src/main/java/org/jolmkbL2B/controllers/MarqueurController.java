@@ -58,7 +58,7 @@ public class MarqueurController  {
 
             /* doublon dans la clause where pour eviter d'eventuelles erreur, par précaution */
             ResultSet rs = stmt.executeQuery("SELECT idmarqueur, placeType, latitude, longitude, marqueurName" +
-                    "FROM marqueurs NATURAL JOIN customMarqueurs WHERE placeType = \"CUSTOM\" AND idowner = " + idutilisateur + ";");
+                    " FROM marqueurs NATURAL JOIN customMarqueurs WHERE marqueurs.placeType = \"CUSTOM\" AND idowner = " + idutilisateur + ";");
             return rs;
         }
         catch(SQLException e) {
