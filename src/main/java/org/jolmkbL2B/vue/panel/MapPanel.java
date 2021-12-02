@@ -53,7 +53,7 @@ public class MapPanel extends JPanel {
 
 
         /** AFFICHARGE MARQUEUR */
-        this.waypoints = loader.loadAllMarkers();
+        this.waypoints = loader.loadAllMarkers(1);
         //this.waypoints = loader.loadAllMarkersByType(PlaceType.HOTEL);
         //this.waypoints = loader.loadListToNewSet(1,1);
         //this.waypoints = loader.loadListInCurrentSet(waypoints, 1, 1);
