@@ -38,7 +38,7 @@ import static org.jolmkbL2B.marqueurs.Marqueur.*;
 /**
  *
  *
- *
+ * @author KHALED MAHDI
  *
  * */
 
@@ -49,7 +49,7 @@ public class ColoredMarqueurRenderer implements WaypointRenderer<Marqueur> {
 
     {
         try {
-            BLUEPIN = ImageIO.read(new File("C:\\Users\\Alfa-Tech\\IdeaProjects\\OurMap-project\\src\\main\\java\\org\\jolmkbL2B\\vue\\marqueurPainters\\BLUE PIN(1).png"));
+            BLUEPIN = ImageIO.read(new File("src/main/java/org/jolmkbL2B/vue/marqueurPainters/BLUE PIN(1).png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,7 +61,7 @@ public class ColoredMarqueurRenderer implements WaypointRenderer<Marqueur> {
         try {
 
 
-           REDPIN =ImageIO.read(new File("C:\\Users\\Alfa-Tech\\IdeaProjects\\OurMap-project\\src\\main\\java\\org\\jolmkbL2B\\vue\\marqueurPainters\\RED PIN(1).png"));
+           REDPIN =ImageIO.read(new File("src/main/java/org/jolmkbL2B/vue/marqueurPainters/RED PIN(1).png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,7 +73,7 @@ public class ColoredMarqueurRenderer implements WaypointRenderer<Marqueur> {
         try {
 
 
-            ORANGEPIN =ImageIO.read(new File("C:\\Users\\Alfa-Tech\\IdeaProjects\\OurMap-project\\src\\main\\java\\org\\jolmkbL2B\\vue\\marqueurPainters\\ORANGE PIN.png"));
+            ORANGEPIN =ImageIO.read(new File("src/main/java/org/jolmkbL2B/vue/marqueurPainters/ORANGE PIN.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -86,17 +86,11 @@ public class ColoredMarqueurRenderer implements WaypointRenderer<Marqueur> {
         try {
 
 
-            GREENPIN =ImageIO.read(new File("C:\\Users\\Alfa-Tech\\IdeaProjects\\OurMap-project\\src\\main\\java\\org\\jolmkbL2B\\vue\\marqueurPainters\\GREEN PIN.png"));
+            GREENPIN =ImageIO.read(new File("src/main/java/org/jolmkbL2B/vue/marqueurPainters/GREEN PIN.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
-
-
-
-
 
     @Override
     public void paintWaypoint(Graphics2D g, JXMapViewer map, Marqueur waypoint)
