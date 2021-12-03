@@ -9,7 +9,7 @@ public class Admin extends UtilisateurAuthentifié {
 
     // Constructeur avec parametre()
     public Admin(int idutilisateur, String displayName, String password, int idFavList) {
-        super(idutilisateur, displayName, password, idFavList);
+        super(idutilisateur, displayName, password, idFavList, true);
         this.isAdmin = true;
     }
     //Constructeur sans parametre

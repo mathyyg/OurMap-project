@@ -1,9 +1,14 @@
-package org.jolmkbL2B.controllers;
+package org.jolmkbL2B.vue.frame;
 
-//auteur jalal
+import org.jolmkbL2B.AppControllers;
+import org.jolmkbL2B.controllers.Seconnecter;
+import org.jolmkbL2B.controllers.Sinscrire;
+
+import javax.swing.*;
 import java.sql.*;
-import java.util.Properties;
-public class Seconnecter extends javax.swing.JFrame {
+
+public class LoginFrame extends JFrame {
+    private final AppControllers app;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Annuler;
     private javax.swing.JButton btnconn;
@@ -22,7 +27,9 @@ public class Seconnecter extends javax.swing.JFrame {
     /**
      Creation de formulaire de connexion
      */
-    public Seconnecter() {
+    public LoginFrame(AppControllers app) {
+        super("Se connecter");
+        this.app = app;
         initComponents(); //appel de la methode qui contient les composants de formulaire
     }
 
@@ -55,7 +62,7 @@ public class Seconnecter extends javax.swing.JFrame {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Mot de passe");
 
-        //connpass.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        connpass.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
 
         btnconn.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnconn.setText("Se connecter");
@@ -183,14 +190,13 @@ public class Seconnecter extends javax.swing.JFrame {
             con.setAutoCommit(false);
             Statement stmt = con.createStatement();
             stmt.execute("USE ourmapdb;");
-           String log ="select displayName,password from utilisateurs where displayName='"+connnom1.getText()+"' and password='"+connpass.getText()+"'";
+            String log ="select displayName,password from utilisateurs where displayName='"+connnom1.getText()+"' and password='"+connpass.getText()+"'";
 
 
             PreparedStatement ps =  con.prepareStatement(log);
             ResultSet resultat = ps.executeQuery();
             if(resultat.next()){
-
-                dispose();
+                this.second();
             }
 
             else
@@ -206,38 +212,42 @@ public class Seconnecter extends javax.swing.JFrame {
     }
     private void btnisncrire1ActionPerformed(java.awt.event.ActionEvent evt) {
 
-        new Sinscrire().setVisible(true);
+        new RegisterFrame(this.app).setVisible(true);
         dispose();
     }
 
-
-    public static void main(String args[]) {
-
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Seconnecter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Seconnecter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Seconnecter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Seconnecter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
-
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Seconnecter().setVisible(true);
-            }
-        });
+    public void second() {
+        HubFrame next = new HubFrame(app);
+        next.setVisible(true);
+        this.dispose();
     }
 
 
+//    public static void main(String args[]) {
+//
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(Seconnecter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(Seconnecter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(Seconnecter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(Seconnecter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//
+//
+//
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new Seconnecter().setVisible(true);
+//            }
+//        });
+//    }
 }

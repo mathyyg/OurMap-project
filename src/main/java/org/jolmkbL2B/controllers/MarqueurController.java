@@ -1,4 +1,5 @@
 package org.jolmkbL2B.controllers;
+import org.jolmkbL2B.controllers.databaseTablesAndColumns.*;
 import org.jolmkbL2B.marqueurs.*;
 
 import java.sql.*;
@@ -28,13 +29,6 @@ public class MarqueurController  {
                     ". Initialization cannot continue.");
             // Soucis : si pas internet, on peut pas utiliser l'appli
             sqlException.printStackTrace();
-            try {
-                con.close();
-            }
-            catch(SQLException e)   {
-                e.printStackTrace();
-                System.err.println("Connection cannot be closed or already is.");
-            }
         }
     }
 
@@ -43,14 +37,29 @@ public class MarqueurController  {
     /** Recupere tous les marqueurs de la base de données.
      * @since 2.0 ~
      * @version 1
-     * @retyrn ResultSet aux colonnes suivantes : (`placeType`, `latitude`, `longitude`, `marqueurName`, `city`, `description`)
+     * @retyrn ResultSet aux colonnes suivantes : (`placeType`, `latitude`, `longitude`, `marqueurName`)
      * @author Bastien
      */
     public ResultSet fetchAll() {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, placeType, latitude, longitude, marqueurName, city, marqueurDescription" +
-                    " FROM marqueurs;");
+            ResultSet rs = stmt.executeQuery("SELECT * " +
+                    " FROM marqueurs WHERE placeType NOT LIKE \"CUSTOM\";");
+            return rs;
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ResultSet fetchUserCustomMarqueur(long idutilisateur)    {
+        try {
+            Statement stmt = con.createStatement();
+
+            /* doublon dans la clause where pour eviter d'eventuelles erreur, par précaution */
+            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, placeType, latitude, longitude, marqueurName" +
+                    " FROM marqueurs NATURAL JOIN customMarqueurs WHERE marqueurs.placeType = \"CUSTOM\" AND idowner = " + idutilisateur + ";");
             return rs;
         }
         catch(SQLException e) {
@@ -64,13 +73,13 @@ public class MarqueurController  {
     /** Recupere tous les marqueurs d'un certain placeType (seulement les hotels, les arrets de bus etc...)
      * @since 2.4 ~
      * @version 1
-     * @retyrn ResultSet aux colonnes suivantes : (`placeType`, `latitude`, `longitude`, `marqueurName`, `city`, `description`)
+     * @retyrn ResultSet aux colonnes suivantes : (`placeType`, `latitude`, `longitude`, `marqueurName`)
      * @author Bastien
      */
     public ResultSet fetchAllByType(PlaceType placeType)    {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, placeType, latitude, longitude, marqueurName, city, description" +
+            ResultSet rs = stmt.executeQuery("SELECT idmarqueur, placeType, latitude, longitude, marqueurName" +
                     " FROM marqueurs WHERE placeType = \"" + placeType.toString() + "\";");
             return rs;
         }
@@ -79,8 +88,6 @@ public class MarqueurController  {
         }
         return null;
     }
-
-
 
     /** Recupere tous les marqueurs de la base de données.
      * @since 2.0 ~
@@ -103,7 +110,7 @@ public class MarqueurController  {
 
     /** Recupere toutes les infos d'un unique marqueur
      * @version 1
-     * @retyrn ResultSet aux colonnes suivantes : (`placeType`, `latitude`, `longitude`, `marqueurName`, `city`, `description`) + colonnes specifiques aux tables
+     * @retyrn ResultSet aux colonnes suivantes : (`placeType`, `latitude`, `longitude`, `marqueurName`) + colonnes specifiques aux tables
      * @author Bastien*/
     public ResultSet fetchAllInfo(long id, PlaceType placeType) {
         String table = selectTable(placeType);
@@ -153,6 +160,9 @@ public class MarqueurController  {
                 return "hotels";
             case ARRETBUS:
                 return "arretsbus";
+
+            case CUSTOM :
+                return "customMarqueur";
             default:
                 System.err.println("Argument PlaceType non reconnu;");
                 return "none";
@@ -175,11 +185,8 @@ public class MarqueurController  {
                     "(`placeType`,\n" +
                     "`latitude`,\n" +
                     "`longitude`,\n" +
-                    "`marqueurName`,\n" +
-                    "`city`,\n" +
-                    "`description`)\n VALUES (\"" + marqueur.getPlaceType().toString() + "\", " +
-                    marqueur.getPosition().getLatitude() + ", " + marqueur.getPosition().getLongitude() + ", \"" + marqueur.getName() + "\", \""
-                    + marqueur.getCity() + "\", \"" + marqueur.getDescription() + "\");";
+                    "`marqueurName`,)\n VALUES (\"" + marqueur.getPlaceType().toString() + "\", " +
+                    marqueur.getPosition().getLatitude() + ", " + marqueur.getPosition().getLongitude() + ", \"" + marqueur.getName() + "\");";
             stmt.executeUpdate(sql1);
 
             String getLastIDQuerry = "SELECT idmarqueur FROM marqueurs ORDER BY idmarqueur DESC LIMIT 1;"; //Recuperation de l'identifiant de la nouvelle entree
@@ -200,7 +207,7 @@ public class MarqueurController  {
      * @since 2.5
      * @param hotel : un objet Hotel (etendu de marqueur)
      * @return identifiant de la nouvelle entree
-     * @version 1*/
+     * @version 2*/
     public boolean insertMarqueur(Hotel hotel) {
         boolean success = false;
         try {
@@ -210,6 +217,8 @@ public class MarqueurController  {
 
                 String sql = "INSERT INTO `ourmapdb`.`hotels`\n" +
                         "(`idmarqueur`,\n" +
+                        "`city`,\n" +
+                        "`marqueurDescription`,\n" +
                         "`adresse`,\n" +
                         "`hasRestaurant`,\n" +
                         "`numTel`,\n" +
@@ -221,7 +230,7 @@ public class MarqueurController  {
                         "`handi_auditif`,\n" +
                         "`handi_visuel`,\n" +
                         "`accepteAnimaux`)\n" +
-                        "VALUES ( " + id + ", \"" + hotel.getAddress() + "\", " + hotel.isHasRestaurant() + ", \"" + hotel.getNumTelephone() +
+                        "VALUES ( " + id + ", \"" + hotel.getCity() + "\" , \"" + hotel.getDescription() + "\", \"" + hotel.getAddress() + "\", " + hotel.isHasRestaurant() + ", \"" + hotel.getNumTelephone() +
                         "\", " + hotel.getCategorieEtoiles() + ", \"" + hotel.getSiteWeb() + "\", \"" + hotel.getTripAdvisor() +
                         "\", " + hotel.getLabelHandicap()[0] + ", " + hotel.getLabelHandicap()[1] + ", " + hotel.getLabelHandicap()[1] +
                         ", " + hotel.getLabelHandicap()[2] + ", " + hotel.getLabelHandicap()[3] + ", " + hotel.isAnimauxAcceptes() + ");";
@@ -241,7 +250,7 @@ public class MarqueurController  {
      * @since 2.5
      * @param arret : un objet ArretBus (etendu de marqueur)
      * @return identifiant de la nouvelle entree
-     * @version 1*/
+     * @version 2*/
     public boolean insertMarqueur(ArretBus arret)   {
         boolean success = false;
         try {
@@ -251,9 +260,11 @@ public class MarqueurController  {
 
                 String sql = "INSERT INTO `ourmapdb`.`arretsbus`\n" +
                         "(`idmarqueur`,\n" +
+                        "`city`,\n" +
+                        "`marqueurDescription`,\n" +
                         "`accesHandi`)\n" +
                         "VALUES\n" +
-                        "( " + id + ", " + arret.isAccesHandicap() + ");\n";
+                        "( " + id + ", \"" + arret.getCity() + "\" , \"" + arret.getDescription() + "\", " + arret.isAccesHandicap() + ");\n";
                 int tmp = stmt.executeUpdate(sql); //executeUpdate renvoie le nombre de lignes modifiees / inserees
                 con.commit();
                 stmt.close();
@@ -273,13 +284,15 @@ public class MarqueurController  {
 
                 String sql = "INSERT INTO `ourmapdb`.`schools`\n" +
                         "(`idschools`,\n" +
+                        "`city`,\n" +
+                        "`marqueurDescription`,\n" +
                         "`schoolType`,\n" +
                         "`statut`,\n" +
                         "`adresse`)\n" +
                         "VALUES\n" +
-                        "(" + id + ",\n\"" +
-                        school.getSchoolType().toString() + "\",\n\"" +
-                        school.PublicOuPrive().toString() + "\",\n\"" +
+                        "(" + id + ", \"" + school.getCity() + "\" , \"" + school.getDescription() + "\", \"" +
+                        school.getSchoolType().toString() + "\", \"" +
+                        school.PublicOuPrive().toString() + "\", \"" +
                         school.getAddress() + ");\n";
                 int tmp = stmt.executeUpdate(sql); //executeUpdate renvoie le nombre de lignes modifiees / inserees
                 con.commit();
@@ -292,7 +305,32 @@ public class MarqueurController  {
     }
 
 
-    public boolean updateHotel(long idmarqueur, HashMap<TableHotel, String> changes) {
+    public boolean insertMarqueur(CustomMarqueur custom)   {
+        boolean success = false;
+        try {
+            int id = insertMarqueur((Marqueur) custom); //Les informations de classes mere Marqueur sont envoyés vers la table marqueurs
+            if(id> 0) { //si id < 0, c'est qu'il y a une erreur, les exceptions sont deja lancee dans la methode insertMarqueur(Marqueur)
+                Statement stmt = con.createStatement();
+
+                String sql = "INSERT INTO `ourmapdb`.`customMarqueurs`\n" +
+                        "(`idmarqueur`,\n" +
+                        "`marqueurDescription`,\n" +
+                        "`idOwner`)\n" +
+                        "VALUES\n" +
+                        "( " + id + ", \"" + custom.getDescription() + ", " + custom.getOwnerID() + ");\n";
+                int tmp = stmt.executeUpdate(sql); //executeUpdate renvoie le nombre de lignes modifiees / inserees
+                con.commit();
+                stmt.close();
+                if (tmp > 0) success = true; //si plus de 0 lignes sont ;odifee, l'operation est un succès
+            }
+        }
+        catch(SQLException e)  {e.printStackTrace();}
+        return success;
+    }
+
+
+/** version 2*/
+    public boolean updateHotel(long idmarqueur, HashMap<ModifiableHotelsColumns, String> changes) {
         try {
             Statement stmt = con.createStatement();
             String operations = "";
@@ -300,18 +338,15 @@ public class MarqueurController  {
 
 
             for(Map.Entry e : changes.entrySet()) {
-                TableHotel colonne = (TableHotel) e.getKey();
-                if (colonne.equals(TableHotel.description)) {
-                    stmt.executeUpdate("UPDATE `ourmapdb`.`marqueurs` (\n" +
-                            "SET `description` = \"" + e.getValue().toString() + "\"\n" +
-                            "WHERE idmarqueur = " + idmarqueur +";");
-                }
-                else {
-                    switch(colonne) {
+                ModifiableHotelsColumns colonne = (ModifiableHotelsColumns) e.getKey();
+                switch(colonne) {
+                    case marqueurName:
+                        stmt.executeUpdate("\"UPDATE `ourmapdb`.`marqueurs` (SET marqueurName = " + e.getValue().toString() + "WHERE idmarqueur = " + idmarqueur + "\";");
+                        break;
                         case etoiles:
                             formattedValue = e.getValue().toString();
                             break;
-                        case adresse, numTel, siteWeb, tripadvisor:
+                        case adresse, numTel, siteWeb, tripadvisor, marqueurDescription:
                             formattedValue = "\"" + e.getValue().toString() + "\"";
                             break;
                         case hasRestaurant, handi_moteur, handi_mental, handi_auditif, handi_visuel, accepteAnimaux:
@@ -327,7 +362,6 @@ public class MarqueurController  {
                     }
                     operations += "`" + colonne + "` = " + formattedValue +", ";
                 }
-            }
             operations = operations.substring(0, operations.length()-2);
 
             String sqlUpdate = "UPDATE `ourmapdb`.`hotels` (SET " + operations + "WHERE idmarqueur = " + idmarqueur +";";
@@ -351,7 +385,8 @@ public class MarqueurController  {
         return false;
     }
 
-    public boolean updateArretBus(long idmarqueur, HashMap<TableArretBus, String> changes) {
+    /** version 2*/
+    public boolean updateArretBus(long idmarqueur, HashMap<TableArretsBus, String> changes) {
         try {
             Statement stmt = con.createStatement();
             String operations = "";
@@ -359,21 +394,24 @@ public class MarqueurController  {
 
 
             for (Map.Entry e : changes.entrySet()) {
-                TableArretBus colonne = (TableArretBus) e.getKey();
-                if (colonne.equals(TableArretBus.description)) {
-                    stmt.executeUpdate("UPDATE `ourmapdb`.`marqueurs` (\n" +
-                            "SET `description` = \"" + e.getValue().toString() + "\"\n" +
-                            "WHERE idmarqueur = " + idmarqueur + ";");
-                } else {
-                    if (colonne.equals(TableArretBus.accesHandi)) {
+                ModifiableArretsBusColumns colonne = (ModifiableArretsBusColumns) e.getKey();
+                switch(colonne) {
+                    case marqueurName:
+                        stmt.executeUpdate("\"UPDATE `ourmapdb`.`marqueurs` (SET marqueurName = " + e.getValue().toString() + "WHERE idmarqueur = " + idmarqueur + "\";");
+                        break;
+                    case marqueurDescription:
+                        formattedValue = "\"" + e.getValue().toString() + "\"";
+                        break;
+                    case accesHandi:
                         String bool = e.getValue().toString();
-                        if (bool.equals("true") || bool.equals("True") || bool.equals("TRUE") || bool.equals("1")) {
+                        if(bool.equals("true") || bool.equals("True") || bool.equals("TRUE") || bool.equals("1"))   {
                             formattedValue = "1";
-                        } else formattedValue = "0";
-                        operations += "`accesHandi` = " + formattedValue + ", ";
-                    }
-                    else throw new IllegalArgumentException("Vous n'avez pas la permission de modifier cette" +
-                            "information (" + colonne + ")");
+                        }
+                        else formattedValue = "0";
+                        break;
+                    default :
+                        throw new RuntimeException("Vous n'avez pas la permission de modifier cette" +
+                                "information (" + colonne + ")");
                 }
             }
             operations = operations.substring(0, operations.length() - 2);
@@ -397,4 +435,99 @@ public class MarqueurController  {
         }
         return false;
     }
+
+    public boolean updateSchool(long idmarqueur, HashMap<ModifiableSchoolsColumns, String> changes) {
+        try {
+            Statement stmt = con.createStatement();
+            String operations = "";
+            String formattedValue = "";
+
+
+            for (Map.Entry e : changes.entrySet()) {
+                ModifiableSchoolsColumns colonne = (ModifiableSchoolsColumns) e.getKey();
+                switch(colonne) {
+                    case marqueurName:
+                        stmt.executeUpdate("\"UPDATE `ourmapdb`.`marqueurs` (SET marqueurName = " + e.getValue().toString() + "WHERE idmarqueur = " + idmarqueur + "\";");
+                        break;
+                    case marqueurDescription:
+                        formattedValue = "\"" + e.getValue().toString() + "\"";
+                        break;
+                    default :
+                        throw new RuntimeException("Vous n'avez pas la permission de modifier cette" +
+                                "information (" + colonne + ")");
+                }
+            }
+            operations = operations.substring(0, operations.length() - 2);
+
+            String sqlUpdate = "UPDATE `ourmapdb`.`schools` (SET " + operations + "WHERE idmarqueur = " + idmarqueur + ";";
+            stmt.executeUpdate(sqlUpdate);
+            stmt.close();
+            con.commit();
+            return true;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        catch (RuntimeException e)    {
+            System.err.println(e);
+        }
+        return false;
+    }
+
+    public boolean updateCustom(long idmarqueur, HashMap<ModifiableCustomsColumns, String> changes, long idRequestingUser) {
+
+
+        try {
+            Statement stmt = con.createStatement();
+            String operations = "";
+            String formattedValue = "";
+
+            ResultSet ownerPrivilegeCheck = stmt.executeQuery("SELECT idowner FROM customMarqueurs WHERE idmarqueur = " + idmarqueur + ";");
+            ownerPrivilegeCheck.next();
+            if(ownerPrivilegeCheck.getLong("idowner") != idRequestingUser ) {
+                throw new RuntimeException("Vous n'êtes pas propriétaire de ce marqueur et n'avez pas le droit de le modifier.");
+            }
+
+
+            for (Map.Entry e : changes.entrySet()) {
+                ModifiableCustomsColumns colonne = (ModifiableCustomsColumns) e.getKey();
+                switch(colonne) {
+                    case marqueurName:
+                        stmt.executeUpdate("\"UPDATE `ourmapdb`.`marqueurs` (SET marqueurName = " + e.getValue().toString() + "WHERE idmarqueur = " + idmarqueur + "\";");
+                        break;
+                    case marqueurDescription:
+                        formattedValue = "\"" + e.getValue().toString() + "\"";
+                        break;
+                    default :
+                        throw new RuntimeException("Vous n'avez pas la permission de modifier cette" +
+                                "information (" + colonne + ")");
+                }
+            }
+            operations = operations.substring(0, operations.length() - 2);
+
+            String sqlUpdate = "UPDATE `ourmapdb`.`customMarqueurs` (SET " + operations + "WHERE idmarqueur = " + idmarqueur + ";";
+            stmt.executeUpdate(sqlUpdate);
+            stmt.close();
+            con.commit();
+            return true;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        catch (RuntimeException e)    {
+            System.err.println(e);
+        }
+        return false;
+    }
+
 }

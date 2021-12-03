@@ -48,17 +48,32 @@ public class MarqueurLoader {
         return marqueurPainter;
     }
 
-    /** Methode executee a l'initialisation pour creer le set initial de marqueur.
+    /** Methode executee a l'initialisation pour creer le set initial de marqueur, charge tous les marqueurs publics et
+     * ajoute les marqueurs customs de l'utilisateur.
      * @author Bastien
      * @return HashSet de tous les marqueurs de la base de données
-     * @version 2*/
+     * @version 3*/
+    public HashSet<Marqueur> loadAllMarkers(long idutilisateur) {
+        HashSet<Marqueur> marqueurSet = loadNewSet(marqueurController.fetchAll());
+        marqueurSet = updateMarqueurSet(marqueurSet, marqueurController.fetchUserCustomMarqueur(idutilisateur));
+        return marqueurSet;
+    }
+
     public HashSet<Marqueur> loadAllMarkers() {
-        return loadNewSet(marqueurController.fetchAll());
+        HashSet<Marqueur> marqueurSet = loadNewSet(marqueurController.fetchAll());
+        return marqueurSet;
+    }
+
+    /** Pour charger seulement les customs */
+    public HashSet<Marqueur> loadAllMarkersByType(PlaceType placeType, long idutilisateur) {
+        if(placeType == placeType.CUSTOM)   return loadNewSet(marqueurController.fetchUserCustomMarqueur(idutilisateur));
+        else return loadNewSet(marqueurController.fetchAllByType(placeType));
     }
 
     public HashSet<Marqueur> loadAllMarkersByType(PlaceType placeType) {
         return loadNewSet(marqueurController.fetchAllByType(placeType));
     }
+
 
     /** Méthode chargeant une liste de marqueurs dans un nouveau set
      * @author Bastien
@@ -100,14 +115,17 @@ public class MarqueurLoader {
                         break;
                     case "SCHOOL":
                         placeType = placeType.SCHOOL;
+                        break;
+                    case "CUSTOM" :
+                        placeType = placeType.CUSTOM;
+                        break;
                     default:
                         throw new SQLDataException("Donnée " + type + " ne correspond pas aux valeurs attendues dans ENUM (PlaceType). ");
                 }
                 //Instanciation du marqueur avec tous les champs du contructeur et de la base de donnée
                 Marqueur wp = new Marqueur(placeType, rs.getDouble("latitude"),
                         rs.getDouble("longitude"), rs.getLong("idmarqueur"),
-                        rs.getString("marqueurName"), rs.getString("city"),
-                        rs.getString("marqueurDescription"));
+                        rs.getString("marqueurName"));
 
                 initialSet.add(wp); //ajout du marqueur au Set
             }
@@ -144,14 +162,17 @@ public class MarqueurLoader {
                         break;
                     case "SCHOOL":
                         placeType = placeType.SCHOOL;
+                        break;
+                    case "CUSTOM" :
+                        placeType = placeType.CUSTOM;
+                        break;
                     default:
                         throw new SQLDataException("Donnée " + type + " ne correspond pas aux valeurs attendues dans ENUM (PlaceType). ");
                 }
                 //Creation du nouveau Marqueur
                 Marqueur wp = new Marqueur(placeType, rs.getDouble("latitude"),
                         rs.getDouble("longitude"), rs.getLong("idmarqueur"),
-                        rs.getString("marqueurName"), rs.getString("city"),
-                        rs.getString("marqueurDescription"));
+                        rs.getString("marqueurName"));
 
                 //System.out.println(wp.getPlaceType()); TEST PURPOSE
 
