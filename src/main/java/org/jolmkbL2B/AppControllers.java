@@ -8,12 +8,12 @@ import java.sql.*;
 
 public class AppControllers {
     public static Connection con;
-    public static MarqueurController marqueurController;
-    private final ListeController listeController;
-    private final CommentaireController commentaireController;
-    private final ConnexionController connexionController;
-    private final UtilisateurController utilisateurController;
-    private final MemoController memoController;
+    public final MarqueurController marqueurController;
+    public final ListeController listeController;
+    public final CommentaireController commentaireController;
+    public final ConnexionController connexionController;
+    public final UtilisateurController utilisateurController;
+    public final MemoController memoController;
 //    public static UserContentController userContentController;
 
     public AppControllers()    {

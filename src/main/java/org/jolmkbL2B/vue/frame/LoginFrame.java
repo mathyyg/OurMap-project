@@ -217,7 +217,7 @@ public class LoginFrame extends JFrame {
     }
 
     public void second() {
-        HubFrame next = new HubFrame();
+        HubFrame next = new HubFrame(app);
         next.setVisible(true);
         this.dispose();
     }

@@ -78,12 +78,12 @@ public class CommentFrame extends JFrame {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    private JPanel panel1;
-    private JScrollPane scrollPane1;
-    private JTable table1;
-    private JPanel panel2;
-    private JScrollPane scrollPane2;
-    private JTextArea textArea1;
-    private JButton button1;
+    public JPanel panel1;
+    public JScrollPane scrollPane1;
+    public JTable table1;
+    public JPanel panel2;
+    public JScrollPane scrollPane2;
+    public JTextArea textArea1;
+    public JButton button1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

@@ -63,11 +63,11 @@ public class MemoFrame extends JFrame {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    private JScrollPane scrollPane1;
-    private JList list1;
-    private JPanel panel1;
-    private JButton button2;
-    private JButton button3;
-    private JTextField textField1;
+    public JScrollPane scrollPane1;
+    public JList list1;
+    public JPanel panel1;
+    public JButton button2;
+    public JButton button3;
+    public JTextField textField1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

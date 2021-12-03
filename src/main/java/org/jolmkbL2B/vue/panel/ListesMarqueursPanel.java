@@ -7,8 +7,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 public class ListesMarqueursPanel extends JPanel {
-    private JScrollPane lmScrollPane;
-    private JTree lmTree;
+    public JScrollPane lmScrollPane;
+    public JTree lmTree;
+    public JButton createMarqueurButton;
 
     public ListesMarqueursPanel() {
 
@@ -18,7 +19,7 @@ public class ListesMarqueursPanel extends JPanel {
         this.setLayout(new MigLayout(
                 "insets dialog, hidemode 3", //layout constraints
                 "[200,fill]", //column constraints
-                "[200]" //row constraints
+                "[200][50]" //row constraints
         ));
 
         {
@@ -48,7 +49,9 @@ public class ListesMarqueursPanel extends JPanel {
                     }));
             lmScrollPane.setViewportView(lmTree);
         }
-        add(lmScrollPane, "cell 0 0");
+        add(lmScrollPane, "cell 0 0, wrap");
+        createMarqueurButton = new JButton("Nouveau marqueur");
+        add(createMarqueurButton);
 
     }
 }

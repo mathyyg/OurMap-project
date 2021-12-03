@@ -10,27 +10,42 @@ new FormModel {
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label2"
 				"text": "text"
+				auxiliary() {
+					"JavaCodeGenerator.variableModifiers": 1
+				}
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "West"
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label3"
 				"text": "text"
+				auxiliary() {
+					"JavaCodeGenerator.variableModifiers": 1
+				}
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "North"
 			} )
 			add( new FormComponent( "org.jolmkbL2B.vue.panel.ListesMarqueursPanel" ) {
 				name: "listesMarqueursPanel1"
+				auxiliary() {
+					"JavaCodeGenerator.variableModifiers": 1
+				}
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "East"
 			} )
 			add( new FormComponent( "org.jolmkbL2B.vue.panel.MapPanel" ) {
 				name: "mapPanel1"
+				auxiliary() {
+					"JavaCodeGenerator.variableModifiers": 1
+				}
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "Center"
 			} )
 			add( new FormComponent( "org.jolmkbL2B.vue.panel.MarqueurInfosPanel" ) {
 				name: "marqueurInfosPanel1"
+				auxiliary() {
+					"JavaCodeGenerator.variableModifiers": 1
+				}
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "South"
 			} )

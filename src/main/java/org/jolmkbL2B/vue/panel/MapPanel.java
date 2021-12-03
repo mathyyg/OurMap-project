@@ -22,6 +22,7 @@ import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -29,9 +30,9 @@ import java.util.Set;
 
 public class MapPanel extends JPanel {
     public static JXMapViewer OurMap; //L'objet "carte"
-    private final GeoPosition Blois_Focus; //Le point central de la carte au chargement
-    private HashSet<Marqueur> waypoints; //Un hashset contenant tous les waypoints affichés
-    private MarqueurLoader loader; // Un objet qui gere l'affichage des marqueurs
+    public final GeoPosition Blois_Focus; //Le point central de la carte au chargement
+    public HashSet<Marqueur> waypoints; //Un hashset contenant tous les waypoints affichés
+    public MarqueurLoader loader; // Un objet qui gere l'affichage des marqueurs
 
     public MapPanel() {
 
@@ -59,26 +60,6 @@ public class MapPanel extends JPanel {
         //this.waypoints = loader.loadListInCurrentSet(waypoints, 1, 1);
         OurMap.setOverlayPainter(loader.updateDisplay(waypoints));
 
-
-        /** mouse clicks to waypoints method  */
-        OurMap.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent me) {
-
-                /** création d'un marqueur en cliquant  */
-                JXMapViewer me_src = (JXMapViewer) me.getSource();
-
-                Marqueur clickwaypoint = new Marqueur(PlaceType.ARRETBUS,me_src.convertPointToGeoPosition(me.getPoint()).getLatitude(),
-                        me_src.convertPointToGeoPosition(me.getPoint()).getLongitude(), 0, "click");
-
-                waypoints.add(clickwaypoint);
-                OurMap.setOverlayPainter(loader.updateDisplay(waypoints));
-
-                System.out.println(" mouse  x coordinates =" + me_src.getMousePosition().getX() + "/ mouse y coordinates =" + me_src.getMousePosition().getY());
-                System.out.println("CONVERTING MOUSE COORDINATES TO geoposition ones =====> latitude :" + me_src.convertPointToGeoPosition(me.getPoint()).getLatitude() + "  longitude :" + me_src.convertPointToGeoPosition(me.getPoint()).getLongitude());
-
-            }
-        });
 
         /** Interactions  avec le bouton de la souris*/
         MouseInputListener mia = new PanMouseInputListener(OurMap);

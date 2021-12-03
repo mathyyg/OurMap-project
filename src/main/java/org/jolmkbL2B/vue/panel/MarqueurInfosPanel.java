@@ -4,6 +4,7 @@
 
 package org.jolmkbL2B.vue.panel;
 
+import java.awt.*;
 import javax.swing.*;
 import net.miginfocom.swing.*;
 
@@ -59,6 +60,7 @@ public class MarqueurInfosPanel extends JPanel {
 
         //---- tfNom ----
         tfNom.setEditable(false);
+        tfNom.setBackground(new Color(44, 44, 58));
         add(tfNom, "cell 0 2");
 
         //======== scrollPaneDesc ========
@@ -90,19 +92,19 @@ public class MarqueurInfosPanel extends JPanel {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    private JLabel labelNom;
-    private JLabel labelDescription;
-    private JSeparator separator6;
-    private JSeparator separator1;
-    private JSeparator separator2;
-    private JTextField tfNom;
-    private JScrollPane scrollPaneDesc;
-    private JTextArea taDesc;
-    private JButton button2;
-    private JSeparator separator3;
-    private JSeparator separator4;
-    private JButton button3;
-    private JButton button4;
-    private JSeparator separator5;
+    public JLabel labelNom;
+    public JLabel labelDescription;
+    public JSeparator separator6;
+    public JSeparator separator1;
+    public JSeparator separator2;
+    public JTextField tfNom;
+    public JScrollPane scrollPaneDesc;
+    public JTextArea taDesc;
+    public JButton button2;
+    public JSeparator separator3;
+    public JSeparator separator4;
+    public JButton button3;
+    public JButton button4;
+    public JSeparator separator5;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
