@@ -1,4 +1,5 @@
 package org.jolmkbL2B.controllers;
+import org.jolmkbL2B.controllers.databaseTablesAndColumns.*;
 import org.jolmkbL2B.marqueurs.*;
 
 import java.sql.*;
@@ -329,7 +330,7 @@ public class MarqueurController  {
 
 
 /** version 2*/
-    public boolean updateHotel(long idmarqueur, HashMap<TableHotel, String> changes) {
+    public boolean updateHotel(long idmarqueur, HashMap<ModifiableHotelsColumns, String> changes) {
         try {
             Statement stmt = con.createStatement();
             String operations = "";
@@ -337,12 +338,15 @@ public class MarqueurController  {
 
 
             for(Map.Entry e : changes.entrySet()) {
-                TableHotel colonne = (TableHotel) e.getKey();
+                ModifiableHotelsColumns colonne = (ModifiableHotelsColumns) e.getKey();
                 switch(colonne) {
+                    case marqueurName:
+                        stmt.executeUpdate("\"UPDATE `ourmapdb`.`marqueurs` (SET marqueurName = " + e.getValue().toString() + "WHERE idmarqueur = " + idmarqueur + "\";");
+                        break;
                         case etoiles:
                             formattedValue = e.getValue().toString();
                             break;
-                        case adresse, numTel, siteWeb, tripadvisor, description:
+                        case adresse, numTel, siteWeb, tripadvisor, marqueurDescription:
                             formattedValue = "\"" + e.getValue().toString() + "\"";
                             break;
                         case hasRestaurant, handi_moteur, handi_mental, handi_auditif, handi_visuel, accepteAnimaux:
@@ -382,7 +386,7 @@ public class MarqueurController  {
     }
 
     /** version 2*/
-    public boolean updateArretBus(long idmarqueur, HashMap<TableArretBus, String> changes) {
+    public boolean updateArretBus(long idmarqueur, HashMap<TableArretsBus, String> changes) {
         try {
             Statement stmt = con.createStatement();
             String operations = "";
@@ -390,9 +394,12 @@ public class MarqueurController  {
 
 
             for (Map.Entry e : changes.entrySet()) {
-                TableArretBus colonne = (TableArretBus) e.getKey();
+                ModifiableArretsBusColumns colonne = (ModifiableArretsBusColumns) e.getKey();
                 switch(colonne) {
-                    case description:
+                    case marqueurName:
+                        stmt.executeUpdate("\"UPDATE `ourmapdb`.`marqueurs` (SET marqueurName = " + e.getValue().toString() + "WHERE idmarqueur = " + idmarqueur + "\";");
+                        break;
+                    case marqueurDescription:
                         formattedValue = "\"" + e.getValue().toString() + "\"";
                         break;
                     case accesHandi:
@@ -428,4 +435,99 @@ public class MarqueurController  {
         }
         return false;
     }
+
+    public boolean updateSchool(long idmarqueur, HashMap<ModifiableSchoolsColumns, String> changes) {
+        try {
+            Statement stmt = con.createStatement();
+            String operations = "";
+            String formattedValue = "";
+
+
+            for (Map.Entry e : changes.entrySet()) {
+                ModifiableSchoolsColumns colonne = (ModifiableSchoolsColumns) e.getKey();
+                switch(colonne) {
+                    case marqueurName:
+                        stmt.executeUpdate("\"UPDATE `ourmapdb`.`marqueurs` (SET marqueurName = " + e.getValue().toString() + "WHERE idmarqueur = " + idmarqueur + "\";");
+                        break;
+                    case marqueurDescription:
+                        formattedValue = "\"" + e.getValue().toString() + "\"";
+                        break;
+                    default :
+                        throw new RuntimeException("Vous n'avez pas la permission de modifier cette" +
+                                "information (" + colonne + ")");
+                }
+            }
+            operations = operations.substring(0, operations.length() - 2);
+
+            String sqlUpdate = "UPDATE `ourmapdb`.`schools` (SET " + operations + "WHERE idmarqueur = " + idmarqueur + ";";
+            stmt.executeUpdate(sqlUpdate);
+            stmt.close();
+            con.commit();
+            return true;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        catch (RuntimeException e)    {
+            System.err.println(e);
+        }
+        return false;
+    }
+
+    public boolean updateCustom(long idmarqueur, HashMap<ModifiableCustomsColumns, String> changes, long idRequestingUser) {
+
+
+        try {
+            Statement stmt = con.createStatement();
+            String operations = "";
+            String formattedValue = "";
+
+            ResultSet ownerPrivilegeCheck = stmt.executeQuery("SELECT idowner FROM customMarqueurs WHERE idmarqueur = " + idmarqueur + ";");
+            ownerPrivilegeCheck.next();
+            if(ownerPrivilegeCheck.getLong("idowner") != idRequestingUser ) {
+                throw new RuntimeException("Vous n'êtes pas propriétaire de ce marqueur et n'avez pas le droit de le modifier.");
+            }
+
+
+            for (Map.Entry e : changes.entrySet()) {
+                ModifiableCustomsColumns colonne = (ModifiableCustomsColumns) e.getKey();
+                switch(colonne) {
+                    case marqueurName:
+                        stmt.executeUpdate("\"UPDATE `ourmapdb`.`marqueurs` (SET marqueurName = " + e.getValue().toString() + "WHERE idmarqueur = " + idmarqueur + "\";");
+                        break;
+                    case marqueurDescription:
+                        formattedValue = "\"" + e.getValue().toString() + "\"";
+                        break;
+                    default :
+                        throw new RuntimeException("Vous n'avez pas la permission de modifier cette" +
+                                "information (" + colonne + ")");
+                }
+            }
+            operations = operations.substring(0, operations.length() - 2);
+
+            String sqlUpdate = "UPDATE `ourmapdb`.`customMarqueurs` (SET " + operations + "WHERE idmarqueur = " + idmarqueur + ";";
+            stmt.executeUpdate(sqlUpdate);
+            stmt.close();
+            con.commit();
+            return true;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        catch (RuntimeException e)    {
+            System.err.println(e);
+        }
+        return false;
+    }
+
 }

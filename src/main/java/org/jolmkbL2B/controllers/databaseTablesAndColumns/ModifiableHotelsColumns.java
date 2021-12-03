@@ -1,7 +1,9 @@
-package org.jolmkbL2B.controllers;
+package org.jolmkbL2B.controllers.databaseTablesAndColumns;
 
-public enum TableHotel  {
-    idmarqueur, type, latitude, longitude, marqueurName, city, description,
+public enum ModifiableHotelsColumns {
+
+    marqueurName,
+    marqueurDescription,
     adresse, hasRestaurant, numTel, etoiles, siteWeb, tripadvisor,
     handi_moteur, handi_mental, handi_auditif, handi_visuel, accepteAnimaux,
 }
