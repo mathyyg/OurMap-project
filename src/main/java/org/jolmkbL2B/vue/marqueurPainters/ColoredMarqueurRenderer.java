@@ -80,6 +80,21 @@ public class ColoredMarqueurRenderer implements WaypointRenderer<Marqueur> {
     }
 
 
+    BufferedImage GREENPIN;
+
+    {
+        try {
+
+
+            GREENPIN =ImageIO.read(new File("C:\\Users\\Alfa-Tech\\IdeaProjects\\OurMap-project\\src\\main\\java\\org\\jolmkbL2B\\vue\\marqueurPainters\\GREEN PIN.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 
 
 
@@ -106,14 +121,14 @@ public class ColoredMarqueurRenderer implements WaypointRenderer<Marqueur> {
             g.drawImage(BLUEPIN, x, y, null);
         }
 
-        else if (waypoint.getPlaceType()==PlaceType.SCHOOL)
+        else if (waypoint.getPlaceType()==PlaceType.CUSTOM)
         {
             Point2D point = map.getTileFactory().geoToPixel(waypoint.getPosition(), map.getZoom());
 
-            int x = (int) point.getX() - ORANGEPIN.getWidth() / 2;
-            int y = (int) point.getY() - ORANGEPIN.getHeight();
+            int x = (int) point.getX() - GREENPIN.getWidth() / 2;
+            int y = (int) point.getY() - GREENPIN.getHeight();
 
-            g.drawImage(ORANGEPIN, x, y, null);
+            g.drawImage(GREENPIN, x, y, null);
         }
 
 

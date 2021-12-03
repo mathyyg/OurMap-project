@@ -39,7 +39,7 @@ public class HubFrame extends JFrame {
             /** création d'un marqueur en cliquant  */
             JXMapViewer me_src = (JXMapViewer) me.getSource();
 
-            Marqueur clickwaypoint = new Marqueur(PlaceType.ARRETBUS,me_src.convertPointToGeoPosition(me.getPoint()).getLatitude(),
+            Marqueur clickwaypoint = new Marqueur(PlaceType.CUSTOM,me_src.convertPointToGeoPosition(me.getPoint()).getLatitude(),
                     me_src.convertPointToGeoPosition(me.getPoint()).getLongitude(), 0, "click");
 
             mapPanel1.waypoints.add(clickwaypoint);
