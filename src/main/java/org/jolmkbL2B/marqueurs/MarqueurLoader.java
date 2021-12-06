@@ -4,6 +4,7 @@ import org.jolmkbL2B.controllers.ListeController;
 import org.jolmkbL2B.controllers.MarqueurController;
 import org.jolmkbL2B.vue.marqueurPainters.SwingMarqueurPainter;
 import org.jxmapviewer.viewer.Waypoint;
+import org.jolmkbL2B.vue.marqueurPainters.ColoredMarqueurRenderer;
 import org.jxmapviewer.viewer.WaypointPainter;
 
 import java.util.HashSet;
@@ -43,7 +44,7 @@ public class MarqueurLoader {
      */
     public WaypointPainter<Marqueur> updateDisplay(HashSet<Marqueur> marqueurs)  {
         marqueurPainter.setWaypoints(marqueurs);
-       //marqueurPainter.setRenderer(new ColoredMarqueurRenderer());
+       marqueurPainter.setRenderer(new ColoredMarqueurRenderer());
 
         return marqueurPainter;
     }
