@@ -125,6 +125,15 @@ public class ColoredMarqueurRenderer implements WaypointRenderer<Marqueur> {
             g.drawImage(GREENPIN, x, y, null);
         }
 
+        else if (waypoint.getPlaceType()==PlaceType.SCHOOL)
+        {
+            Point2D point = map.getTileFactory().geoToPixel(waypoint.getPosition(), map.getZoom());
+
+            int x = (int) point.getX() - ORANGEPIN.getWidth() / 2;
+            int y = (int) point.getY() - ORANGEPIN.getHeight();
+
+            g.drawImage(ORANGEPIN, x, y, null);
+        }
 
 
     }
