@@ -49,7 +49,7 @@ public class ColoredMarqueurRenderer implements WaypointRenderer<Marqueur> {
 
     {
         try {
-            BLUEPIN = ImageIO.read(new File("src/main/java/org/jolmkbL2B/vue/marqueurPainters/BLUE PIN(1).png"));
+            BLUEPIN = ImageIO.read(new File("src/main/java/org/jolmkbL2B/vue/marqueurPainters/BLUE PIN.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,7 +61,7 @@ public class ColoredMarqueurRenderer implements WaypointRenderer<Marqueur> {
         try {
 
 
-           REDPIN =ImageIO.read(new File("src/main/java/org/jolmkbL2B/vue/marqueurPainters/RED PIN(1).png"));
+           REDPIN =ImageIO.read(new File("src/main/java/org/jolmkbL2B/vue/marqueurPainters/RED PIN.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
