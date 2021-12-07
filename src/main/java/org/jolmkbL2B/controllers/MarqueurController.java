@@ -134,6 +134,54 @@ public class MarqueurController  {
         return null;
     }
 
+    public String fetchMarqueurNom(long id, PlaceType placeType) {
+        String table = selectTable(placeType);
+
+        try {
+            if (table.equals("none"))    {
+                System.err.println("Erreur lors de la selection de la table de BD.");
+                return null;
+            }
+            else {
+                Statement stmt = con.createStatement();
+                ResultSet infoMarqueur = stmt.executeQuery("SELECT marqueurName FROM marqueurs NATURAL JOIN " + table + " WHERE " +
+                        "idmarqueur = " + id + ";");
+                checkResultSetSize(infoMarqueur);
+                while(infoMarqueur.next()) {
+                    return infoMarqueur.getString(1);
+                }
+            }
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String fetchMarqueurDescription(long id, PlaceType placeType) {
+        String table = selectTable(placeType);
+
+        try {
+            if (table.equals("none"))    {
+                System.err.println("Erreur lors de la selection de la table de BD.");
+                return null;
+            }
+            else {
+                Statement stmt = con.createStatement();
+                ResultSet infoMarqueur = stmt.executeQuery("SELECT marqueurDesc FROM " + table + " NATURAL JOIN marqueurs WHERE " +
+                        "idmarqueur = " + id + ";");
+                checkResultSetSize(infoMarqueur);
+                while(infoMarqueur.next()) {
+                    return infoMarqueur.getString(1);
+                }
+            }
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     /** Verifie qu'un ResultSet a au plus 1 resultat. Affiche un message d'avertissement si ce n'est pas le cas
      * @author Bastien*/
@@ -162,7 +210,7 @@ public class MarqueurController  {
                 return "arretsbus";
 
             case CUSTOM :
-                return "customMarqueur";
+                return "customMarqueurs";
             default:
                 System.err.println("Argument PlaceType non reconnu;");
                 return "none";
@@ -185,8 +233,8 @@ public class MarqueurController  {
                     "(`placeType`,\n" +
                     "`latitude`,\n" +
                     "`longitude`,\n" +
-                    "`marqueurName`,)\n VALUES (\"" + marqueur.getPlaceType().toString() + "\", " +
-                    marqueur.getPosition().getLatitude() + ", " + marqueur.getPosition().getLongitude() + ", \"" + marqueur.getName() + "\");";
+                    "`marqueurName`)\n VALUES (\"" + marqueur.getPlaceType().toString() + "\", " +
+                    "\"" + marqueur.getPosition().getLatitude() + "\", \"" + marqueur.getPosition().getLongitude() + "\", \"" + marqueur.getName() + "\");";
             stmt.executeUpdate(sql1);
 
             String getLastIDQuerry = "SELECT idmarqueur FROM marqueurs ORDER BY idmarqueur DESC LIMIT 1;"; //Recuperation de l'identifiant de la nouvelle entree
@@ -305,19 +353,20 @@ public class MarqueurController  {
     }
 
 
-    public boolean insertMarqueur(CustomMarqueur custom)   {
+    public int insertMarqueur(CustomMarqueur custom)   {
+        int resid =-1;
         boolean success = false;
         try {
-            int id = insertMarqueur((Marqueur) custom); //Les informations de classes mere Marqueur sont envoyés vers la table marqueurs
-            if(id> 0) { //si id < 0, c'est qu'il y a une erreur, les exceptions sont deja lancee dans la methode insertMarqueur(Marqueur)
+            resid = insertMarqueur((Marqueur) custom); //Les informations de classes mere Marqueur sont envoyés vers la table marqueurs
+            if(resid> 0) { //si id < 0, c'est qu'il y a une erreur, les exceptions sont deja lancee dans la methode insertMarqueur(Marqueur)
                 Statement stmt = con.createStatement();
 
                 String sql = "INSERT INTO `ourmapdb`.`customMarqueurs`\n" +
                         "(`idmarqueur`,\n" +
-                        "`marqueurDescription`,\n" +
+                        "`marqueurDesc`,\n" +
                         "`idOwner`)\n" +
                         "VALUES\n" +
-                        "( " + id + ", \"" + custom.getDescription() + ", " + custom.getOwnerID() + ");\n";
+                        "( " + resid + ", \"" + custom.getDescription() + "\", " + custom.getOwnerID() + ");\n";
                 int tmp = stmt.executeUpdate(sql); //executeUpdate renvoie le nombre de lignes modifiees / inserees
                 con.commit();
                 stmt.close();
@@ -325,7 +374,7 @@ public class MarqueurController  {
             }
         }
         catch(SQLException e)  {e.printStackTrace();}
-        return success;
+        return resid;
     }
 
 
@@ -484,8 +533,8 @@ public class MarqueurController  {
 
         try {
             Statement stmt = con.createStatement();
-            String operations = "";
-            String formattedValue = "";
+//            String operations = "";
+//            String formattedValue = "";
 
             ResultSet ownerPrivilegeCheck = stmt.executeQuery("SELECT idowner FROM customMarqueurs WHERE idmarqueur = " + idmarqueur + ";");
             ownerPrivilegeCheck.next();
@@ -498,20 +547,20 @@ public class MarqueurController  {
                 ModifiableCustomsColumns colonne = (ModifiableCustomsColumns) e.getKey();
                 switch(colonne) {
                     case marqueurName:
-                        stmt.executeUpdate("\"UPDATE `ourmapdb`.`marqueurs` (SET marqueurName = " + e.getValue().toString() + "WHERE idmarqueur = " + idmarqueur + "\";");
+                        stmt.executeUpdate("UPDATE `ourmapdb`.`marqueurs` SET marqueurName = \"" + e.getValue().toString() + "\" WHERE idmarqueur = " + idmarqueur + ";");
                         break;
                     case marqueurDescription:
-                        formattedValue = "\"" + e.getValue().toString() + "\"";
+                        stmt.executeUpdate("UPDATE `ourmapdb`.`customMarqueurs` SET marqueurDesc = \"" + e.getValue().toString() + "\" WHERE idmarqueur = " + idmarqueur + ";");
                         break;
                     default :
                         throw new RuntimeException("Vous n'avez pas la permission de modifier cette" +
                                 "information (" + colonne + ")");
                 }
             }
-            operations = operations.substring(0, operations.length() - 2);
-
-            String sqlUpdate = "UPDATE `ourmapdb`.`customMarqueurs` (SET " + operations + "WHERE idmarqueur = " + idmarqueur + ";";
-            stmt.executeUpdate(sqlUpdate);
+//            operations = operations.substring(0, operations.length() - 2);
+//
+//            String sqlUpdate = "UPDATE `ourmapdb`.`customMarqueurs` (SET " + operations + "WHERE idmarqueur = " + idmarqueur + ";";
+//            stmt.executeUpdate(sqlUpdate);
             stmt.close();
             con.commit();
             return true;

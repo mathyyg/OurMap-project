@@ -2,10 +2,11 @@ package org.jolmkbL2B.controllers;
 
 import java.sql.*;
 
-public class MemoController {
+// @author MATHYS
+public class SuggestionController {
     private Connection con;
 
-    public MemoController()    {
+    public SuggestionController()    {
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
                     "mathys", "projet2021GL");
@@ -26,17 +27,17 @@ public class MemoController {
         }
     }
 
-    public boolean addMemoToMarqueur(long idutilisateur, long idmarqueur, String text)    {
+    public boolean addSuggestion(long idmarqueur, long idutilisateur, String text) {
         try {
             Statement stmt = con.createStatement();
-            stmt.executeUpdate("INSERT INTO `ourmapdb`.`userMemo`\n" +
+            stmt.executeUpdate("INSERT INTO `ourmapdb`.`suggestions`\n" +
                     "(`idmarqueur`,\n" +
                     "`idutilisateur`,\n" +
                     "`text`)\n" +
                     "VALUES\n" +
                     "(" + idmarqueur + ",\n" +
                     + idutilisateur + ",\n" +
-                    "\"" + text + "\"\n" + " );\n");
+                    "\"" + text + "\")\n" + ";\n");
 
             stmt.close();
             con.commit();
@@ -48,26 +49,12 @@ public class MemoController {
         return false;
     }
 
-    public boolean removeMemoFromMarqueur(long idutilisateur, long idmarqueur, String text) {
-        try {
-            Statement stmt = con.createStatement();
-            stmt.executeUpdate("DELETE FROM userMemo WHERE idutilisateur = " + idutilisateur + " AND idmarqueur = " + idmarqueur + " AND text = " + "\"" + text + "\"");
-            stmt.close();
-            con.commit();
-            return true;
-        }
-        catch(SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
-    public ResultSet fetchUserMemo(long idmarqueur, long idutilisateur) {
+    public ResultSet fetchMarqueurSuggestions(long idmarqueur) {
         try {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT text FROM userMemo WHERE idmarqueur = " + idmarqueur + " AND " +
-                    "idutilisateur = " + idutilisateur + " ;");
-//            stmt.close();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM suggestions WHERE idmarqueur = " + idmarqueur + " ;");
+            stmt.close();
             return rs;
         }
         catch(SQLException e) {

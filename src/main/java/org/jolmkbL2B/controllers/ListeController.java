@@ -23,14 +23,28 @@ public class ListeController implements Listes {
             sqlException.printStackTrace();
         }
     }
+
     public ResultSet fetchList(long idliste, long requestingUser)    {
         try {
             Statement stmt = con.createStatement();
-            if(checkListAccessRight(idliste, requestingUser)) {
-                ResultSet rs = stmt.executeQuery("SELECT idmarqueur FROM listemarqueurs WHERE idliste = " + idliste +
+//            if(checkListAccessRight(idliste, requestingUser)) {
+                ResultSet rs = stmt.executeQuery("SELECT idmarqueur, marqueurName FROM listemarqueurs NATURAL JOIN marqueurs WHERE idliste = " + idliste +
                         ";");
                 return rs;
-            }
+
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ResultSet fetchAllLists(long requestingUser) {
+        try {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT idliste, listName FROM listeOwner WHERE idutilisateur = " + requestingUser +
+                    ";");
+            return rs;
         }
         catch(SQLException e) {
             e.printStackTrace();
@@ -67,7 +81,7 @@ public class ListeController implements Listes {
      * */
     public boolean addToList(long idmarqueur, long idliste, long requestingUser) {
         try {
-            if(checkListAccessRight(idliste, requestingUser)) {
+//            if(checkListAccessRight(idliste, requestingUser)) {
                 Statement stmt = con.createStatement();
                 if(stmt.executeUpdate("INSERT INTO `ourmapdb`.`listemarqueurs`\n" +
                         "(`idliste`,\n" +
@@ -78,7 +92,7 @@ public class ListeController implements Listes {
                     con.commit();
                     return true;
                 }
-            }
+
             else System.out.println("Erreur lors de l'ajout du collaborateur.");
         }
         catch(SQLException e) {

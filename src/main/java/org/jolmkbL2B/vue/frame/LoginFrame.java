@@ -190,12 +190,13 @@ public class LoginFrame extends JFrame {
             con.setAutoCommit(false);
             Statement stmt = con.createStatement();
             stmt.execute("USE ourmapdb;");
-            String log ="select displayName,password from utilisateurs where displayName='"+connnom1.getText()+"' and password='"+connpass.getText()+"'";
+            String log ="select idutilisateur, displayName,password from utilisateurs where displayName='"+connnom1.getText()+"' and password='"+connpass.getText()+"'";
 
 
             PreparedStatement ps =  con.prepareStatement(log);
             ResultSet resultat = ps.executeQuery();
             if(resultat.next()){
+                this.app.idUtilisateurConnecte = resultat.getLong(1);
                 this.second();
             }
 
@@ -216,7 +217,7 @@ public class LoginFrame extends JFrame {
         dispose();
     }
 
-    public void second() {
+    public void second() throws SQLException {
         HubFrame next = new HubFrame(app);
         next.setVisible(true);
         this.dispose();

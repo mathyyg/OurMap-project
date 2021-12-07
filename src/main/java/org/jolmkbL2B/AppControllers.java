@@ -14,6 +14,8 @@ public class AppControllers {
     public final ConnexionController connexionController;
     public final UtilisateurController utilisateurController;
     public final MemoController memoController;
+    public final SuggestionController suggestionController;
+    public long idUtilisateurConnecte;
 //    public static UserContentController userContentController;
 
     public AppControllers()    {
@@ -23,6 +25,7 @@ public class AppControllers {
         this.memoController = new MemoController();
         this.connexionController = new ConnexionController();
         this.utilisateurController = new UtilisateurController();
+        this.suggestionController = new SuggestionController();
     }
 
 }

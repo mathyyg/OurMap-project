@@ -56,8 +56,8 @@ public class MarqueurLoader {
      * @version 3*/
     public HashSet<Marqueur> loadAllMarkers(long idutilisateur) {
         HashSet<Marqueur> marqueurSet = loadNewSet(marqueurController.fetchAll());
-        marqueurSet = updateMarqueurSet(marqueurSet, marqueurController.fetchUserCustomMarqueur(idutilisateur));
-        return marqueurSet;
+        return updateMarqueurSet(marqueurSet, marqueurController.fetchUserCustomMarqueur(idutilisateur));
+
     }
 
     public HashSet<Marqueur> loadAllMarkers() {
