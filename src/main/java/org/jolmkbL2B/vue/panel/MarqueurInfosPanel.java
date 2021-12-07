@@ -26,11 +26,11 @@ public class MarqueurInfosPanel extends JPanel {
         tfNom = new JTextField();
         scrollPaneDesc = new JScrollPane();
         taDesc = new JTextArea();
-        button2 = new JButton();
+        buttonInfos = new JButton();
         separator3 = new JSeparator();
         separator4 = new JSeparator();
-        button3 = new JButton();
-        button4 = new JButton();
+        buttonMemos = new JButton();
+        buttonCommentaires = new JButton();
         separator5 = new JSeparator();
 
         //======== this ========
@@ -74,19 +74,19 @@ public class MarqueurInfosPanel extends JPanel {
         }
         add(scrollPaneDesc, "cell 1 2");
 
-        //---- button2 ----
-        button2.setText("+ d'infos");
-        add(button2, "cell 2 2");
+        //---- buttonInfos ----
+        buttonInfos.setText("+ d'infos");
+        add(buttonInfos, "cell 2 2");
         add(separator3, "cell 0 3");
         add(separator4, "cell 1 3");
 
-        //---- button3 ----
-        button3.setText("M\u00e9mos");
-        add(button3, "cell 0 4");
+        //---- buttonMemos ----
+        buttonMemos.setText("M\u00e9mos");
+        add(buttonMemos, "cell 0 4");
 
-        //---- button4 ----
-        button4.setText("Commentaires");
-        add(button4, "cell 1 4");
+        //---- buttonCommentaires ----
+        buttonCommentaires.setText("Commentaires");
+        add(buttonCommentaires, "cell 1 4");
         add(separator5, "cell 2 4");
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
@@ -100,11 +100,11 @@ public class MarqueurInfosPanel extends JPanel {
     public JTextField tfNom;
     public JScrollPane scrollPaneDesc;
     public JTextArea taDesc;
-    public JButton button2;
+    public JButton buttonInfos;
     public JSeparator separator3;
     public JSeparator separator4;
-    public JButton button3;
-    public JButton button4;
+    public JButton buttonMemos;
+    public JButton buttonCommentaires;
     public JSeparator separator5;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

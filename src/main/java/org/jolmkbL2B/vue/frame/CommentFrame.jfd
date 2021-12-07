@@ -9,6 +9,7 @@ new FormModel {
 			name: "this"
 			"title": "Commentaires"
 			"$sizePolicy": 1
+			"defaultCloseOperation": 2
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 				name: "panel1"
 				auxiliary() {
@@ -21,6 +22,7 @@ new FormModel {
 					}
 					add( new FormComponent( "javax.swing.JTable" ) {
 						name: "table1"
+						"fillsViewportHeight": true
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
 						}
@@ -43,7 +45,7 @@ new FormModel {
 							"JavaCodeGenerator.variableModifiers": 1
 						}
 						add( new FormComponent( "javax.swing.JTextArea" ) {
-							name: "textArea1"
+							name: "textAComment"
 							auxiliary() {
 								"JavaCodeGenerator.variableModifiers": 1
 							}
@@ -52,7 +54,7 @@ new FormModel {
 						"value": "cell 0 0 6 1"
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
-						name: "button1"
+						name: "ButtonAddComment"
 						"text": "Ajouter un commentaire"
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1

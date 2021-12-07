@@ -1,7 +1,6 @@
 package org.jolmkbL2B;
 
 import com.formdev.flatlaf.intellijthemes.FlatDarkPurpleIJTheme;
-import org.jolmkbL2B.vue.frame.AppliHubFrame;
 import org.jolmkbL2B.vue.frame.LoginFrame;
 
 

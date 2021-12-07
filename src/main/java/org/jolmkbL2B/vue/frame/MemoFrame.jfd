@@ -8,6 +8,7 @@ new FormModel {
 		} ) {
 			name: "this"
 			"title": "Mémos"
+			"defaultCloseOperation": 2
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "scrollPane1"
 				auxiliary() {
@@ -32,7 +33,7 @@ new FormModel {
 					"JavaCodeGenerator.variableModifiers": 1
 				}
 				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "button2"
+					name: "buttonAdd"
 					"text": "Ajouter"
 					auxiliary() {
 						"JavaCodeGenerator.variableModifiers": 1
@@ -41,7 +42,7 @@ new FormModel {
 					"value": "cell 0 0"
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "button3"
+					name: "butotnDelete"
 					"text": "Supprimer"
 					auxiliary() {
 						"JavaCodeGenerator.variableModifiers": 1

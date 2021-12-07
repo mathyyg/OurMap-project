@@ -1,6 +1,7 @@
 package org.jolmkbL2B.vue.panel;
 
 import com.formdev.flatlaf.intellijthemes.FlatDarkPurpleIJTheme;
+import org.jolmkbL2B.AppControllers;
 import org.jolmkbL2B.controllers.MarqueurController;
 import org.jolmkbL2B.marqueurs.Marqueur;
 import org.jolmkbL2B.marqueurs.MarqueurLoader;
@@ -34,7 +35,7 @@ public class MapPanel extends JPanel {
     public HashSet<Marqueur> waypoints; //Un hashset contenant tous les waypoints affichés
     public MarqueurLoader loader; // Un objet qui gere l'affichage des marqueurs
 
-    public MapPanel() {
+    public MapPanel(AppControllers app) {
 
         this.setLayout(new BorderLayout());
 //        try {
@@ -54,7 +55,7 @@ public class MapPanel extends JPanel {
 
 
         /** AFFICHARGE MARQUEUR */
-        this.waypoints = loader.loadAllMarkers(1);
+        this.waypoints = loader.loadAllMarkers(app.idUtilisateurConnecte);
         //this.waypoints = loader.loadAllMarkersByType(PlaceType.HOTEL);
         //this.waypoints = loader.loadListToNewSet(1,1);
         //this.waypoints = loader.loadListInCurrentSet(waypoints, 1, 1);
