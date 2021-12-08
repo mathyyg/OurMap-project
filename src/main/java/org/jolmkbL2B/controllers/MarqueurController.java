@@ -13,13 +13,25 @@ import java.util.Map;
 public class MarqueurController  {
     protected Connection con;
 
+
+    /** Constructeur. Etablit la connection à la base de données sur un serveur distant
+     * @throws SQLException en cas de soucis de connection.
+     */
     public MarqueurController() {
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
                     "mathys", "projet2021GL");
             this.con = con;
             Statement stmt = con.createStatement();
+
+            /** Requête sur le serveur pour utiliser la base de données de
+             dédiée à l'application */
             stmt.execute("USE ourmapdb;");
+
+
+            /** Les updates et insertion sur la base de données ne sont pas enregistrées
+             * automatiquement. Il est nécessaire d'executer la commande "con.commit(); pour enregistrer les changements.
+             * Ceci permet d'éviter que des transactions incompletes soient enregistrés en cas de crash.*/
             con.setAutoCommit(false);
         }
         catch(SQLException sqlException) {
@@ -89,7 +101,7 @@ public class MarqueurController  {
         return null;
     }
 
-    /** Recupere tous les marqueurs de la base de données.
+    /** Recupère tous les marqueurs de la base de données.
      * @since 2.0 ~
      * @param id identifiant d'un marqueur
      * @version 1
@@ -134,6 +146,7 @@ public class MarqueurController  {
         return null;
     }
 
+    /** @author Mathys */
     public String fetchMarqueurNom(long id, PlaceType placeType) {
         String table = selectTable(placeType);
 
@@ -158,6 +171,7 @@ public class MarqueurController  {
         return null;
     }
 
+    /**@author Mathys */
     public String fetchMarqueurDescription(long id, PlaceType placeType) {
         String table = selectTable(placeType);
 
@@ -183,7 +197,8 @@ public class MarqueurController  {
     }
 
 
-    /** Verifie qu'un ResultSet a au plus 1 resultat. Affiche un message d'avertissement si ce n'est pas le cas
+    /** Verifie qu'un ResultSet a au plus 1 resultat. Affiche un message d'avertissement si ce n'est pas le cas,
+     * mais ne change pas le contenu du resultSet, sert seulement d'avertissement.
      * @author Bastien*/
     private void checkResultSetSize(ResultSet rs)   {
         try {
@@ -199,7 +214,10 @@ public class MarqueurController  {
         }
     }
 
-    /** Selection d'une table de base de donnees en fonction d'un parametre Enum PlaceType donné */
+    /** Selection d'une table de base de donnees en fonction d'un parametre Enum PlaceType donné
+     * @param placeType d'un objet Marqueur
+     * @return une string correspondant au nom de la table de la BD qui doit être utilisée
+     * @author Bastien */
     protected String selectTable(PlaceType placeType) {
         switch(placeType)   {
             case SCHOOL:
@@ -208,7 +226,6 @@ public class MarqueurController  {
                 return "hotels";
             case ARRETBUS:
                 return "arretsbus";
-
             case CUSTOM :
                 return "customMarqueurs";
             default:
@@ -217,18 +234,21 @@ public class MarqueurController  {
         }
     }
 
-    /** Insertion des données de base d'un nouveau marqueur dans la table marqueurs
+    /** Insertion des données de base d'un nouveau marqueur dans la table marqueurs.
+     * Cette méthode est uniquement appelée par els méthodes InsertMarqueur(Hotel), (ArretBus), (School) et (Custom)
      * @author Bastien
      * @since 2.5
      * @param marqueur : un objet Marqueur
      * @return identifiant de la nouvelle entree, -1 en cas d'erreur
      * @version 1*/
+
     private int insertMarqueur(Marqueur marqueur)    {
         boolean success = false;
         int lastID = -1;
 
         try {
             Statement stmt = con.createStatement();
+            //Requete reprenant tous les attribtus de l'objet pour les traduire en SQL, sous le format requis pour la BD
             String sql1 = "INSERT INTO `ourmapdb`.`marqueurs`\n" +
                     "(`placeType`,\n" +
                     "`latitude`,\n" +
@@ -253,7 +273,7 @@ public class MarqueurController  {
     /** Insertion des données de base d'un nouvel Hotel dans la tables marqueurs et hotels
      * @author Bastien
      * @since 2.5
-     * @param hotel : un objet Hotel (etendu de marqueur)
+     * @param hotel : un objet Hotel (classe étendue de marqueur)
      * @return identifiant de la nouvelle entree
      * @version 2*/
     public boolean insertMarqueur(Hotel hotel) {
@@ -296,7 +316,7 @@ public class MarqueurController  {
     /** Insertion des données de base d'un nouvel Arret de Bus dans les tables marqueurs et arretsbus
      * @author Bastien
      * @since 2.5
-     * @param arret : un objet ArretBus (etendu de marqueur)
+     * @param arret : un objet ArretBus (classe étendue de marqueur)
      * @return identifiant de la nouvelle entree
      * @version 2*/
     public boolean insertMarqueur(ArretBus arret)   {
@@ -323,6 +343,12 @@ public class MarqueurController  {
         return success;
     }
 
+    /** Insertion des données de base d'un nouvel Arret de Bus dans les tables marqueurs et schools
+     * @author Bastien
+     * @since 2.5
+     * @param school : un objet School (classe étendue de marqueur)
+     * @return identifiant de la nouvelle entree
+     * @version 2*/
     public boolean insertMarqueur(School school)   {
         boolean success = false;
         try {
@@ -352,9 +378,14 @@ public class MarqueurController  {
         return success;
     }
 
-
+    /** Insertion des données de base d'un nouvel Arret de Bus dans les tables marqueurs et customMarqueurs
+     * @author Bastien
+     * @since 2.6
+     * @param custom : un objet CustomMarqueur (classe étendue de marqueur)
+     * @return identifiant de la nouvelle entree
+     * @version 2*/
     public int insertMarqueur(CustomMarqueur custom)   {
-        int resid =-1;
+        int resid =-1; //variable contenant l'identifiant du marqueur dans la base de données
         boolean success = false;
         try {
             resid = insertMarqueur((Marqueur) custom); //Les informations de classes mere Marqueur sont envoyés vers la table marqueurs
@@ -378,27 +409,35 @@ public class MarqueurController  {
     }
 
 
-/** version 2*/
+
+    /** Cette méthode permet de modifier les informations d'un Hotel dans la base de donnée.
+     *
+     * @author Bastien
+     * @param changes Hashmap la clé est le nom de la colonne a modifier, la valeur est le changement à réaliser.
+     * @param idmarqueur identifiant du marqueur concerné
+     *
+     * @return true en cas de succès, false en cas d'echec
+     * @version 3*/
     public boolean updateHotel(long idmarqueur, HashMap<ModifiableHotelsColumns, String> changes) {
         try {
             Statement stmt = con.createStatement();
-            String operations = "";
-            String formattedValue = "";
+            String formattedValue = ""; //la valeur à rentrer, avec guillemets en cas de Varchar, sans en cas d'entier
 
 
             for(Map.Entry e : changes.entrySet()) {
                 ModifiableHotelsColumns colonne = (ModifiableHotelsColumns) e.getKey();
                 switch(colonne) {
                     case marqueurName:
-                        stmt.executeUpdate("\"UPDATE `ourmapdb`.`marqueurs` (SET marqueurName = " + e.getValue().toString() + "WHERE idmarqueur = " + idmarqueur + "\";");
+                        stmt.executeUpdate("\"UPDATE `ourmapdb`.`marqueurs` (SET marqueurName = " + e.getValue().toString()
+                                + "WHERE idmarqueur = " + idmarqueur + "\";"); //marqueurName est le seul élément modifiable dans la table Marqueurs
                         break;
-                        case etoiles:
+                        case etoiles: //étoiles est un entier, il est donc formatté sans guillemets
                             formattedValue = e.getValue().toString();
                             break;
-                        case adresse, numTel, siteWeb, tripadvisor, marqueurDescription:
+                        case adresse, numTel, siteWeb, tripadvisor, marqueurDescription: // formatés avec des guillemets car ce sont des VARCHAR
                             formattedValue = "\"" + e.getValue().toString() + "\"";
                             break;
-                        case hasRestaurant, handi_moteur, handi_mental, handi_auditif, handi_visuel, accepteAnimaux:
+                        case hasRestaurant, handi_moteur, handi_mental, handi_auditif, handi_visuel, accepteAnimaux: //Sous forme de 1 ou 0 (booléens)
                             String bool = e.getValue().toString();
                             if(bool.equals("true") || bool.equals("True") || bool.equals("TRUE") || bool.equals("1"))   {
                                 formattedValue = "1";
@@ -409,12 +448,11 @@ public class MarqueurController  {
                             throw new RuntimeException("Vous n'avez pas la permission de modifier cette" +
                                     "information (" + colonne + ")");
                     }
-                    operations += "`" + colonne + "` = " + formattedValue +", ";
+                if(colonne != ModifiableHotelsColumns.marqueurName) { //le statement est dofférent pour marqueurName
+                    String sqlUpdate = "UPDATE `ourmapdb`.`hotels` (SET " + colonne + " = " + formattedValue + "WHERE  idmarqueur = " + idmarqueur + ";";
+                    stmt.executeUpdate(sqlUpdate);
                 }
-            operations = operations.substring(0, operations.length()-2);
-
-            String sqlUpdate = "UPDATE `ourmapdb`.`hotels` (SET " + operations + "WHERE idmarqueur = " + idmarqueur +";";
-            stmt.executeUpdate(sqlUpdate);
+            }
             stmt.close();
             con.commit();
             return true;
@@ -434,24 +472,30 @@ public class MarqueurController  {
         return false;
     }
 
-    /** version 2*/
+    /** Cette méthode permet de modifier les informations d'un Arret de bus dans la base de donnée.
+     *
+     * @author Bastien
+     * @param changes Hashmap la clé est le nom de la colonne a modifier, la valeur est le changement à réaliser.
+     * @param idmarqueur identifiant du marqueur concerné
+     *
+     * @return true en cas de succès, false en cas d'echec
+     * @version 3*/
     public boolean updateArretBus(long idmarqueur, HashMap<TableArretsBus, String> changes) {
         try {
             Statement stmt = con.createStatement();
-            String operations = "";
             String formattedValue = "";
 
 
             for (Map.Entry e : changes.entrySet()) {
                 ModifiableArretsBusColumns colonne = (ModifiableArretsBusColumns) e.getKey();
                 switch(colonne) {
-                    case marqueurName:
+                    case marqueurName: //marqueurName est le seul élément modifiable dans la table Marqueurs
                         stmt.executeUpdate("\"UPDATE `ourmapdb`.`marqueurs` (SET marqueurName = " + e.getValue().toString() + "WHERE idmarqueur = " + idmarqueur + "\";");
                         break;
-                    case marqueurDescription:
+                    case marqueurDescription: // formatés avec des guillemets car c'est un VARCHAR
                         formattedValue = "\"" + e.getValue().toString() + "\"";
                         break;
-                    case accesHandi:
+                    case accesHandi: // sous forme de 0 ou 1, san guillemets (booleen)
                         String bool = e.getValue().toString();
                         if(bool.equals("true") || bool.equals("True") || bool.equals("TRUE") || bool.equals("1"))   {
                             formattedValue = "1";
@@ -462,11 +506,11 @@ public class MarqueurController  {
                         throw new RuntimeException("Vous n'avez pas la permission de modifier cette" +
                                 "information (" + colonne + ")");
                 }
+                if(colonne != ModifiableArretsBusColumns.marqueurName) { //le statement est dofférent pour marqueurName
+                    String sqlUpdate = "UPDATE `ourmapdb`.`arretsbus` (SET " + colonne + " = " + formattedValue + "WHERE  idmarqueur = " + idmarqueur + ";";
+                    stmt.executeUpdate(sqlUpdate);
+                }
             }
-            operations = operations.substring(0, operations.length() - 2);
-
-            String sqlUpdate = "UPDATE `ourmapdb`.`arretsbus` (SET " + operations + "WHERE idmarqueur = " + idmarqueur + ";";
-            stmt.executeUpdate(sqlUpdate);
             stmt.close();
             con.commit();
             return true;
@@ -485,11 +529,18 @@ public class MarqueurController  {
         return false;
     }
 
+
+    /** Cette méthode permet de modifier les informations d'une école dans la base de donnée.
+     *
+     * @author Bastien
+     * @param changes Hashmap la clé est le nom de la colonne à modifier, la valeur est le changement à réaliser.
+     * @param idmarqueur identifiant du marqueur concerné
+     *
+     * @return true en cas de succès, false en cas d'échec
+     * @version 3*/
     public boolean updateSchool(long idmarqueur, HashMap<ModifiableSchoolsColumns, String> changes) {
         try {
             Statement stmt = con.createStatement();
-            String operations = "";
-            String formattedValue = "";
 
 
             for (Map.Entry e : changes.entrySet()) {
@@ -499,17 +550,13 @@ public class MarqueurController  {
                         stmt.executeUpdate("\"UPDATE `ourmapdb`.`marqueurs` (SET marqueurName = " + e.getValue().toString() + "WHERE idmarqueur = " + idmarqueur + "\";");
                         break;
                     case marqueurDescription:
-                        formattedValue = "\"" + e.getValue().toString() + "\"";
+                        stmt.executeUpdate("UPDATE `ourmapdb`.`customMarqueurs` SET marqueurDesc = \"" + e.getValue().toString() + "\" WHERE idmarqueur = " + idmarqueur + ";");
                         break;
                     default :
                         throw new RuntimeException("Vous n'avez pas la permission de modifier cette" +
                                 "information (" + colonne + ")");
                 }
             }
-            operations = operations.substring(0, operations.length() - 2);
-
-            String sqlUpdate = "UPDATE `ourmapdb`.`schools` (SET " + operations + "WHERE idmarqueur = " + idmarqueur + ";";
-            stmt.executeUpdate(sqlUpdate);
             stmt.close();
             con.commit();
             return true;
@@ -528,20 +575,25 @@ public class MarqueurController  {
         return false;
     }
 
-    public boolean updateCustom(long idmarqueur, HashMap<ModifiableCustomsColumns, String> changes, long idRequestingUser) {
 
+    /** Cette méthode permet de modifier les informations d'un marqueur custom dans la base de donnée.
+     *
+     * @author Bastien
+     * @param changes Hashmap la clé est le nom de la colonne à modifier, la valeur est le changement à réaliser.
+     * @param idmarqueur identifiant du marqueur concerné
+     *
+     * @return true en cas de succès, false en cas d'échec
+     * @version 3*/
+    public boolean updateCustom(long idmarqueur, HashMap<ModifiableCustomsColumns, String> changes, long idRequestingUser) {
 
         try {
             Statement stmt = con.createStatement();
-//            String operations = "";
-//            String formattedValue = "";
 
             ResultSet ownerPrivilegeCheck = stmt.executeQuery("SELECT idowner FROM customMarqueurs WHERE idmarqueur = " + idmarqueur + ";");
-            ownerPrivilegeCheck.next();
+            ownerPrivilegeCheck.next(); //Verification que la personne qui demande la modification est bien proproétaire du marqueur
             if(ownerPrivilegeCheck.getLong("idowner") != idRequestingUser ) {
                 throw new RuntimeException("Vous n'êtes pas propriétaire de ce marqueur et n'avez pas le droit de le modifier.");
             }
-
 
             for (Map.Entry e : changes.entrySet()) {
                 ModifiableCustomsColumns colonne = (ModifiableCustomsColumns) e.getKey();
@@ -557,10 +609,7 @@ public class MarqueurController  {
                                 "information (" + colonne + ")");
                 }
             }
-//            operations = operations.substring(0, operations.length() - 2);
-//
-//            String sqlUpdate = "UPDATE `ourmapdb`.`customMarqueurs` (SET " + operations + "WHERE idmarqueur = " + idmarqueur + ";";
-//            stmt.executeUpdate(sqlUpdate);
+
             stmt.close();
             con.commit();
             return true;
