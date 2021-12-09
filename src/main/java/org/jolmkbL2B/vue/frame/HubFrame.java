@@ -13,8 +13,14 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.IntelliJTheme.ThemeLaf;
+import com.formdev.flatlaf.intellijthemes.*;
 import org.jolmkbL2B.AppControllers;
 import org.jolmkbL2B.marqueurs.*;
 import org.jolmkbL2B.vue.panel.*;
@@ -27,13 +33,11 @@ import org.jxmapviewer.viewer.GeoPosition;
 public class HubFrame extends JFrame {
 
     private AppControllers app;
+    private ThemeFrame themeFrame = new ThemeFrame();
+    private HashMap<String, ThemeLaf> themes = new HashMap<String, ThemeLaf>();
     public HubFrame(AppControllers app) throws SQLException {
         this.app = app;
         initComponents();
-    }
-
-    private void createUIComponents() {
-        // TODO: add custom component creation code here
     }
 
     MouseListener addMarqueur = new MouseListener() {
@@ -194,8 +198,7 @@ public class HubFrame extends JFrame {
                 menu1.setText("Affichage");
 
                 //---- checkBoxMenuItem1 ----
-                checkBoxMenuItem1.setText("Liste de th\u00e8mes");
-                checkBoxMenuItem1.setSelected(true);
+                checkBoxMenuItem1.setText("Liste des th\u00e8mes");
                 menu1.add(checkBoxMenuItem1);
             }
             menuBar1.add(menu1);
@@ -249,6 +252,59 @@ public class HubFrame extends JFrame {
                     listesMarqueursPanel1.initTree();
                 } catch (SQLException ex) {
                     ex.printStackTrace();
+                }
+            }
+        });
+
+        initThemes();
+        DefaultListModel listModel = new DefaultListModel();
+        for(String theme : this.themes.keySet()) {
+            listModel.addElement(theme);
+        }
+        this.themeFrame.jlistThemes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        this.themeFrame.jlistThemes.setModel(listModel);
+        this.themeFrame.jlistThemes.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                String res = "Arc";
+                if(!e.getValueIsAdjusting()) {
+                    res = themeFrame.jlistThemes.getSelectedValue().toString();
+                }
+                updateLF(res);
+            }
+        });
+        this.themeFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                checkBoxMenuItem1.setSelected(false);
+                e.getWindow().dispose();
+            }
+        });
+
+//        jlistThemes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//        jlistThemes.setModel(listModel);
+//        jlistThemes.addListSelectionListener(new ListSelectionListener() {
+//            @Override
+//            public void valueChanged(ListSelectionEvent e) {
+//                String res = "Arc";
+//                if(!e.getValueIsAdjusting()) {
+//                    res = jlistThemes.getSelectedValue().toString();
+//                }
+//                updateLF(res);
+//            }
+//        });
+//
+//        scrollPane1.setVisible(false);
+        checkBoxMenuItem1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(checkBoxMenuItem1.isSelected()) {
+//                    scrollPane1.setVisible(true);
+                    themeFrame.setVisible(true);
+                }
+                else {
+//                    scrollPane1.setVisible(false);
+                    themeFrame.setVisible(false);
                 }
             }
         });
@@ -348,6 +404,49 @@ public class HubFrame extends JFrame {
         commentFrame.setVisible(true);
     }
 
+    private void initThemes() {
+        this.themes.put("Arc", new FlatArcIJTheme());
+        this.themes.put("Arc Orange", new FlatArcOrangeIJTheme());
+        this.themes.put("Arc Dark", new FlatArcDarkIJTheme());
+        this.themes.put("Arc Dark Orange", new FlatArcDarkOrangeIJTheme());
+        this.themes.put("Carbon", new FlatCarbonIJTheme());
+        this.themes.put("Cobalt 2", new FlatCobalt2IJTheme());
+        this.themes.put("Cyan Light", new FlatCyanLightIJTheme());
+        this.themes.put("Dark Flat", new FlatDarkFlatIJTheme());
+        this.themes.put("Dark Purple", new FlatDarkPurpleIJTheme());
+        this.themes.put("Dracula", new FlatDraculaIJTheme());
+        this.themes.put("Gradianto Dark Fuchsia", new FlatGradiantoDarkFuchsiaIJTheme());
+        this.themes.put("Grandianto Deep Ocean", new FlatGradiantoDeepOceanIJTheme());
+        this.themes.put("Gradianto Midnight Blue", new FlatGradiantoMidnightBlueIJTheme());
+        this.themes.put("Gradianto Nature Green", new FlatGradiantoNatureGreenIJTheme());
+        this.themes.put("Gray", new FlatGrayIJTheme());
+        this.themes.put("Gruvbox Dark Hard", new FlatGruvboxDarkHardIJTheme());
+        this.themes.put("Gruvbox Dark Medium", new FlatGruvboxDarkMediumIJTheme());
+        this.themes.put("Gruvbox Dark Soft", new FlatGruvboxDarkSoftIJTheme());
+        this.themes.put("Hiberbee Dark", new FlatHiberbeeDarkIJTheme());
+        this.themes.put("High Contrast", new FlatHighContrastIJTheme());
+        this.themes.put("Light Flat", new FlatLightFlatIJTheme());
+        this.themes.put("Material Design Dark", new FlatMaterialDesignDarkIJTheme());
+        this.themes.put("Monocai", new FlatMonocaiIJTheme());
+        this.themes.put("Nord", new FlatNordIJTheme());
+        this.themes.put("One Dark", new FlatOneDarkIJTheme());
+        this.themes.put("Solarized Dark", new FlatSolarizedDarkIJTheme());
+        this.themes.put("Solarized Light", new FlatSolarizedLightIJTheme());
+        this.themes.put("Spacegray", new FlatSpacegrayIJTheme());
+        this.themes.put("Vuesion", new FlatVuesionIJTheme());
+    }
+
+    public void updateLF(String lf) {
+        try {
+            UIManager.setLookAndFeel(themes.get(lf));
+            FlatLaf.updateUI();
+
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JMenuBar menuBar1;
     private JMenu menu2;
@@ -355,7 +454,7 @@ public class HubFrame extends JFrame {
     private JSeparator separator1;
     public JMenuItem menuQUitter;
     private JMenu menu1;
-    public JCheckBoxMenuItem checkBoxMenuItem1;
+    private JCheckBoxMenuItem checkBoxMenuItem1;
     private JMenu menu3;
     private JMenuItem menuSeDeco;
     public ListesMarqueursPanel listesMarqueursPanel1;

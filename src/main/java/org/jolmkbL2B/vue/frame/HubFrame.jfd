@@ -64,11 +64,7 @@ new FormModel {
 					"text": "Affichage"
 					add( new FormComponent( "javax.swing.JCheckBoxMenuItem" ) {
 						name: "checkBoxMenuItem1"
-						"text": "Liste de thèmes"
-						"selected": true
-						auxiliary() {
-							"JavaCodeGenerator.variableModifiers": 1
-						}
+						"text": "Liste des thèmes"
 					} )
 				} )
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
@@ -82,7 +78,7 @@ new FormModel {
 				} )
 			}
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 20, 25 )
+			"location": new java.awt.Point( 30, 105 )
 			"size": new java.awt.Dimension( 845, 520 )
 		} )
 	}
