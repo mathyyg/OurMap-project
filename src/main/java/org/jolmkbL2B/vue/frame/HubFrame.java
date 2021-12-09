@@ -45,7 +45,20 @@ public class HubFrame extends JFrame {
         public void mouseClicked(MouseEvent me) {
             enableMarqueurSelection(false);
 
-            /** création d'un marqueur en cliquant  */
+            /** création d'un marqueur en cliquant
+             * getsource() est une méthode qui sert à identifier le boutton cliqué sur la carte
+             * la methode convertPointToGeoPosition prend en paramétres les coordonées X et Y
+             * et ensuite les converti en Latitude et Longitude respectivement
+             * grace à cette conversion nous avons maintenat les coordonnées exactes de notre clique
+             * que nous pouvons ainsi attribuer à un marqueur CUSTOM pour que l'utilisateur puisse le placer
+             *  n'importe où sur la carte
+             *
+             * au final nous avons aussi un affichage des coordonnées x et y ainsi que leur conversion
+             * qui servait au début à tester l'exactitude de nos cliques et de leur conversion et qui maintenant sert à renseigner
+             * les données géographique d'un marqueur quelconque
+             * @param me_src,clickwaypoint
+             * @khaled mahdi
+             * */
             JXMapViewer me_src = (JXMapViewer) me.getSource();
 
             CustomMarqueur clickwaypoint = new CustomMarqueur(PlaceType.CUSTOM,me_src.convertPointToGeoPosition(me.getPoint()).getLatitude(),
@@ -79,14 +92,18 @@ public class HubFrame extends JFrame {
 
         public void mousePressed(MouseEvent e) {} public void mouseReleased(MouseEvent e) {} public void mouseEntered(MouseEvent e) {} public void mouseExited(MouseEvent e) {}
     };
-
+    /**
+     *
+     *
+     *
+     * */
     MouseListener selectMarqueurMap = new MouseListener() {
         @Override
         public void mouseClicked(MouseEvent me) {
             JXMapViewer me_src = (JXMapViewer) me.getSource();
             for(Marqueur wp : mapPanel1.waypoints) {
-                if (Math.abs(wp.getPosition().getLatitude() - me_src.convertPointToGeoPosition(me.getPoint()).getLatitude())  <= 0.0005
-                && Math.abs(wp.getPosition().getLongitude() - me_src.convertPointToGeoPosition(me.getPoint()).getLongitude()) <= 0.0005 ) {
+                if (Math.abs(wp.getPosition().getLatitude() - me_src.convertPointToGeoPosition(me.getPoint()).getLatitude())  <= 0.0025
+                && Math.abs(wp.getPosition().getLongitude() - me_src.convertPointToGeoPosition(me.getPoint()).getLongitude()) <= 0.0025 ) {
                     marqueurInfosPanel1.buttonInfos.setEnabled(true);
                     marqueurInfosPanel1.buttonCommentaires.setEnabled(true);
                     marqueurInfosPanel1.buttonMemos.setEnabled(true);
