@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "7.0.4.0.360" Java: "11.0.12" encoding: "UTF-8"
+JFDML JFormDesigner: "7.0.5.0.404" Java: "11.0.12" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -54,7 +54,6 @@ new FormModel {
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "tfNom"
 				"editable": false
-				"background": new java.awt.Color( 44, 44, 58, 255 )
 				auxiliary() {
 					"JavaCodeGenerator.variableModifiers": 1
 				}

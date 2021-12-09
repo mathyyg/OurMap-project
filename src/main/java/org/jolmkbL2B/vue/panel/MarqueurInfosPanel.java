@@ -60,7 +60,6 @@ public class MarqueurInfosPanel extends JPanel {
 
         //---- tfNom ----
         tfNom.setEditable(false);
-        tfNom.setBackground(new Color(44, 44, 58));
         add(tfNom, "cell 0 2");
 
         //======== scrollPaneDesc ========
