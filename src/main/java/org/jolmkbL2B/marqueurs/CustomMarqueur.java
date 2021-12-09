@@ -1,5 +1,8 @@
 package org.jolmkbL2B.marqueurs;
 
+/**
+ * @author Bastien Richardeau
+ */
 public class CustomMarqueur extends Marqueur    {
     private String description;
 

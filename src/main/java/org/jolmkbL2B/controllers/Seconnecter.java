@@ -1,6 +1,9 @@
 package org.jolmkbL2B.controllers;
 
-//auteur jalal
+/**
+ * @author Mohammed Jalal El Hani
+ */
+
 import java.sql.*;
 import java.util.Properties;
 public class Seconnecter extends javax.swing.JFrame {

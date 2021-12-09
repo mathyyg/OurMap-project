@@ -3,7 +3,10 @@ package org.jolmkbL2B.controllers;
 import javax.xml.transform.Result;
 import java.sql.*;
 
-// @author MATHYS
+/**
+ * @author Mathys Gagner
+ * Classe permettant d'intéragir avec les suggestions dans la base de données
+ */
 public class SuggestionController {
     private Connection con;
 
@@ -28,6 +31,14 @@ public class SuggestionController {
         }
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode permettant l'ajout d'une suggestion à un marqueur
+     * @param idmarqueur id du marqueur concerné
+     * @param idutilisateur id de l'utilisateur qui envoie la suggestion
+     * @param text message de la suggestion
+     * @return
+     */
     public boolean addSuggestion(long idmarqueur, long idutilisateur, String text) {
         try {
             Statement stmt = con.createStatement();
@@ -50,7 +61,11 @@ public class SuggestionController {
         return false;
     }
 
-
+    /**
+     * @author Mathys Gagner
+     * @param idmarqueur id du marqueur concerné
+     * @return un ResultSet contenant toutes les suggestions pour le marqueur renseigné
+     */
     public ResultSet fetchMarqueurSuggestions(long idmarqueur) {
         try {
             Statement stmt = con.createStatement();
@@ -64,6 +79,11 @@ public class SuggestionController {
         return null;
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode qui permet de récupérer toutes les suggestions de la base de données, tous marqueurs confondus
+     * @return un ResultSet contenant toutes les suggestions
+     */
     public ResultSet fetchAllSuggestions() {
         try {
             Statement stmt = con.createStatement();
@@ -76,6 +96,12 @@ public class SuggestionController {
         return null;
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode qui permet de supprimer une suggestion selon son ID
+     * @param idsuggestion id de la suggestion à supprimer
+     * @return un booléen faisant état de la réalisation de la requête (succès / erreur)
+     */
     public boolean deleteSuggestion(int idsuggestion) {
         try {
             Statement stmt = con.createStatement();
