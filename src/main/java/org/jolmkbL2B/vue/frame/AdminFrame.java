@@ -1,5 +1,5 @@
 /*
- * Created by JFormDesigner on Wed Dec 01 13:08:35 CET 2021
+ * Created by JFormDesigner on Thu Dec 09 12:45:10 CET 2021
  */
 
 package org.jolmkbL2B.vue.frame;
@@ -10,75 +10,35 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.beans.PropertyChangeListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.IntelliJTheme.ThemeLaf;
+import com.formdev.flatlaf.IntelliJTheme;
 import com.formdev.flatlaf.intellijthemes.*;
+import net.miginfocom.swing.*;
 import org.jolmkbL2B.AppControllers;
 import org.jolmkbL2B.marqueurs.*;
 import org.jolmkbL2B.vue.panel.*;
 import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.viewer.GeoPosition;
 
 /**
  * @author Mathys Gagner
  */
-public class HubFrame extends JFrame {
-
-    private AppControllers app;
+public class AdminFrame extends JFrame {
+    private final AppControllers app;
     private ThemeFrame themeFrame = new ThemeFrame();
-    private HashMap<String, ThemeLaf> themes = new HashMap<String, ThemeLaf>();
-    public HubFrame(AppControllers app) throws SQLException {
+    private HashMap<String, IntelliJTheme.ThemeLaf> themes = new HashMap<String, IntelliJTheme.ThemeLaf>();
+
+    public AdminFrame(AppControllers app) {
         this.app = app;
         initComponents();
     }
-
-    MouseListener addMarqueur = new MouseListener() {
-        @Override
-        public void mouseClicked(MouseEvent me) {
-            enableMarqueurSelection(false);
-
-            /** création d'un marqueur en cliquant  */
-            JXMapViewer me_src = (JXMapViewer) me.getSource();
-
-            CustomMarqueur clickwaypoint = new CustomMarqueur(PlaceType.CUSTOM,me_src.convertPointToGeoPosition(me.getPoint()).getLatitude(),
-                    me_src.convertPointToGeoPosition(me.getPoint()).getLongitude(), 0, "Marqueur custom", "...", app.idUtilisateurConnecte);
-
-            int idnew = app.marqueurController.insertMarqueur(clickwaypoint);
-
-            if(idnew > -1) {
-                clickwaypoint.setLieuID(idnew);
-                mapPanel1.waypoints.add(clickwaypoint);
-                mapPanel1.OurMap.setOverlayPainter(mapPanel1.loader.updateDisplay(mapPanel1.waypoints));
-                JOptionPane.showMessageDialog(getParent(), "Votre marqueur personnalisé a bien été ajouté. Pensez à le modifier.", "Succès", JOptionPane.INFORMATION_MESSAGE);
-            }
-            else {
-                JOptionPane.showMessageDialog(getParent(), "Erreur lors de la création du marqueur", "Erreur", JOptionPane.ERROR_MESSAGE);
-            }
-
-            System.out.println(" mouse  x coordinates =" + me_src.getMousePosition().getX() + "/ mouse y coordinates =" + me_src.getMousePosition().getY());
-            System.out.println("CONVERTING MOUSE COORDINATES TO geoposition ones =====> latitude :" + me_src.convertPointToGeoPosition(me.getPoint()).getLatitude() + "  longitude :" + me_src.convertPointToGeoPosition(me.getPoint()).getLongitude());
-            enableMarqueurCreation(false);
-            listesMarqueursPanel1.createMarqueurButton.setEnabled(true);
-            enableMarqueurSelection(true);
-            listesMarqueursPanel1.createMarqueurButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    listesMarqueursPanel1.createMarqueurButton.setEnabled(false);
-                    enableMarqueurCreation(true);
-                }
-            });
-        }
-
-        public void mousePressed(MouseEvent e) {} public void mouseReleased(MouseEvent e) {} public void mouseEntered(MouseEvent e) {} public void mouseExited(MouseEvent e) {}
-    };
 
     MouseListener selectMarqueurMap = new MouseListener() {
         @Override
@@ -86,7 +46,7 @@ public class HubFrame extends JFrame {
             JXMapViewer me_src = (JXMapViewer) me.getSource();
             for(Marqueur wp : mapPanel1.waypoints) {
                 if (Math.abs(wp.getPosition().getLatitude() - me_src.convertPointToGeoPosition(me.getPoint()).getLatitude())  <= 0.0005
-                && Math.abs(wp.getPosition().getLongitude() - me_src.convertPointToGeoPosition(me.getPoint()).getLongitude()) <= 0.0005 ) {
+                        && Math.abs(wp.getPosition().getLongitude() - me_src.convertPointToGeoPosition(me.getPoint()).getLongitude()) <= 0.0005 ) {
                     marqueurInfosPanel1.buttonInfos.setEnabled(true);
                     marqueurInfosPanel1.buttonCommentaires.setEnabled(true);
                     marqueurInfosPanel1.buttonMemos.setEnabled(true);
@@ -99,38 +59,38 @@ public class HubFrame extends JFrame {
 
                     marqueurInfosPanel1.taDesc.setText(app.marqueurController.fetchMarqueurDescription(wp.getLieuID(), wp.getPlaceType()));
 //                    marqueurInfosPanel1.taDesc.setText(wp.);
-                        marqueurInfosPanel1.buttonInfos.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                try {
-                                    enablePlusDinfos(wp);
-                                } catch (SQLException ex) {
-                                    ex.printStackTrace();
-                                }
+                    marqueurInfosPanel1.buttonInfos.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                enablePlusDinfos(wp);
+                            } catch (SQLException ex) {
+                                ex.printStackTrace();
                             }
-                        });
+                        }
+                    });
 
-                        marqueurInfosPanel1.buttonMemos.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                try {
-                                    enableMemos(wp);
-                                } catch (SQLException ex) {
-                                    ex.printStackTrace();
-                                }
+                    marqueurInfosPanel1.buttonMemos.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                enableMemos(wp);
+                            } catch (SQLException ex) {
+                                ex.printStackTrace();
                             }
-                        });
+                        }
+                    });
 
-                        marqueurInfosPanel1.buttonCommentaires.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                try {
-                                    enableCommentaires(wp);
-                                } catch (SQLException ex) {
-                                    ex.printStackTrace();
-                                }
+                    marqueurInfosPanel1.buttonCommentaires.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            try {
+                                enableCommentaires(wp);
+                            } catch (SQLException ex) {
+                                ex.printStackTrace();
                             }
-                        });
+                        }
+                    });
                     break;
                 }
                 else {
@@ -150,27 +110,25 @@ public class HubFrame extends JFrame {
 
     };
 
-
-
-    private void initComponents() throws SQLException {
+    private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         menuBar1 = new JMenuBar();
         menu2 = new JMenu();
-        menuRefreshLists = new JMenuItem();
-        separator1 = new JSeparator();
         menuQUitter = new JMenuItem();
         menu1 = new JMenu();
-        modeAdminMenu = new JMenuItem();
+        goNormal = new JMenuItem();
         checkBoxMenuItem1 = new JCheckBoxMenuItem();
         menu3 = new JMenu();
         menuSeDeco = new JMenuItem();
-        listesMarqueursPanel1 = new ListesMarqueursPanel(this.app);
         mapPanel1 = new MapPanel(this.app);
         marqueurInfosPanel1 = new MarqueurInfosPanel();
+        panel1 = new JPanel();
+        buttonSuggestions = new JButton();
+        buttonUsers = new JButton();
+        label1 = new JLabel();
 
         //======== this ========
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("OurMap project");
+        setTitle("OurMap project (mode admin)");
         var contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
 
@@ -180,12 +138,6 @@ public class HubFrame extends JFrame {
             //======== menu2 ========
             {
                 menu2.setText("Fichier");
-
-                //---- menuRefreshLists ----
-                menuRefreshLists.setText("Rafra\u00eechir les listes");
-                menuRefreshLists.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK));
-                menu2.add(menuRefreshLists);
-                menu2.add(separator1);
 
                 //---- menuQUitter ----
                 menuQUitter.setText("Quitter");
@@ -198,9 +150,9 @@ public class HubFrame extends JFrame {
             {
                 menu1.setText("Affichage");
 
-                //---- modeAdminMenu ----
-                modeAdminMenu.setText("Lancer le mode admin");
-                menu1.add(modeAdminMenu);
+                //---- goNormal ----
+                goNormal.setText("Retourner en mode normal");
+                menu1.add(goNormal);
 
                 //---- checkBoxMenuItem1 ----
                 checkBoxMenuItem1.setText("Liste des th\u00e8mes");
@@ -220,21 +172,47 @@ public class HubFrame extends JFrame {
             menuBar1.add(menu3);
         }
         setJMenuBar(menuBar1);
-        contentPane.add(listesMarqueursPanel1, BorderLayout.EAST);
         contentPane.add(mapPanel1, BorderLayout.CENTER);
-        contentPane.add(marqueurInfosPanel1, BorderLayout.SOUTH);
-        setSize(845, 520);
+        contentPane.add(marqueurInfosPanel1, BorderLayout.NORTH);
+
+        //======== panel1 ========
+        {
+            panel1.setLayout(new MigLayout(
+                "hidemode 3",
+                // columns
+                "[fill]" +
+                "[fill]" +
+                "[fill]" +
+                "[fill]" +
+                "[fill]" +
+                "[fill]" +
+                "[fill]" +
+                "[fill]" +
+                "[fill]" +
+                "[fill]" +
+                "[fill]",
+                // rows
+                "[]" +
+                "[]"));
+
+            //---- buttonSuggestions ----
+            buttonSuggestions.setText("Afficher toutes les suggestions");
+            panel1.add(buttonSuggestions, "cell 0 0");
+
+            //---- buttonUsers ----
+            buttonUsers.setText("Afficher tous les utilisateurs");
+            panel1.add(buttonUsers, "cell 1 0");
+
+            //---- label1 ----
+            label1.setText("Bienvenue dans l'interface admin, ");
+            panel1.add(label1, "cell 5 1");
+        }
+        contentPane.add(panel1, BorderLayout.SOUTH);
+        setSize(760, 495);
         setLocationRelativeTo(getOwner());
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
-        listesMarqueursPanel1.initTree();
-        listesMarqueursPanel1.createMarqueurButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                listesMarqueursPanel1.createMarqueurButton.setEnabled(false);
-                enableMarqueurCreation(true);
-            }
-        });
         enableMarqueurSelection(true);
+        label1.setText(label1.getText() + app.utilisateurController.getUtilisateurById((int) app.idUtilisateurConnecte).getDisplayName());
         menuQUitter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -249,25 +227,39 @@ public class HubFrame extends JFrame {
                 dispose();
             }
         });
-        modeAdminMenu.addActionListener(new ActionListener() {
+        goNormal.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(app.utilisateurController.isAdmin((int) app.idUtilisateurConnecte)) {
-                    AdminFrame adminFrame = new AdminFrame(app);
-                    adminFrame.setVisible(true);
+                try {
+                    HubFrame hubFrame = new HubFrame(app);
+                    hubFrame.setVisible(true);
                     dispose();
-                }
-                else {
-                    JOptionPane.showMessageDialog(getParent(), "Vous ne disposez pas des droits administrateur.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
             }
         });
 
-        menuRefreshLists.addActionListener(new ActionListener() {
+        buttonSuggestions.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                ListSuggestionsFrame listSuggestionsFrame = null;
                 try {
-                    listesMarqueursPanel1.initTree();
+                    listSuggestionsFrame = new ListSuggestionsFrame(app);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+                listSuggestionsFrame.setVisible(true);
+            }
+        });
+
+        buttonUsers.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ListUsersFrame listUsersFrame = null;
+                try {
+                    listUsersFrame = new ListUsersFrame(app);
+                    listUsersFrame.setVisible(true);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -299,20 +291,7 @@ public class HubFrame extends JFrame {
             }
         });
 
-//        jlistThemes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//        jlistThemes.setModel(listModel);
-//        jlistThemes.addListSelectionListener(new ListSelectionListener() {
-//            @Override
-//            public void valueChanged(ListSelectionEvent e) {
-//                String res = "Arc";
-//                if(!e.getValueIsAdjusting()) {
-//                    res = jlistThemes.getSelectedValue().toString();
-//                }
-//                updateLF(res);
-//            }
-//        });
-//
-//        scrollPane1.setVisible(false);
+
         checkBoxMenuItem1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -326,17 +305,7 @@ public class HubFrame extends JFrame {
                 }
             }
         });
-    }
 
-    public void enableMarqueurCreation(boolean etat) {
-        /** mouse clicks to waypoints method  */
-        if(etat == true) {
-            mapPanel1.OurMap.addMouseListener(addMarqueur);
-            enableMarqueurSelection(false);
-        }
-        else {
-            mapPanel1.OurMap.removeMouseListener(addMarqueur);
-        }
     }
 
     public void enableMarqueurSelection(boolean etat) {
@@ -419,6 +388,21 @@ public class HubFrame extends JFrame {
 
     public void enableCommentaires(Marqueur mq) throws SQLException {
         CommentFrame commentFrame = new CommentFrame(this.app, mq);
+        JButton butSup = new JButton("Cacher le commentaire");
+        commentFrame.add(butSup, "wrap");
+        butSup.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(app.commentaireController.setCertainCommVisible((long)app.utilisateurController.getUtilisateurByName(commentFrame.table1.getValueAt(commentFrame.table1.getSelectedRow(), 1).toString()).getIdutilisateur(),
+                        commentFrame.mq.getLieuID(),commentFrame.table1.getValueAt(commentFrame.table1.getSelectedRow(), 0).toString(), false )) {
+                    ((DefaultTableModel)commentFrame.table1.getModel()).removeRow(commentFrame.table1.getSelectedRow());
+                    JOptionPane.showMessageDialog(commentFrame.getParent(), "Le commentaire a bien été caché.", "Succès", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else {
+                    JOptionPane.showMessageDialog(commentFrame.getParent(), "Erreur lors de la sélection du commentaire", "Erreur", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
         commentFrame.setVisible(true);
     }
 
@@ -466,18 +450,19 @@ public class HubFrame extends JFrame {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    private JMenuBar menuBar1;
-    private JMenu menu2;
-    public JMenuItem menuRefreshLists;
-    private JSeparator separator1;
+    public JMenuBar menuBar1;
+    public JMenu menu2;
     public JMenuItem menuQUitter;
-    private JMenu menu1;
-    public JMenuItem modeAdminMenu;
+    public JMenu menu1;
+    public JMenuItem goNormal;
     private JCheckBoxMenuItem checkBoxMenuItem1;
-    private JMenu menu3;
+    public JMenu menu3;
     private JMenuItem menuSeDeco;
-    public ListesMarqueursPanel listesMarqueursPanel1;
     public MapPanel mapPanel1;
     public MarqueurInfosPanel marqueurInfosPanel1;
+    public JPanel panel1;
+    public JButton buttonSuggestions;
+    public JButton buttonUsers;
+    public JLabel label1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

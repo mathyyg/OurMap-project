@@ -21,7 +21,7 @@ import org.jolmkbL2B.marqueurs.Marqueur;
  * @author Mathys Gagner
  */
 public class CommentFrame extends JFrame {
-    private final Marqueur mq;
+    public final Marqueur mq;
     private final AppControllers app;
 
     public CommentFrame(AppControllers app, Marqueur mq) throws SQLException {

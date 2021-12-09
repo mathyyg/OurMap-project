@@ -7,7 +7,9 @@ public interface Commentaires {
 
     public ResultSet fetchAllCommentairesByUser(long idmarqueur);
 
-    boolean setCommentaireVisible(long idutilisateur, long idmarqueur, boolean visible);
+    boolean setCommentairesVisible(long idutilisateur, long idmarqueur, boolean visible);
+
+    boolean setCertainCommVisible(long idutilisateur, long idmarqueur, String text, boolean visible);
 
     boolean postCommentaire(long idutilisateur, long idmarqueur, String text);
 }

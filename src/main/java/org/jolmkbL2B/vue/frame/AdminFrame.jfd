@@ -5,23 +5,13 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 			name: "this"
+			"title": "OurMap project (mode admin)"
 			"$sizePolicy": 1
-			"defaultCloseOperation": 2
-			"title": "OurMap project"
-			add( new FormComponent( "org.jolmkbL2B.vue.panel.ListesMarqueursPanel" ) {
-				name: "listesMarqueursPanel1"
-				auxiliary() {
-					"JavaCodeGenerator.variableModifiers": 1
-					"JavaCodeGenerator.customCreateCode": "new ListesMarqueursPanel(this.app);"
-				}
-			}, new FormLayoutConstraints( class java.lang.String ) {
-				"value": "East"
-			} )
 			add( new FormComponent( "org.jolmkbL2B.vue.panel.MapPanel" ) {
 				name: "mapPanel1"
 				auxiliary() {
-					"JavaCodeGenerator.variableModifiers": 1
 					"JavaCodeGenerator.customCreateCode": "new MapPanel(this.app);"
+					"JavaCodeGenerator.variableModifiers": 1
 				}
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "Center"
@@ -32,24 +22,58 @@ new FormModel {
 					"JavaCodeGenerator.variableModifiers": 1
 				}
 			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "North"
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class net.miginfocom.swing.MigLayout ) {
+				"$layoutConstraints": "hidemode 3"
+				"$columnConstraints": "[fill][fill][fill][fill][fill][fill][fill][fill][fill][fill][fill]"
+				"$rowConstraints": "[][]"
+			} ) {
+				name: "panel1"
+				auxiliary() {
+					"JavaCodeGenerator.variableModifiers": 1
+				}
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "buttonSuggestions"
+					"text": "Afficher toutes les suggestions"
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 1
+					}
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 0 0"
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "buttonUsers"
+					"text": "Afficher tous les utilisateurs"
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 1
+					}
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 1 0"
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label1"
+					"text": "Bienvenue dans l'interface admin, "
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 1
+					}
+				}, new FormLayoutConstraints( class net.miginfocom.layout.CC ) {
+					"value": "cell 5 1"
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "South"
 			} )
 			menuBar: new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
 				name: "menuBar1"
+				auxiliary() {
+					"JavaCodeGenerator.variableModifiers": 1
+				}
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 					name: "menu2"
 					"text": "Fichier"
-					add( new FormComponent( "javax.swing.JMenuItem" ) {
-						name: "menuRefreshLists"
-						"text": "Rafraîchir les listes"
-						"accelerator": static javax.swing.KeyStroke getKeyStroke( 82, 130, false )
-						auxiliary() {
-							"JavaCodeGenerator.variableModifiers": 1
-						}
-					} )
-					add( new FormComponent( "javax.swing.JSeparator" ) {
-						name: "separator1"
-					} )
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 1
+					}
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuQUitter"
 						"text": "Quitter"
@@ -62,9 +86,12 @@ new FormModel {
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 					name: "menu1"
 					"text": "Affichage"
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 1
+					}
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
-						name: "modeAdminMenu"
-						"text": "Lancer le mode admin"
+						name: "goNormal"
+						"text": "Retourner en mode normal"
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
 						}
@@ -77,6 +104,9 @@ new FormModel {
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 					name: "menu3"
 					"text": "Compte"
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 1
+					}
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
 						name: "menuSeDeco"
 						"text": "Se déconnecter"
@@ -85,8 +115,8 @@ new FormModel {
 				} )
 			}
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 30, 105 )
-			"size": new java.awt.Dimension( 845, 520 )
+			"location": new java.awt.Point( 35, 30 )
+			"size": new java.awt.Dimension( 760, 495 )
 		} )
 	}
 }

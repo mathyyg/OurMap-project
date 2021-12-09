@@ -1,5 +1,6 @@
 package org.jolmkbL2B.controllers;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 
 // @author MATHYS
@@ -61,5 +62,31 @@ public class SuggestionController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public ResultSet fetchAllSuggestions() {
+        try {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM suggestions");
+//            stmt.close();
+            return rs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean deleteSuggestion(int idsuggestion) {
+        try {
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate("DELETE FROM suggestions WHERE idsuggestion = " + idsuggestion);
+            stmt.close();
+            con.commit();
+            return true;
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

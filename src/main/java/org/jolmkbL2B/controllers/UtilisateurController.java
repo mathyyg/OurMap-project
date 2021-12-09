@@ -57,15 +57,11 @@ public boolean isAdmin;
         this.idFavList = idFavList;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
-    }
+//    public void setAdmin(boolean admin) {
+//        isAdmin = admin;
+//    }
 
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
-    }
-
-    public void getAllUtilisateurs() {
+    public ResultSet getAllUtilisateurs() {
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
                     "mathys", "projet2021GL"); //etablissement connection
@@ -76,15 +72,14 @@ public boolean isAdmin;
             PreparedStatement ps =  con.prepareStatement(log);
             ResultSet resultat = ps.executeQuery();
             if(resultat.next()){
-               System.out.println(resultat);
+                return resultat;
             }
-            else {
-                System.out.println("Erreur");
-            }
+
         }
         catch(SQLException e) {
             System.out.println("Connection failed. Aborting process." + e);
         }
+        return null;
     }
 
     public UtilisateurAuthentifié getUtilisateurById(int identr) {
@@ -112,6 +107,31 @@ public boolean isAdmin;
         return res;
     }
 
+    public UtilisateurAuthentifié getUtilisateurByName(String name) {
+        UtilisateurAuthentifié res = null;
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
+                    "mathys", "projet2021GL"); //etablissement connection
+            con.setAutoCommit(false);
+            Statement stmt = con.createStatement();
+            stmt.execute("USE ourmapdb;");
+            String log ="select idutilisateur,displayName,password,idFavList,isAdmin from utilisateurs where displayName = ?";
+            PreparedStatement ps =  con.prepareStatement(log);
+            ps.setString(1, name);
+            ResultSet resultat = ps.executeQuery();
+            if(resultat.next()){
+                res = new UtilisateurAuthentifié(resultat.getInt("idutilisateur"), resultat.getString("displayName"),
+                        resultat.getString("password"), resultat.getInt("idFavList"),
+                        resultat.getBoolean("isAdmin"));
+            }
+
+        }
+        catch(SQLException e) {
+            System.out.println("Connection failed. Aborting process." + e);
+        }
+        return res;
+    }
+
     public void setNom(int iduser,String NouveauNom) {
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
@@ -129,7 +149,7 @@ public boolean isAdmin;
         }
     }
 
-    public void setAdmin(int iduser,boolean status) {
+    public boolean setAdmin(int iduser,boolean status) {
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
                     "mathys", "projet2021GL"); //etablissement connection
@@ -140,10 +160,16 @@ public boolean isAdmin;
                     " SET `isAdmin` = " + status + "\n" +
                     "WHERE idutilisateur = " + iduser + ";");
             con.commit();
+            return true;
         }
         catch(SQLException e) {
             System.out.println("Connection failed. Aborting process." + e);
         }
+        return false;
+    }
+
+    public boolean isAdmin(int iduser) {
+        return getUtilisateurById(iduser).isAdmin;
     }
 }
 

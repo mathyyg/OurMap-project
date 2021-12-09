@@ -80,7 +80,7 @@ public class CommentaireController implements Commentaires  {
      * @param idutilisateur identifiant de l'utilisateur ayant posté le commentaire à masquer / montrer
      * @param idmarqueur identifiant du marqueur sur lequel se trouvent les commentaires à masquer / montrer
      * @param visible true si on souhaite montrer un commentaire, false si on se souhaite le cacher*/
-    public boolean setCommentaireVisible(long idutilisateur, long idmarqueur, boolean visible) {
+    public boolean setCommentairesVisible(long idutilisateur, long idmarqueur, boolean visible) {
         /**On s'assure que le booleen sera bien transmis sous lq forme 0 ou 1 (la BD etant configuree
          * pour que les booleens soient sous forne de 0 ou 1)
          */
@@ -90,7 +90,28 @@ public class CommentaireController implements Commentaires  {
             Statement stmt = con.createStatement();
             int success = stmt.executeUpdate("UPDATE `ourmapdb`.`commentaires`\n" +
                     "(SET `setVisible`= " + isVisible + ")\n" +
-                    "WHERE idmarqueur = " + idmarqueur + "AND idutlisateur = " + idutilisateur + ";\n");
+                    "WHERE idmarqueur = " + idmarqueur + "AND idutilisateur = " + idutilisateur + ";\n");
+            stmt.close();
+            con.commit(); /** Enregistrement de la modification, le setAutoCommit étant sur false. */
+            if(success == 0) { /** Si aucune ligne de la BD n'a été changée, retourner false */
+                System.err.println("Aucun commentaire n'a pu être modifié.");
+                return false;
+            }
+            else return true; /** Si une ou plusieurs lignes de la BD ont été changées, retourner true)*/
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean setCertainCommVisible(long idutilisateur, long idmarqueur, String text, boolean visible) {
+        int isVisible = 0;
+        if(visible == true) isVisible = 1;
+        try {
+            Statement stmt = con.createStatement();
+            int success = stmt.executeUpdate("UPDATE commentaires SET setVisible = " + isVisible + " WHERE idmarqueur = " + idmarqueur + " AND idutilisateur = " + idutilisateur
+                                                + " AND text = \"" + text + "\";");
             stmt.close();
             con.commit(); /** Enregistrement de la modification, le setAutoCommit étant sur false. */
             if(success == 0) { /** Si aucune ligne de la BD n'a été changée, retourner false */
