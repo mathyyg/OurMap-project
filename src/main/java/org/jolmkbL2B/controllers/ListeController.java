@@ -1,6 +1,11 @@
 package org.jolmkbL2B.controllers;
 
 import java.sql.*;
+/**
+ * @author Oualid Siraji
+ *
+ *
+ */
 
 public class ListeController implements Listes {
     private Connection con;
@@ -40,7 +45,6 @@ public class ListeController implements Listes {
      *                      Colonnes (idmarqueur, placeType, latitude, longitude, marqueurName)
      *
      * ATTENTION : acces rights check désactivé temporairement. Cause un crash au demarage
-     * @since  2.0
      * @version 1
      */
     public ResultSet fetchList(long idliste, long requestingUser)    {
