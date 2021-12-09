@@ -2,6 +2,10 @@ package org.jolmkbL2B.controllers;
 
 import java.sql.*;
 /**
+ *
+ *
+ *
+ *
  * @author Oualid Siraji
  */
 
@@ -231,13 +235,12 @@ public class Sinscrire extends javax.swing.JFrame {
 
     }
 
-    /** Cette méthode execute els requetes SQL necessaire à l'inscription d'un nouvel utilisateur.
+    /** Cette méthode execute les requetes SQL necessaire à l'inscription d'un nouvel utilisateur.
      * Elle inscrit d'abord l'utilisateur dans la table utilisateurs pui créé sa liste de favoris. Elle n'est executée
      * qu'une fois les verification de mot de passe et de nom d'utilisateurs sont effectuées.
      *
      * @param username, password1
      * @return true si l'inscription se déroule correctement, false en cas d'erreur
-     * @since 2.4.8
      * @version 1
      * @author Oualid Siraji */
     private boolean finaliserInscription(String username, String password1) {
