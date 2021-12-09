@@ -102,8 +102,8 @@ public class HubFrame extends JFrame {
         public void mouseClicked(MouseEvent me) {
             JXMapViewer me_src = (JXMapViewer) me.getSource();
             for(Marqueur wp : mapPanel1.waypoints) {
-                if (Math.abs(wp.getPosition().getLatitude() - me_src.convertPointToGeoPosition(me.getPoint()).getLatitude())  <= 0.0025
-                && Math.abs(wp.getPosition().getLongitude() - me_src.convertPointToGeoPosition(me.getPoint()).getLongitude()) <= 0.0025 ) {
+                if (Math.abs(wp.getPosition().getLatitude() - me_src.convertPointToGeoPosition(me.getPoint()).getLatitude())  <= 0.00025
+                && Math.abs(wp.getPosition().getLongitude() - me_src.convertPointToGeoPosition(me.getPoint()).getLongitude()) <= 0.00025 ) {
                     marqueurInfosPanel1.buttonInfos.setEnabled(true);
                     marqueurInfosPanel1.buttonCommentaires.setEnabled(true);
                     marqueurInfosPanel1.buttonMemos.setEnabled(true);
