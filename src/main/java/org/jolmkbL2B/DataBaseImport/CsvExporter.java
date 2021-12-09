@@ -12,18 +12,21 @@ public class CsvExporter {
     public CsvExporter() {
     }
 
-    /** @obsolete N'est plus compatible avec la BD*/
+    /** @obsolete N'est plus compatible avec la BD
+     * @author Bastien*/
     private boolean exportArretBus(String path, Connection con)  {
         boolean success = false;
 
         try {
             BufferedReader lineReader = new BufferedReader(new FileReader(path)); //Buffer servant à lire le fichier ligne par ligne
             String csvLine = "";
-            lineReader.readLine();
+            lineReader.readLine(); //la ligne actuellement lue
 
             while ((csvLine = lineReader.readLine()) != null) {
-                String[] data = csvLine.split(",");
+                String[] data = csvLine.split(","); //la virgule sépare les colonnes
                 Statement stmt = con.createStatement();
+
+                //insertion dans la table marqueurs
                 String sql1 = "INSERT INTO `ourmapdb`.`marqueurs`\n" +
                         "(`type`,\n" +
                         "`latitude`,\n" +
@@ -35,6 +38,7 @@ public class CsvExporter {
                 stmt.executeUpdate(sql1);
 
                 String getLastIDQuerry = "SELECT idmarqueur FROM marqueurs ORDER BY idmarqueur DESC LIMIT 1;";
+                //récupération de l'identifiant du dernier marqueur
                 ResultSet rs = stmt.executeQuery(getLastIDQuerry);
                 rs.next();
                 int rowID = rs.getInt(1);
@@ -66,7 +70,8 @@ public class CsvExporter {
     }
 
 
-    /** @obsolete N'est plus compatible avec la BD */
+    /** @obsolete N'est plus compatible avec la BD
+     * @author Bastien*/
     private boolean exportHotels(String path, Connection con)    {
         boolean success = false;
         String csvLine = "";
@@ -74,11 +79,13 @@ public class CsvExporter {
         try {
             BufferedReader lineReader = new BufferedReader(new FileReader(path)); //Buffer servant à lire le fichier ligne par ligne
 
-            csvLine = lineReader.readLine();
+            csvLine = lineReader.readLine();//la ligne actuellement lue
 
             while ((csvLine = lineReader.readLine()) != null) {
-                String[] data = csvLine.split(",");
+                String[] data = csvLine.split(","); //la virgule sépare les colonnes
                 Statement stmt = con.createStatement();
+
+                //insertion dans la table marqueurs
                 String sql1 = "INSERT INTO `ourmapdb`.`marqueurs`\n" +
                         "(`type`,\n" +
                         "`latitude`,\n" +
@@ -90,9 +97,12 @@ public class CsvExporter {
                 stmt.executeUpdate(sql1);
 
                 String getLastIDQuerry = "SELECT idmarqueur FROM marqueurs ORDER BY idmarqueur DESC LIMIT 1;";
+                //récupération de l'identifiant du dernier marqueur
                 ResultSet rs = stmt.executeQuery(getLastIDQuerry);
                 rs.next();
                 int rowID = rs.getInt(1);
+
+                //insertion du reste des infos
 
                 String sql2 = "INSERT INTO `ourmapdb`.`hotels`\n" +
                         "(`idhotels`,\n" +
@@ -138,12 +148,14 @@ public class CsvExporter {
 
         try {
             BufferedReader lineReader = new BufferedReader(new FileReader(path)); //Buffer servant à lire le fichier ligne par ligne
-            String csvLine = "";
+            String csvLine = "";//la ligne actuellement lue
             lineReader.readLine();
 
             while ((csvLine = lineReader.readLine()) != null) {
-                String[] data = csvLine.split(",");
+                String[] data = csvLine.split(",");//la virgule sépare les colonnes
                 Statement stmt = con.createStatement();
+
+                //insertion dans la table marqueurs
                 String sql1 = "INSERT INTO `ourmapdb`.`marqueurs`\n" +
                         "(`placeType`,\n" +
                         "`latitude`, \n" +
@@ -152,10 +164,12 @@ public class CsvExporter {
                 stmt.executeUpdate(sql1);
 
                 String getLastIDQuerry = "SELECT idmarqueur FROM marqueurs ORDER BY idmarqueur DESC LIMIT 1;";
+                //récupération de l'identifiant du dernier marqueur
                 ResultSet rs = stmt.executeQuery(getLastIDQuerry);
                 rs.next();
                 int rowID = rs.getInt(1);
 
+                //insertion du reste des infos
                 String sql2 = "INSERT INTO `ourmapdb`.`schools`\n" +
                         "(`idmarqueur`,\n" +
                         "`city`,\n" +
