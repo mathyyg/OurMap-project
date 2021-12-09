@@ -5,18 +5,9 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 			name: "this"
+			"title": "OurMap project (mode invité)"
 			"$sizePolicy": 1
 			"defaultCloseOperation": 2
-			"title": "OurMap project"
-			add( new FormComponent( "org.jolmkbL2B.vue.panel.ListesMarqueursPanel" ) {
-				name: "listesMarqueursPanel1"
-				auxiliary() {
-					"JavaCodeGenerator.variableModifiers": 1
-					"JavaCodeGenerator.customCreateCode": "new ListesMarqueursPanel(this.app);"
-				}
-			}, new FormLayoutConstraints( class java.lang.String ) {
-				"value": "East"
-			} )
 			add( new FormComponent( "org.jolmkbL2B.vue.panel.MapPanel" ) {
 				name: "mapPanel1"
 				auxiliary() {
@@ -40,18 +31,7 @@ new FormModel {
 					name: "menu2"
 					"text": "Fichier"
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
-						name: "menuRefreshLists"
-						"text": "Rafraîchir les listes"
-						"accelerator": static javax.swing.KeyStroke getKeyStroke( 82, 130, false )
-						auxiliary() {
-							"JavaCodeGenerator.variableModifiers": 1
-						}
-					} )
-					add( new FormComponent( "javax.swing.JSeparator" ) {
-						name: "separator1"
-					} )
-					add( new FormComponent( "javax.swing.JMenuItem" ) {
-						name: "menuQUitter"
+						name: "menuQuitter"
 						"text": "Quitter"
 						"accelerator": static javax.swing.KeyStroke getKeyStroke( 81, 130, false )
 						auxiliary() {
@@ -70,20 +50,41 @@ new FormModel {
 							"JavaCodeGenerator.variableModifiers": 1
 						}
 					} )
+					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
+						name: "separator2"
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuGetGPS"
+						"text": "Afficher les coordonnées du clic..."
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
+					} )
 				} )
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 					name: "menu3"
 					"text": "Compte"
 					add( new FormComponent( "javax.swing.JMenuItem" ) {
-						name: "menuSeDeco"
-						"text": "Se déconnecter"
-						"accelerator": static javax.swing.KeyStroke getKeyStroke( 68, 130, false )
+						name: "menuLogin"
+						"text": "Se connecter"
+						"accelerator": static javax.swing.KeyStroke getKeyStroke( 76, 130, false )
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "menuSinscrire"
+						"text": "S'inscrire"
+						"accelerator": static javax.swing.KeyStroke getKeyStroke( 83, 130, false )
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
 					} )
 				} )
 			}
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 20, 25 )
-			"size": new java.awt.Dimension( 845, 520 )
+			"location": new java.awt.Point( 55, 45 )
+			"size": new java.awt.Dimension( 760, 470 )
 		} )
 	}
 }

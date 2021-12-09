@@ -122,6 +122,6 @@ public class CustomFrame extends JFrame {
     public JScrollPane scrollPane1;
     public JTextArea textADesc;
     public JButton buttonSauvegarder;
-    private JButton button1;
+    public JButton button1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

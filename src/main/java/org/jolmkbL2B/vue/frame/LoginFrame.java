@@ -73,7 +73,7 @@ public class LoginFrame extends JFrame {
         });
 
         Annuler.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        Annuler.setText("Annuler");
+        Annuler.setText("Mode invité");
         Annuler.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AnnulerActionPerformed(evt);
@@ -163,9 +163,9 @@ public class LoginFrame extends JFrame {
     }
 
     private void AnnulerActionPerformed(java.awt.event.ActionEvent evt) {
-        connnom1.setText("");
-        connpass.setText("");
-
+        HubFrameInvite hubFrameInvite = new HubFrameInvite(app);
+        hubFrameInvite.setVisible(true);
+        this.dispose();
     }
 
     //Bouttoun se connecter
