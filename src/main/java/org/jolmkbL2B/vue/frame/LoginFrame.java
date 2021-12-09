@@ -7,6 +7,10 @@ import org.jolmkbL2B.controllers.Sinscrire;
 import javax.swing.*;
 import java.sql.*;
 
+/**
+ * @author Mohammed Jalal El Hani
+ * Cette classe permet de se connecter à l'application
+ */
 public class LoginFrame extends JFrame {
     private final AppControllers app;
     // Variables declaration - do not modify//GEN-BEGIN:variables

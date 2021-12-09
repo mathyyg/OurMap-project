@@ -29,6 +29,7 @@ import org.jxmapviewer.viewer.GeoPosition;
 
 /**
  * @author Mathys Gagner
+ * Cette classe gère et affiche la fenêtre principal de l'application pour un utilisateur authentifié
  */
 public class HubFrame extends JFrame {
 
@@ -40,6 +41,7 @@ public class HubFrame extends JFrame {
         initComponents();
     }
 
+    // MouseListener de création de marqueur
     MouseListener addMarqueur = new MouseListener() {
         @Override
         public void mouseClicked(MouseEvent me) {
@@ -80,6 +82,7 @@ public class HubFrame extends JFrame {
         public void mousePressed(MouseEvent e) {} public void mouseReleased(MouseEvent e) {} public void mouseEntered(MouseEvent e) {} public void mouseExited(MouseEvent e) {}
     };
 
+    // MouseListener de sélection de marqueur
     MouseListener selectMarqueurMap = new MouseListener() {
         @Override
         public void mouseClicked(MouseEvent me) {
@@ -151,7 +154,12 @@ public class HubFrame extends JFrame {
     };
 
 
-
+    /**
+     * @author Mathys Gagner
+     * Méthode créée par JFormDesigner qui initialise tous les composants Swing
+     * Le reste des instructions est personnalisé et contient toutes les autres initialisations ;
+     * listeners, états de composants, ...
+     */
     private void initComponents() throws SQLException {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         menuBar1 = new JMenuBar();
@@ -328,6 +336,11 @@ public class HubFrame extends JFrame {
         });
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode permettant l'activation ou non du mode "création de marqueur"
+     * @param etat true ou false
+     */
     public void enableMarqueurCreation(boolean etat) {
         /** mouse clicks to waypoints method  */
         if(etat == true) {
@@ -339,6 +352,11 @@ public class HubFrame extends JFrame {
         }
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode permettant l'activation ou non du mode "sélection de marqueur"
+     * @param etat true ou false
+     */
     public void enableMarqueurSelection(boolean etat) {
         if(etat == true) {
             mapPanel1.OurMap.addMouseListener(selectMarqueurMap);
@@ -351,6 +369,11 @@ public class HubFrame extends JFrame {
         }
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode qui désactive les boutons de mémos, commentaires et informations détaillées d'un marqueur
+     * (pas de marqueur sélectionné = boutons désactivés)
+     */
     public void disableButtons() {
         for(ActionListener al : this.marqueurInfosPanel1.buttonInfos.getActionListeners()) {
             this.marqueurInfosPanel1.buttonInfos.removeActionListener(al);
@@ -363,6 +386,12 @@ public class HubFrame extends JFrame {
         }
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode qui affiche les informations détaillées d'un marqueur selon son type.
+     * @param mq Marqueur dont on veut afficher les informations
+     * @throws SQLException
+     */
     public void enablePlusDinfos(Marqueur mq) throws SQLException {
 //        System.out.println(mq.getName());
         ResultSet infos = this.app.marqueurController.fetchAllInfo(mq.getLieuID(), mq.getPlaceType());
@@ -411,17 +440,33 @@ public class HubFrame extends JFrame {
         }
     }
 
+    /**
+     * @author Mathys Gagner
+     * Cette méthode ouvre la fenêtre des mémos associés au marqueur
+     * @param mq le marqueur dont on veut gérer les mémos (personnels)
+     * @throws SQLException
+     */
     public void enableMemos(Marqueur mq) throws SQLException {
 //        ResultSet memos = this.app.memoController.fetchUserMemo(mq.getLieuID(), this.app.idUtilisateurConnecte);
         MemoFrame memoFrame = new MemoFrame(this.app, mq);
         memoFrame.setVisible(true);
     }
 
+    /**
+     * @author Mathys Gagner
+     * Cette méthode ouvre la fenêtre des commentaires associés au marqueur
+     * @param mq le marqueur dont on veut gérer les commentaires (publics)
+     * @throws SQLException
+     */
     public void enableCommentaires(Marqueur mq) throws SQLException {
         CommentFrame commentFrame = new CommentFrame(this.app, mq);
         commentFrame.setVisible(true);
     }
 
+    /**
+     * Cette méthode initialise la HashMap de thèmes de couleur de la fenêtre
+     * @author Mathys Gagner
+     */
     private void initThemes() {
         this.themes.put("Arc", new FlatArcIJTheme());
         this.themes.put("Arc Orange", new FlatArcOrangeIJTheme());
@@ -454,6 +499,11 @@ public class HubFrame extends JFrame {
         this.themes.put("Vuesion", new FlatVuesionIJTheme());
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode qui met à jour les composants graphiques avec le nouveau Look & Feel Swing sélectionné dans la liste.
+     * @param lf Nom du Look & Feel Swing dans la liste à aller chercher dans la HashMap
+     */
     public void updateLF(String lf) {
         try {
             UIManager.setLookAndFeel(themes.get(lf));

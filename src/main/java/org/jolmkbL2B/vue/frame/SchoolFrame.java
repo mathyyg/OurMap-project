@@ -14,6 +14,7 @@ import org.jolmkbL2B.marqueurs.School;
 
 /**
  * @author Mathys Gagner
+ * Classe permettant l'affichage de la fenêtre des informations détaillées d'un objet School (fac, école, lycée, ...)
  */
 public class SchoolFrame extends JFrame {
     private final School school;
@@ -25,6 +26,12 @@ public class SchoolFrame extends JFrame {
         initComponents();
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode créée par JFormDesigner qui initialise tous les composants Swing
+     * Le reste des instructions est personnalisé et contient toutes les autres initialisations ;
+     * listeners, états de composants, ...
+     */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         label1 = new JLabel();

@@ -10,12 +10,20 @@ import net.miginfocom.swing.*;
 
 /**
  * @author Mathys Gagner
+ * Classe permettant la création du panel avec le nom et la description d'un marqueur ainsi que les différents boutons
+ * pour accéder aux autres informations liées au marqueur
  */
 public class MarqueurInfosPanel extends JPanel {
     public MarqueurInfosPanel() {
         initComponents();
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode créée par JFormDesigner qui initialise tous les composants Swing
+     * Le reste des instructions est personnalisé et contient toutes les autres initialisations ;
+     * listeners, états de composants, ...
+     */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         labelNom = new JLabel();

@@ -29,6 +29,7 @@ import org.jxmapviewer.JXMapViewer;
 
 /**
  * @author Mathys Gagner
+ * Cette classe affiche l'interface en mode administrateur.
  */
 public class AdminFrame extends JFrame {
     private final AppControllers app;
@@ -40,6 +41,7 @@ public class AdminFrame extends JFrame {
         initComponents();
     }
 
+    /* MouseListener de sélection de marqueur */
     MouseListener selectMarqueurMap = new MouseListener() {
         @Override
         public void mouseClicked(MouseEvent me) {
@@ -110,6 +112,12 @@ public class AdminFrame extends JFrame {
 
     };
 
+    /**
+     * @author Mathys Gagner
+     * Méthode créée par JFormDesigner qui initialise tous les composants Swing
+     * Le reste des instructions est personnalisé et contient toutes les autres initialisations ;
+     * listeners, états de composants, ...
+     */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         menuBar1 = new JMenuBar();
@@ -308,6 +316,11 @@ public class AdminFrame extends JFrame {
 
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode qui active ou non la sélection de marqueur sur la carte
+     * @param etat true ou false
+     */
     public void enableMarqueurSelection(boolean etat) {
         if(etat == true) {
             mapPanel1.OurMap.addMouseListener(selectMarqueurMap);
@@ -320,6 +333,11 @@ public class AdminFrame extends JFrame {
         }
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode qui désactive les boutons liés aux mémos, commentaires et informations sur les marqueurs
+     * (pas de marqueur sélectionné = boutons désactivés)
+     */
     public void disableButtons() {
         for(ActionListener al : this.marqueurInfosPanel1.buttonInfos.getActionListeners()) {
             this.marqueurInfosPanel1.buttonInfos.removeActionListener(al);
@@ -332,6 +350,12 @@ public class AdminFrame extends JFrame {
         }
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode qui affiche les informations détaillées d'un marqueur selon son type.
+     * @param mq Marqueur dont on veut afficher les informations
+     * @throws SQLException
+     */
     public void enablePlusDinfos(Marqueur mq) throws SQLException {
 //        System.out.println(mq.getName());
         ResultSet infos = this.app.marqueurController.fetchAllInfo(mq.getLieuID(), mq.getPlaceType());
@@ -343,7 +367,7 @@ public class AdminFrame extends JFrame {
 //                System.out.println(infos.getString(i) + " "+ infos.getMetaData().getColumnName(i) + " " +infos.getObject(i).getClass().getName());
 //            }
 //        }
-
+        //Lancement de la fenêtre associée au type de marqueur
         switch(mq.getPlaceType()) {
             case CUSTOM:
                 infos.next();
@@ -380,12 +404,24 @@ public class AdminFrame extends JFrame {
         }
     }
 
+    /**
+     * @author Mathys Gagner
+     * Cette méthode ouvre la fenêtre des mémos associés au marqueur
+     * @param mq le marqueur dont on veut gérer les mémos (personnels)
+     * @throws SQLException
+     */
     public void enableMemos(Marqueur mq) throws SQLException {
 //        ResultSet memos = this.app.memoController.fetchUserMemo(mq.getLieuID(), this.app.idUtilisateurConnecte);
         MemoFrame memoFrame = new MemoFrame(this.app, mq);
         memoFrame.setVisible(true);
     }
 
+    /**
+     * @author Mathys Gagner
+     * Cette méthode ouvre la fenêtre des commentaires associés au marqueur
+     * @param mq le marqueur dont on veut gérer les commentaires (publics)
+     * @throws SQLException
+     */
     public void enableCommentaires(Marqueur mq) throws SQLException {
         CommentFrame commentFrame = new CommentFrame(this.app, mq);
         JButton butSup = new JButton("Cacher le commentaire");
@@ -406,6 +442,10 @@ public class AdminFrame extends JFrame {
         commentFrame.setVisible(true);
     }
 
+    /**
+     * Cette méthode initialise la HashMap de thèmes de couleur de la fenêtre
+     * @author Mathys Gagner
+     */
     private void initThemes() {
         this.themes.put("Arc", new FlatArcIJTheme());
         this.themes.put("Arc Orange", new FlatArcOrangeIJTheme());
@@ -438,6 +478,11 @@ public class AdminFrame extends JFrame {
         this.themes.put("Vuesion", new FlatVuesionIJTheme());
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode qui met à jour les composants graphiques avec le nouveau Look & Feel Swing sélectionné dans la liste.
+     * @param lf Nom du Look & Feel Swing dans la liste à aller chercher dans la HashMap
+     */
     public void updateLF(String lf) {
         try {
             UIManager.setLookAndFeel(themes.get(lf));

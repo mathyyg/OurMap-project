@@ -14,6 +14,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Mathys Gagner
+ * Classe qui permet d'afficher la partie "listes de favoris" visible à droite dans l'application principale (HubFrame)
+ * (rare classe graphique non réalisées avec JFormDesigner ... :) )
+ */
 public class ListesMarqueursPanel extends JPanel {
     private final AppControllers app;
     public JScrollPane lmScrollPane;
@@ -51,6 +56,13 @@ public class ListesMarqueursPanel extends JPanel {
 
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode permettant l'initialisation des listes de favoris et des marqueurs associées à chacune
+     * Affiche "(vide)" si la liste est vide
+     * Cette méthode est aussi utilisée pour rafraichir le panel
+     * @throws SQLException
+     */
     public void initTree() throws SQLException {
         ResultSet listesBdd = this.app.listeController.fetchAllLists(app.idUtilisateurConnecte);
         HashMap<String, Long> idListes = new HashMap<String,Long>();

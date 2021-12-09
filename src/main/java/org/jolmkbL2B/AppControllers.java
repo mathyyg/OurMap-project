@@ -5,7 +5,13 @@ import org.jolmkbL2B.controllers.*;
 
 import java.sql.*;
 
-
+/**
+ * @author Mathys Gagner
+ * Classe qui permet d'avoir TOUS les controllers (intéragissant avec la base de données) dans un seul objet
+ * Cette objet est amené à être passé en paramètre de (presque) toutes les classes "graphiques" (Panel, Frame, ...)
+ * On peut noter la présence du champ idUtilisateurConnecte, qui permet d'avoir l'id de l'utilisateur actuellement connecté
+ * accessible n'importe quand et de n'importe où (à condition que l'objet AppControllers soit passé en paramètre)
+ */
 public class AppControllers {
     public static Connection con;
     public final MarqueurController marqueurController;

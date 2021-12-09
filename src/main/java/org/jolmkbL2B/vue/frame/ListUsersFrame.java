@@ -17,6 +17,8 @@ import java.sql.SQLException;
 
 /**
  * @author Mathys Gagner
+ * Cette classe permet l'affichage de la liste de tous les utilisateurs de l'application
+ * On peut également leur attribuer ou leur retirer les droits administrateur via cette fenêtre
  */
 public class ListUsersFrame extends JFrame {
     AppControllers app;
@@ -25,6 +27,12 @@ public class ListUsersFrame extends JFrame {
         initComponents();
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode créée par JFormDesigner qui initialise tous les composants Swing
+     * Le reste des instructions est personnalisé et contient toutes les autres initialisations ;
+     * listeners, états de composants, ...
+     */
     private void initComponents() throws SQLException {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         scrollPane1 = new JScrollPane();

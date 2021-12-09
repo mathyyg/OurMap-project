@@ -29,6 +29,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author Khaled Mahdi, Bastien Richardeau, Mathys Gagner
+ * Classe permettant l'affichage de la carte et des marqueurs (rendu possible par la librairie JXMapViewer2)
+ */
 public class MapPanel extends JPanel {
     public static JXMapViewer OurMap; //L'objet "carte"
     public final GeoPosition Blois_Focus; //Le point central de la carte au chargement

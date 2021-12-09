@@ -17,6 +17,7 @@ import java.util.HashMap;
 
 /**
  * @author Mathys Gagner
+ * Classe permettant d'afficher et de modifier les informations détaillées d'un marqueur personnalisé
  */
 public class CustomFrame extends JFrame {
     private final CustomMarqueur customMarqueur;
@@ -28,6 +29,12 @@ public class CustomFrame extends JFrame {
         initComponents();
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode créée par JFormDesigner qui initialise tous les composants Swing
+     * Le reste des instructions est personnalisé et contient toutes les autres initialisations ;
+     * listeners, états de composants, ...
+     */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         label1 = new JLabel();

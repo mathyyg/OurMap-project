@@ -12,12 +12,19 @@ import java.awt.event.WindowEvent;
 
 /**
  * @author Mathys Gagner
+ * Classe affichant la liste des thèmes de couleur disponibles pour l'application
  */
 public class ThemeFrame extends JFrame {
     public ThemeFrame() {
         initComponents();
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode créée par JFormDesigner qui initialise tous les composants Swing
+     * Le reste des instructions est personnalisé et contient toutes les autres initialisations ;
+     * listeners, états de composants, ...
+     */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         scrollPane1 = new JScrollPane();

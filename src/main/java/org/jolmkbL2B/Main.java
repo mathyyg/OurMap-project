@@ -7,7 +7,11 @@ import org.jolmkbL2B.vue.frame.LoginFrame;
 
 import javax.swing.*;
 
-
+/**
+ * @author Khaled Mahdi, Bastien Richardeau, Oualid Siraji, Mohammed Jalal El Hani, Lucas Carrilho Gomes
+ * (avec tout notre amour et notre bonne volonté)
+ * Classe permettant de lancer l'application
+ */
 public class Main
 {
     public static void main( String[] args ) {

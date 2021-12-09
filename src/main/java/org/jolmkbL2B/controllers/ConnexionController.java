@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/** Cette classe permet de tester la connexion à la base de données.
+ * @author Bastien Richardeau*/
 public class ConnexionController {
     private Connection con;
 

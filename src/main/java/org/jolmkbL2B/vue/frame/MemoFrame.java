@@ -16,6 +16,7 @@ import org.jolmkbL2B.marqueurs.Marqueur;
 
 /**
  * @author Mathys Gagner
+ * Cette classe permet d'afficher la fenêtre de gestion des mémos associés à un marqueur
  */
 public class MemoFrame extends JFrame {
     private final AppControllers app;
@@ -27,6 +28,12 @@ public class MemoFrame extends JFrame {
         initComponents();
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode créée par JFormDesigner qui initialise tous les composants Swing
+     * Le reste des instructions est personnalisé et contient toutes les autres initialisations ;
+     * listeners, états de composants, ...
+     */
     private void initComponents() throws SQLException {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         scrollPane1 = new JScrollPane();

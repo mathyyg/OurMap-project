@@ -1,5 +1,6 @@
 package org.jolmkbL2B.Utilisateurs;
-
+/** Cette classe permet de gérer des résultats de base de données venant de la table utilisateurs.
+ * @author Mohammed Jalal El Hani*/
 public class UtilisateurAuthentifié {
 
 //Attribut de la classe Utilisateur nom authentifié

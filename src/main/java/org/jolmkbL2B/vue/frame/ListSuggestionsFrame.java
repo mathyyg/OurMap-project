@@ -17,6 +17,7 @@ import java.sql.SQLException;
 
 /**
  * @author Mathys Gagner
+ * Cette classe permet l'affichage de toutes les suggestions envoyées par les utilisateurs, tous marqueurs confondus
  */
 public class ListSuggestionsFrame extends JFrame {
     AppControllers app;
@@ -25,6 +26,12 @@ public class ListSuggestionsFrame extends JFrame {
         initComponents();
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode créée par JFormDesigner qui initialise tous les composants Swing
+     * Le reste des instructions est personnalisé et contient toutes les autres initialisations ;
+     * listeners, états de composants, ...
+     */
     private void initComponents() throws SQLException {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         scrollPane1 = new JScrollPane();

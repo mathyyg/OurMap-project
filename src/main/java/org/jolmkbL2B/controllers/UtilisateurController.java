@@ -5,7 +5,8 @@ import org.jolmkbL2B.Utilisateurs.UtilisateurAuthentifié;
 import org.jolmkbL2B.Utilisateurs.Utilisateurs;
 
 import java.sql.*;
-/*auteurs jalal & oualid*/
+/** Cette classe permet de gérer les intéractions avec la table utilisateurs de la base de données.
+ * @author Mohammed Jalal El Hani */
 public class UtilisateurController {
 
 public int idutilisateur;
@@ -61,6 +62,10 @@ public boolean isAdmin;
 //        isAdmin = admin;
 //    }
 
+    /** Cette méthode renvoit un ResultSet contenant tous les utilisateurs authentifiés de la base de données
+     * @author Mohammed Jalal El Hani
+     * @return  un ResultSet
+     * @throws SQLException*/
     public ResultSet getAllUtilisateurs() {
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
@@ -82,6 +87,11 @@ public boolean isAdmin;
         return null;
     }
 
+    /** Cette méthode renvoit un ResultSet contenant un utilisateur recherché par son ID
+     * @author Mohammed Jalal El Hani
+     * @param identr l'ID de l'utilisateur que l'on cherche
+     * @return  un ResultSet contenant l'utilisateur
+     * @throws SQLException*/
     public UtilisateurAuthentifié getUtilisateurById(int identr) {
         UtilisateurAuthentifié res = null;
         try {
@@ -107,6 +117,11 @@ public boolean isAdmin;
         return res;
     }
 
+    /** Cette méthode renvoit un objet de type UtilisateurAuthentifié (pour tester) contenant un utilisateur recherché par son pseudo
+     * @author Mohammed Jalal El Hani
+     * @param name le nom de l'utilisateur que l'on cherche
+     * @return  objet UtilisateurAuthentifié
+     * @throws SQLException*/
     public UtilisateurAuthentifié getUtilisateurByName(String name) {
         UtilisateurAuthentifié res = null;
         try {
@@ -132,6 +147,11 @@ public boolean isAdmin;
         return res;
     }
 
+    /** Cette méthode modifie le nom d'un utilisateur avec un ID et un nouveau nom en entrée
+     * @author Mohammed Jalal El Hani
+     * @param iduser l'ID de l'utilisateur dont on veut modifier le nom
+     * @param NouveauNom nouveau nom que l'on veut attribuer
+     * @throws SQLException*/
     public void setNom(int iduser,String NouveauNom) {
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
@@ -149,6 +169,12 @@ public boolean isAdmin;
         }
     }
 
+    /** Cette méthode modifie le champ isAdmin de la base de données pour donner ou non les droits admin à un user avec son ID
+     * @author Mohammed Jalal El Hani
+     * @param iduser l'ID de l'utilisateur dont on veut changer les droits
+     * @param status true ou false selon si on veut donner ou retirer les droits admin à l'utilisateur
+     * @return true ou false si la fonction s'est exécutée correctement ou non
+     * @throws SQLException*/
     public boolean setAdmin(int iduser,boolean status) {
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
@@ -168,6 +194,9 @@ public boolean isAdmin;
         return false;
     }
 
+    /** Cette méthode renvoit le champ booléen isAdmin
+     * @author Mohammed Jalal El Hani
+     * @return un booléen true ou false */
     public boolean isAdmin(int iduser) {
         return getUtilisateurById(iduser).isAdmin;
     }

@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 
 /**
  * @author Mathys Gagner
+ * Classe permettant l'affichage des informations détaillées d'un arrêt de bus
  */
 public class ArretBusFrame extends JFrame {
     private final AppControllers app;
@@ -26,6 +27,12 @@ public class ArretBusFrame extends JFrame {
         initComponents();
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode créée par JFormDesigner qui initialise tous les composants Swing
+     * Le reste des instructions est personnalisé et contient toutes les autres initialisations ;
+     * listeners, états/contenus de composants, ...
+     */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         label4 = new JLabel();

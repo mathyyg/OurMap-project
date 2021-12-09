@@ -18,6 +18,7 @@ import java.sql.SQLException;
 
 /**
  * @author Mathys Gagner
+ * Classe permetttant l'affichage du choix de la liste de favoris à laquelle on veut ajouter un marqueur
  */
 public class ChoixListeFrame extends JFrame {
     private final Marqueur mq;
@@ -28,7 +29,12 @@ public class ChoixListeFrame extends JFrame {
         this.app = app;
         initComponents();
     }
-
+    /**
+     * @author Mathys Gagner
+     * Méthode créée par JFormDesigner qui initialise tous les composants Swing
+     * Le reste des instructions est personnalisé et contient toutes les autres initialisations ;
+     * listeners, états de composants, ...
+     */
     private void initComponents() throws SQLException {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         label1 = new JLabel();

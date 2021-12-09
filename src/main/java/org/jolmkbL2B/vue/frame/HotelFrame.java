@@ -16,6 +16,7 @@ import org.jolmkbL2B.marqueurs.Hotel;
 
 /**
  * @author Mathys Gagner
+ * Classe permettant l'affichage des informations détaillées d'un Hotel
  */
 public class HotelFrame extends JFrame {
     private final Hotel hotel;
@@ -27,6 +28,12 @@ public class HotelFrame extends JFrame {
         initComponents();
     }
 
+    /**
+     * @author Mathys Gagner
+     * Méthode créée par JFormDesigner qui initialise tous les composants Swing
+     * Le reste des instructions est personnalisé et contient toutes les autres initialisations ;
+     * listeners, états de composants, ...
+     */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         label1 = new JLabel();
