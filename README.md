@@ -71,6 +71,10 @@ V4 : mode administrateur et changement de thème d'application
 - Ajouter les fichiers .jar du dossier lib comme librairies du projet
 - Exécuter la classe Main
 
+## Tests
+
+WIP
+
 ## Documentation
 
 WIP
