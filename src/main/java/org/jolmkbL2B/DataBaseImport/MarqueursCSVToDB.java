@@ -5,6 +5,8 @@ import java.sql.*;
 
 public class MarqueursCSVToDB   {
 
+    /** Min pour l'export de fichier CSV
+     * @author Bastien*/
     public static void main( String[] args ) throws SQLException {
 
         try {

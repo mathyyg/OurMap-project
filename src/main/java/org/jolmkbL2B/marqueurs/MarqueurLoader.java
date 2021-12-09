@@ -38,7 +38,7 @@ public class MarqueurLoader {
 
     /** Rend visible sur la carte les marqueurs d'un HashSet
      * @author Bastien
-     * @version 1.5 (work in progress)
+     * @version 2
      * @param marqueurs (HashSet de marqueurs
      * @return les marqueurs visibles, generqlement appelé dqns un OurMap.setOverlay
      */
@@ -49,34 +49,45 @@ public class MarqueurLoader {
         return marqueurPainter;
     }
 
-    /** Methode executee a l'initialisation pour creer le set initial de marqueur, charge tous les marqueurs publics et
+    /** Méthode executee a l'initialisation pour creer le set initial de marqueur, charge tous les marqueurs publics et
      * ajoute les marqueurs customs de l'utilisateur.
      * @author Bastien
-     * @return HashSet de tous les marqueurs de la base de données
+     * @return HashSet de tous les marqueurs publiques de la base de données + les marqueurs custom de l'utilisateur
      * @version 3*/
     public HashSet<Marqueur> loadAllMarkers(long idutilisateur) {
-        HashSet<Marqueur> marqueurSet = loadNewSet(marqueurController.fetchAll());
+        HashSet<Marqueur> marqueurSet = loadNewSet(marqueurController.fetchAll()); // Chargement des marqueurs publics
         return updateMarqueurSet(marqueurSet, marqueurController.fetchUserCustomMarqueur(idutilisateur));
+        //Ajout des marqueurs customisés de l'utilisateur au HashSet
 
     }
-
+    /** Méthode chargeant tous les marqueurs publiques pour un utilisateur non connecté
+     * @author Bastien
+     * @return HashSet de marqueurs à afficher */
     public HashSet<Marqueur> loadAllMarkers() {
-        HashSet<Marqueur> marqueurSet = loadNewSet(marqueurController.fetchAll());
+        HashSet<Marqueur> marqueurSet = loadNewSet(marqueurController.fetchAll()); // Chargement des marqueurs publics
         return marqueurSet;
     }
 
-    /** Pour charger seulement les customs */
+    /** Méthode chargeant seulement les marqueurs d'un certain type.
+     * @author Bastien
+     * @param idutilisateur Au cas où l'utilisateur veuille charger ses marqueurs custom
+     * @param placeType le type de marqueur recherché
+     * @return HashSet de marqueurs à afficher */
     public HashSet<Marqueur> loadAllMarkersByType(PlaceType placeType, long idutilisateur) {
         if(placeType == placeType.CUSTOM)   return loadNewSet(marqueurController.fetchUserCustomMarqueur(idutilisateur));
         else return loadNewSet(marqueurController.fetchAllByType(placeType));
     }
 
+    /** Méthode chargeant seulement les marqueurs d'un certain type.
+     * @author Bastien
+     * @param placeType le type de marqueur recherché
+     * @return HashSet de marqueurs à afficher*/
     public HashSet<Marqueur> loadAllMarkersByType(PlaceType placeType) {
         return loadNewSet(marqueurController.fetchAllByType(placeType));
     }
 
 
-    /** Méthode chargeant une liste de marqueurs dans un nouveau set
+    /** Méthode chargeant uniquement les marqueurs d'une liste dans un nouveau set
      * @author Bastien
      * @version 1
      * @since 2.4.2 */

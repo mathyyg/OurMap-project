@@ -36,15 +36,23 @@ import org.jxmapviewer.viewer.WaypointRenderer;
 
 import static org.jolmkbL2B.marqueurs.Marqueur.*;
 /**
- *
+ * MarqueurRenderer modifié qui sert à remplacer le DefaultwaypointRenderer classique trouvé dans la
+ * classe parDéfaut DefaultWaypointRenderer cette méthode sert à differencier les Differents Type de Marqueur
+ * affiché sur notre carte, la méthode DefaultWaypointRenderer faisait en sorte de superposer une image d'un
+ * marqueur non modifiable sur la carte , cette méthode s'en inspire associant chaque image d'un marqueur à son type
+ * d'enum , CUSTOM,SCHOOL,HOTEL,ARRETBUS à l'aide d'un IF qui executé cette vérification avant chaque instanciation
  *
  * @author KHALED MAHDI
- *
  * */
 
 public class ColoredMarqueurRenderer implements WaypointRenderer<Marqueur> {
-
-
+    /**
+     * un BufferedImage qui importe l'image que nous avons choisi depuis un chemin relatif que nous spécifions
+     *  dans ce cas la c'est le src/main/java/org/jolmkbL2B/vue/marqueurPainters/
+     * dans ce repertoire nous avons 3 types d'images spécifique pour chaque type de marqueur
+     * la méthode BufferedImage requiert un try/catch si jamais elle n'arrive pas à trouver une image
+     * dans ce cas la le catch le chemin erroné que nous avons spécifié
+     **/
     BufferedImage BLUEPIN;
 
     {
@@ -61,7 +69,7 @@ public class ColoredMarqueurRenderer implements WaypointRenderer<Marqueur> {
         try {
 
 
-           REDPIN =ImageIO.read(new File("src/main/java/org/jolmkbL2B/vue/marqueurPainters/RED PIN.png"));
+            REDPIN =ImageIO.read(new File("src/main/java/org/jolmkbL2B/vue/marqueurPainters/RED PIN.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -92,6 +100,17 @@ public class ColoredMarqueurRenderer implements WaypointRenderer<Marqueur> {
         }
     }
 
+    /**
+     * la méthode paintWaypoint disponible dans WaypointRenderer fourni avec Jxmapviewer
+     * qui à était modifié afin de vérifier le type d'enum avant chaque affichage et d'afficher
+     * l'image correspondante
+     * elle prends en paramètre un objet graphique 2D , la carte sur laquelle elle superposera l'image, et
+     * cette fois ci notre marqueur avec tout ses attributs ce qui permettra de vérifier son enum (PLACETYPE)
+     * à l'aide d'un IF else
+     *
+     * @param g,map,waypoint,REDPIN,GREENPIN,BLUEPIN,ORANGEPIN
+     *
+     * */
     @Override
     public void paintWaypoint(Graphics2D g, JXMapViewer map, Marqueur waypoint)
     {
