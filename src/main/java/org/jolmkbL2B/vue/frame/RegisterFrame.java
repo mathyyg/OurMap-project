@@ -9,6 +9,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
 
+/**
+ * @author Oualid Siraji
+ * Cette classe permet d'afficher la fenêtre d'inscription
+ */
 public class RegisterFrame extends JFrame {
     private final AppControllers app;
     // Variables declaration
@@ -57,6 +61,12 @@ public class RegisterFrame extends JFrame {
 
     @SuppressWarnings("unchecked")
     //
+    /**
+     * @author Oualid Siraji
+     * Méthode créée par JFormDesigner qui initialise tous les composants Swing
+     * Le reste des instructions est personnalisé et contient toutes les autres initialisations ;
+     * listeners, états de composants, ...
+     */
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
@@ -201,6 +211,10 @@ public class RegisterFrame extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * @author Oualid Siraji
+     * Méthode qui envoie le formulaire de connexion
+     */
     private void Sinscrireform() //Methode Sinscrire pour l'inscription
     {
 

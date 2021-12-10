@@ -13,6 +13,7 @@ import java.awt.geom.Point2D;
  * Recopie / adaptation d'une classe la librairie JXMapViewer2 a l'objet Marqueur.
  *
  * @author Daniel Stahr, contributeur au projet de la librairie JXMapViewer2 utilisee pour ce projet
+ * @author Modifié par Khaled Mahdi
  */
 public class SwingMarqueurPainter extends WaypointPainter<Marqueur> {
 

@@ -28,7 +28,7 @@ import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.GeoPosition;
 
 /**
- * @author Mathys Gagner, Mohammed Jalal El Hani, Oualid Siraji
+ * @author Mathys Gagner, Mohammed Jalal El Hani, Oualid Siraji, Khaled Mahdi
  * Cette classe gère et affiche la fenêtre principal de l'application pour un utilisateur authentifié
  */
 public class HubFrame extends JFrame {
