@@ -18,7 +18,7 @@ import org.jolmkbL2B.AppControllers;
 import org.jolmkbL2B.marqueurs.Marqueur;
 
 /**
- * @author Mathys Gagner
+ * @author Mohammed Jalal El Hani
  * Classe permettant d'afficher les commentaires associés à un marqueur et d'en ajouter
  * (permet aussi d'en supprimer en mode admin, voir AdminFrame)
  */
@@ -32,7 +32,7 @@ public class CommentFrame extends JFrame {
         initComponents();
     }
     /**
-     * @author Mathys Gagner
+     * @author Mohammed Jalal El Hani
      * Méthode créée par JFormDesigner qui initialise tous les composants Swing
      * Le reste des instructions est personnalisé et contient toutes les autres initialisations ;
      * listeners, états de composants, ...

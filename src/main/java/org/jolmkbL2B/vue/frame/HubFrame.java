@@ -28,7 +28,7 @@ import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.GeoPosition;
 
 /**
- * @author Mathys Gagner
+ * @author Mathys Gagner, Mohammed Jalal El Hani, Oualid Siraji
  * Cette classe gère et affiche la fenêtre principal de l'application pour un utilisateur authentifié
  */
 public class HubFrame extends JFrame {
@@ -155,7 +155,7 @@ public class HubFrame extends JFrame {
 
 
     /**
-     * @author Mathys Gagner
+     * @author Mathys Gagner, , Mohammed Jalal El Hani, Oualid Siraji
      * Méthode créée par JFormDesigner qui initialise tous les composants Swing
      * Le reste des instructions est personnalisé et contient toutes les autres initialisations ;
      * listeners, états de composants, ...
@@ -337,7 +337,7 @@ public class HubFrame extends JFrame {
     }
 
     /**
-     * @author Mathys Gagner
+     * @author Mathys Gagner, Mohammed Jalal El Hani, Oualid Siraji
      * Méthode permettant l'activation ou non du mode "création de marqueur"
      * @param etat true ou false
      */
@@ -353,7 +353,7 @@ public class HubFrame extends JFrame {
     }
 
     /**
-     * @author Mathys Gagner
+     * @author Mathys Gagner, Mohammed Jalal El Hani, Oualid Siraji
      * Méthode permettant l'activation ou non du mode "sélection de marqueur"
      * @param etat true ou false
      */
@@ -370,7 +370,7 @@ public class HubFrame extends JFrame {
     }
 
     /**
-     * @author Mathys Gagner
+     * @author Mathys Gagner, Mohammed Jalal El Hani, Oualid Siraji
      * Méthode qui désactive les boutons de mémos, commentaires et informations détaillées d'un marqueur
      * (pas de marqueur sélectionné = boutons désactivés)
      */
@@ -387,7 +387,7 @@ public class HubFrame extends JFrame {
     }
 
     /**
-     * @author Mathys Gagner
+     * @author Mathys Gagner, Mohammed Jalal El Hani, Oualid Siraji
      * Méthode qui affiche les informations détaillées d'un marqueur selon son type.
      * @param mq Marqueur dont on veut afficher les informations
      * @throws SQLException
@@ -441,7 +441,7 @@ public class HubFrame extends JFrame {
     }
 
     /**
-     * @author Mathys Gagner
+     * @author Mathys Gagner, Mohammed Jalal El Hani, Oualid Siraji
      * Cette méthode ouvre la fenêtre des mémos associés au marqueur
      * @param mq le marqueur dont on veut gérer les mémos (personnels)
      * @throws SQLException
@@ -453,7 +453,7 @@ public class HubFrame extends JFrame {
     }
 
     /**
-     * @author Mathys Gagner
+     * @author Mathys Gagner, Mohammed Jalal El Hani, Oualid Siraji
      * Cette méthode ouvre la fenêtre des commentaires associés au marqueur
      * @param mq le marqueur dont on veut gérer les commentaires (publics)
      * @throws SQLException

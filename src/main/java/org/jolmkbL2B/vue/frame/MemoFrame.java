@@ -15,7 +15,7 @@ import org.jolmkbL2B.AppControllers;
 import org.jolmkbL2B.marqueurs.Marqueur;
 
 /**
- * @author Mathys Gagner
+ * @author Oualid Siraji
  * Cette classe permet d'afficher la fenêtre de gestion des mémos associés à un marqueur
  */
 public class MemoFrame extends JFrame {
@@ -29,7 +29,7 @@ public class MemoFrame extends JFrame {
     }
 
     /**
-     * @author Mathys Gagner
+     * @author Oualid Siraji
      * Méthode créée par JFormDesigner qui initialise tous les composants Swing
      * Le reste des instructions est personnalisé et contient toutes les autres initialisations ;
      * listeners, états de composants, ...
