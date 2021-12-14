@@ -35,7 +35,7 @@ public class HubFrame extends JFrame {
 
     private AppControllers app;
     private ThemeFrame themeFrame = new ThemeFrame();
-    private HashMap<String, ThemeLaf> themes = new HashMap<String, ThemeLaf>();
+    public HashMap<String, ThemeLaf> themes = new HashMap<String, ThemeLaf>();
     public HubFrame(AppControllers app) throws SQLException {
         this.app = app;
         initComponents();

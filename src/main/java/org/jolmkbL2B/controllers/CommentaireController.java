@@ -14,7 +14,7 @@ public class CommentaireController implements Commentaires  {
     public CommentaireController()    {
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
-                    "mathys", "projet2021GL");
+                    "mathys", "PROJET2022poogl");
             this.con = con;
             /** Requête sur le serveur pour utiliser la base de données de
              dédiée à l'application */

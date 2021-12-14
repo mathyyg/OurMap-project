@@ -13,7 +13,7 @@ public class MemoController {
     public MemoController()    {
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
-                    "mathys", "projet2021GL");
+                    "mathys", "PROJET2022poogl");
             this.con = con;
             Statement stmt = con.createStatement();
 

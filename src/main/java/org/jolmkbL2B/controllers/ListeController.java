@@ -8,7 +8,7 @@ import java.sql.*;
  */
 
 public class ListeController implements Listes {
-    private Connection con;
+    public Connection con;
 
     /** Constructeur. Etablit la connection à la base de données sur un serveur distant
      * @throws SQLException en cas de soucis de connection.
@@ -16,7 +16,7 @@ public class ListeController implements Listes {
     public ListeController()    {
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
-                    "mathys", "projet2021GL");
+                    "mathys", "PROJET2022poogl");
             this.con = con;
             Statement stmt = con.createStatement();
             /* Requête sur le serveur pour utiliser la base de données de dédiée à l'application */
@@ -118,19 +118,35 @@ public class ListeController implements Listes {
     public boolean addToList(long idmarqueur, long idliste, long requestingUser) {
         try {
             //if(checkListAccessRight(idliste, requestingUser)) { //verification des droits de l'utilisateur sur la liste
-                Statement stmt = con.createStatement();
-                if(stmt.executeUpdate("INSERT INTO `ourmapdb`.`listemarqueurs`\n" +
-                        "(`idliste`,\n" +
-                        "`idmarqueur`)\n" +
-                        "VALUES\n" +
-                        "(" + idliste + ",\n" +
-                        idmarqueur + ");\n") > 0) {
-                    con.commit();
-                    return true;
-                }
-                //}
+            Statement stmt = con.createStatement();
+            if(stmt.executeUpdate("INSERT INTO `ourmapdb`.`listemarqueurs`\n" +
+                    "(`idliste`,\n" +
+                    "`idmarqueur`)\n" +
+                    "VALUES\n" +
+                    "(" + idliste + ",\n" +
+                    idmarqueur + ");\n") > 0) {
+                con.commit();
+                return true;
+            }
+            //}
 
-            else System.out.println("Erreur lors de l'ajout du collaborateur.");
+            else System.out.println("Erreur lors de l'ajout du marqueur à la liste.");
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean removeFromList(long idmarqueur, long idliste, long requestingUser) {
+        try {
+            //if(checkListAccessRight(idliste, requestingUser)) { //verification des droits de l'utilisateur sur la liste
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate("DELETE FROM `ourmapdb`.`listemarqueurs` WHERE idmarqueur = " + idmarqueur + " AND idliste= " + idliste);
+                con.commit();
+                return true;
+
+            //}
         }
         catch(SQLException e) {
             e.printStackTrace();

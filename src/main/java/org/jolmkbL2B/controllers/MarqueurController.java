@@ -11,7 +11,7 @@ import java.util.Map;
  * objets dérivés.
  * @author Bastien*/
 public class MarqueurController  {
-    protected Connection con;
+    public Connection con;
 
 
     /** Constructeur. Etablit la connection à la base de données sur un serveur distant
@@ -20,7 +20,7 @@ public class MarqueurController  {
     public MarqueurController() {
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
-                    "mathys", "projet2021GL");
+                    "mathys", "PROJET2022poogl");
             this.con = con;
             Statement stmt = con.createStatement();
 

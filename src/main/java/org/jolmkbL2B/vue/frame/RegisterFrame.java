@@ -48,7 +48,7 @@ public class RegisterFrame extends JFrame {
         initComponents();
         try {
             this.con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
-                    "mathys", "projet2021GL"); //etablissement connection
+                    "mathys", "PROJET2022poogl"); //etablissement connection
             con.setAutoCommit(false);
         }
         catch(SQLException e)   {

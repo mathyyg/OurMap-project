@@ -69,7 +69,7 @@ public boolean isAdmin;
     public ResultSet getAllUtilisateurs() {
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
-                    "mathys", "projet2021GL"); //etablissement connection
+                    "mathys", "PROJET2022poogl"); //etablissement connection
             con.setAutoCommit(false);
             Statement stmt = con.createStatement();
             stmt.execute("USE ourmapdb;");
@@ -96,7 +96,7 @@ public boolean isAdmin;
         UtilisateurAuthentifié res = null;
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
-                    "mathys", "projet2021GL"); //etablissement connection
+                    "mathys", "PROJET2022poogl"); //etablissement connection
             con.setAutoCommit(false);
             Statement stmt = con.createStatement();
             stmt.execute("USE ourmapdb;");
@@ -126,7 +126,7 @@ public boolean isAdmin;
         UtilisateurAuthentifié res = null;
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
-                    "mathys", "projet2021GL"); //etablissement connection
+                    "mathys", "PROJET2022poogl"); //etablissement connection
             con.setAutoCommit(false);
             Statement stmt = con.createStatement();
             stmt.execute("USE ourmapdb;");
@@ -155,7 +155,7 @@ public boolean isAdmin;
     public void setNom(int iduser,String NouveauNom) {
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
-                    "mathys", "projet2021GL"); //etablissement connection
+                    "mathys", "PROJET2022poogl"); //etablissement connection
             con.setAutoCommit(false);
             Statement stmt = con.createStatement();
             stmt.execute("USE ourmapdb;");
@@ -178,7 +178,7 @@ public boolean isAdmin;
     public boolean setAdmin(int iduser,boolean status) {
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://play.kidl.fr:3306/?user=mathys",
-                    "mathys", "projet2021GL"); //etablissement connection
+                    "mathys", "PROJET2022poogl"); //etablissement connection
             con.setAutoCommit(false);
             Statement stmt = con.createStatement();
             stmt.execute("USE ourmapdb;");
